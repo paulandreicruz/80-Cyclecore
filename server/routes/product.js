@@ -23,7 +23,11 @@ import {
   processPayment,
   orderStatus,
   addShippingOption,
-  getShippingOption,  
+  getShippingOption,
+  createcustomize,
+  listcustomize,
+  readcustomize,
+  photocustomize,
 } from "../controllers/product.js";
 
 router.post("/product", requireSignin, isAdmin, formidable(), create);
@@ -44,5 +48,16 @@ router.get("/braintree/token", getToken);
 router.post("/braintree/payment", requireSignin, processPayment);
 
 router.post("/order-status/:orderId", requireSignin, isAdmin, orderStatus);
+
+router.post(
+  "/customize",
+  requireSignin,
+  isAdmin,
+  formidable(),
+  createcustomize
+);
+router.get("/customizes", listcustomize);
+router.get("/customize/:slug", readcustomize);
+router.get("/customize/photo/:customizeId", photocustomize);
 
 export default router;

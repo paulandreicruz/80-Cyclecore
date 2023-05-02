@@ -21,11 +21,13 @@ import {
 import { toast } from "react-toastify";
 import { HiOutlineSquaresPlus } from "react-icons/hi2";
 import { TbEdit } from "react-icons/tb";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineDislike } from "react-icons/ai";
 import { GiConfirmed } from "react-icons/gi";
-import { FcInfo } from "react-icons/fc";
+import { FcInfo, FcVlc } from "react-icons/fc";
 import { BiSave } from "react-icons/bi";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { MdOutlineSave, MdSecurityUpdate } from "react-icons/md";
+import { FaShippingFast } from "react-icons/fa";
 
 export default function UserProfile() {
   const [address, setAddress] = useState({
@@ -46,6 +48,7 @@ export default function UserProfile() {
 
   //open dialog
   const [dialog, openDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   //context
   const [auth, setAuth] = useAuth();
@@ -81,6 +84,7 @@ export default function UserProfile() {
     try {
       await axios.delete(`/useraddress/${addressId}`);
       setAddresses(addresses.filter((a) => a._id !== addressId));
+      setDeleteDialog(false);
     } catch (err) {
       console.log(err);
     }
@@ -190,8 +194,8 @@ export default function UserProfile() {
           {/* left side */}
           <Grid item className="p-5 border">
             <Paper className="p-5 w-[35rem]">
-              <div className="justify-center">
-                <span className="justify-center mx-auto flex font-bold tracking-wider text-3xl gap-1">
+              <div className="justify-center mb-2">
+                <span className="font-bold tracking-wider flex items-center text-3xl gap-1">
                   Personal Information
                   <FcInfo />
                 </span>
@@ -355,32 +359,44 @@ export default function UserProfile() {
               </form>
             </Paper>
           </Grid>
-
           {/* right side */}
           <Grid item className="border p-5">
             <Paper className="p-5 w-[45rem]">
+              <div className="tracking-wider text-3xl font-bold flex items-center gap-1 mb-2">
+                shipping addresses <FaShippingFast />
+              </div>
+
               <div>
-                <div
-                  className="border-2 border-dotted py-7 px-20 hover:cursor-pointer border-black text-black hover:border-[#FFA500] hover:text-[#FFA500]"
-                  onClick={() => openDialog(true)}
-                >
-                  <div>
-                    {" "}
-                    <HiOutlineSquaresPlus
-                      fontSize={50}
-                      className="mx-auto "
-                    />{" "}
+                {addresses?.length === 3 ? (
+                  <div className="font-bebas text-orange-500 tracking-wide text-xs">
+                    note:{" "}
+                    <span className="tracking-wider font-bold text-sm text-black">
+                      Only three shipping addresses are allowed.
+                    </span>
                   </div>
-                  <div>
-                    <h1 className="text-center  ">Add New Address</h1>
+                ) : (
+                  <div
+                    className="border-2 border-dotted py-7 px-20 hover:cursor-pointer border-black text-black hover:border-[#FFA500] hover:text-[#FFA500]"
+                    onClick={() => openDialog(true)}
+                  >
+                    <div>
+                      {" "}
+                      <HiOutlineSquaresPlus
+                        fontSize={50}
+                        className="mx-auto "
+                      />{" "}
+                    </div>
+                    <div>
+                      <h1 className="text-center  ">Add New Address</h1>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {addresses?.map((a, i) => (
                 <div key={i} className="mt-5">
                   <div className="p-3 border border-[#00ac6a] bg-[#e9f9ee] rounded-sm">
-                    <div className=" font-bold tracking-wide">
+                    <div className=" font-bold tracking-wide text-xl">
                       {a.addressname}
                     </div>
                     <div className="text-sm tracking-wide">
@@ -416,7 +432,7 @@ export default function UserProfile() {
 
                     <div>
                       <Button
-                        onClick={() => deleteAddress(a._id)}
+                        onClick={() => setDeleteDialog(true)}
                         variant="contained"
                         color="error"
                         startIcon={<RiDeleteBinLine />}
@@ -427,6 +443,53 @@ export default function UserProfile() {
                       </Button>
                     </div>
                   </div>
+                  {/* delete dialog */}
+                  <Dialog
+                    open={deleteDialog}
+                    onClose={() => setDeleteDialog(false)}
+                  >
+                    <DialogTitle>
+                      {/* <span className="font-bebas tracking-wider text-lg text-gray-800">Delete Address</span> */}
+                      <InputLabel>
+                        <span className="font-bebas tracking-wider font-bold text-base flex items-center gap-1">
+                          Delete Address <FcVlc />
+                        </span>
+                      </InputLabel>
+                    </DialogTitle>
+
+                    <DialogContent>
+                      <span className="font-bebas tracking-wider font-bold text-2xl">
+                        Are You Sure You Want To Delete This Address?{" "}
+                      </span>
+                    </DialogContent>
+
+                    <DialogActions>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        type="button"
+                        size="small"
+                        onClick={() => deleteAddress(a._id)}
+                        startIcon={<GiConfirmed />}
+                      >
+                        <span className="font-bebas tracking-wider font-bold text-base">
+                          Yes
+                        </span>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        type="button"
+                        size="small"
+                        onClick={() => setDeleteDialog(false)}
+                        startIcon={<AiOutlineDislike />}
+                      >
+                        <span className="font-bebas tracking-wider font-bold text-base">
+                          No
+                        </span>
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               ))}
             </Paper>
@@ -435,8 +498,12 @@ export default function UserProfile() {
       </div>
       {/* Dialog Box */}
       <Dialog open={dialog} onClose={() => openDialog(false)}>
-        <DialogTitle>Update Your Information</DialogTitle>
-        <DialogContent className="my-2">
+        <DialogTitle>
+          <span className="font-bebas tracking-wider text-lg font-bold flex items-center gap-1">
+            Add Shipping Address <MdSecurityUpdate />
+          </span>
+        </DialogTitle>
+        <DialogContent>
           {/* content */}
           <div className="mx-auto">
             <form
@@ -447,69 +514,159 @@ export default function UserProfile() {
                 {/* left side */}
                 <Grid item md={6} className="">
                   <div className="pr-2 space-y-4">
-                    <TextField
-                      type="text"
-                      label="Address Name"
-                      name="addressname"
-                      value={address.addressname}
-                      onChange={handleChange}
-                      required
-                      fullWidth
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          Address Name
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        type="text"
+                        name="addressname"
+                        value={address.addressname}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="barangay"
-                      type="text"
-                      fullWidth
-                      label="Select Barangay"
-                      value={address.barangay}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          barangay
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="barangay"
+                        type="text"
+                        fullWidth
+                        value={address.barangay}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="region"
-                      type="text"
-                      fullWidth
-                      label="Select Region"
-                      value={address.region}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          region
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="region"
+                        type="text"
+                        fullWidth
+                        value={address.region}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
                   </div>
                 </Grid>
                 {/* right side */}
                 <Grid item md={6} className="">
                   <div className="pl-2 space-y-4">
-                    <TextField
-                      name="street"
-                      type="text"
-                      fullWidth
-                      label="House# & Street Name"
-                      value={address.street}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          House # & Street
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="street"
+                        type="text"
+                        fullWidth
+                        value={address.street}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="city"
-                      type="text"
-                      fullWidth
-                      label="Select City"
-                      value={address.city}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          city
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="city"
+                        type="text"
+                        fullWidth
+                        value={address.city}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="postalCode"
-                      type="text"
-                      fullWidth
-                      label="Postal Code"
-                      value={address.postalCode}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          postal code
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="postalCode"
+                        type="text"
+                        fullWidth
+                        value={address.postalCode}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
                   </div>
                 </Grid>
               </Grid>
@@ -522,8 +679,11 @@ export default function UserProfile() {
                   color="inherit"
                   type="submit"
                   fullWidth
+                  startIcon={<MdOutlineSave />}
                 >
-                  Save Information
+                  <span className="font-bebas tracking wider font-bold text-lg">
+                    Save Information
+                  </span>
                 </Button>
               </div>
             </form>
@@ -535,5 +695,4 @@ export default function UserProfile() {
     </>
   );
 }
-
 // html: `Hello! Just one more step to continue cycling Click <a href="${verificationLink}"><button>here</button></a> to verify your email address.`

@@ -30,7 +30,37 @@ const handlebarSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
+    type: {
+      type: String,
+    },
+    material: {
+      type: String,
+    },
+    compatible: {
+      type: String,
+    },
+    widthhood: {
+      type: String,
+    },
+    widthdrops: {
+      type: String,
+    },
+    reaches: {
+      type: String,
+    },
+    drops: {
+      type: String,
+    },
+    clampdiameter: {
+      type: String,
+    },
+    faceplate: {
+      type: String,
+    },
+    controls: {
+      type: String,
+    },
+    weigth:{
       type: String,
     },
     price: {

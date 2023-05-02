@@ -56,6 +56,9 @@ const productSchema = new mongoose.Schema(
         type: String,
       },
     },
+    image: {
+      type: String,
+    },
     shipping: {
       required: false,
       type: Boolean,

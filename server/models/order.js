@@ -33,8 +33,12 @@ const orderSchema = new Schema(
             type: String,
           },
         },
+        image: {
+          type: String,
+        },
       },
     ],
+
     payment: {
       id: String, // Braintree transaction ID
       status: String, // Braintree transaction status
@@ -71,6 +75,10 @@ const orderSchema = new Schema(
         required: false,
       },
     },
+    ordernumber: {
+      type: String,
+    },
+
     status: {
       type: String,
       default: "Not Processed",

@@ -137,7 +137,11 @@ export default function Cart() {
                             src={`${
                               import.meta.env.VITE_APP_REACT_APP_API
                             }/product/photo/${p._id}`}
-                            className="w-24 rounded-sm "
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = p.image;
+                            }}
+                            className="w-24 rounded-sm"
                           />
                         </Grid>
                         <Grid item className="text-center">

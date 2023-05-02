@@ -30,9 +30,6 @@ const groupsetSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
-      type: String,
-    },
     price: {
       type: Number,
       required: true,
@@ -42,6 +39,36 @@ const groupsetSchema = new Schema(
       url: {
         type: String,
       },
+    },
+    weigth: {
+      type: String,
+    },
+    chain: {
+      type: String,
+    },
+    armlength: {
+      type: String,
+    },
+    connectors: {
+      type: String,
+    },
+    charging: {
+      type: String,
+    },
+    sensor : {
+      type: String,
+    },
+    cassette: {
+      type: String,
+    },
+    brakes: {
+      type: String,
+    },
+    functionality: {
+      type: String,
+    },
+    type: {
+      type: String,
     },
     img: {
       url: {

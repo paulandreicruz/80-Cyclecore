@@ -30,13 +30,28 @@ const tireSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
-      type: String,
-    },
     price: {
       type: Number,
       required: true,
       trim: true,
+    },
+    type: {
+      type: String,
+    },
+    bead: {
+      type: String,
+    },
+    casing: {
+      type: String,
+    },
+    compound: {
+      type: String,
+    },
+    flat: {
+      type: String,
+    },
+    weight: {
+      type: String,
     },
     photo: {
       url: {
@@ -45,7 +60,7 @@ const tireSchema = new Schema(
     },
     img: {
       url: {
-        type: String,
+        type: [String],
       },
     },
   },

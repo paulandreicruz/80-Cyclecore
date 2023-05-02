@@ -10,36 +10,37 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
-  Grid,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
 import moment from "moment";
-import { TiArrowBack, TiArrowBackOutline, TiPrinter } from "react-icons/ti";
-import { TbFileInvoice, TbTruckOff, TbTruckReturn } from "react-icons/tb";
+import { TiArrowBackOutline, TiPrinter } from "react-icons/ti";
+import { TbCopyright, TbTruckReturn } from "react-icons/tb";
 import { BsCloudSun } from "react-icons/bs";
 import logo from "../../assets/logo1.png";
 import ReactToPrint from "react-to-print";
 import { BiPrinter } from "react-icons/bi";
 
 export default function UserOrders() {
+  const printButton = "@media print { .print-button { hidden: true}}";
   //context
   const [auth, setAuth] = useAuth();
   //state
   const [orders, setOrders] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrderProducts, setSelectedOrderProducts] = useState([]);
+
+  const handlePrint = () => {
+    window.print();
+    document.title = "order#: " + orderId;
+  };
 
   const navigate = useNavigate();
 
   const handleOrderDetailsClick = (orders) => {
-    setSelectedOrder(orders);
     setDialogOpen(true);
+    setSelectedOrder(orders);
+    setSelectedOrderProducts(orders.products);
   };
 
   useEffect(() => {
@@ -61,6 +62,16 @@ export default function UserOrders() {
     <div className="bg-gray-200 h-full">
       <Navbar />
 
+      <style>
+        {`
+          @media print {
+            .print-button {
+              display: none;
+            }
+          }
+        `}
+      </style>
+
       <Paper className="p-3 mx-24 mt-5 mb-0 font-bebas">
         <div className="flex items-center justify-between">
           <span className="tracking-wide flex hover:text-[#00BFFF] hover:cursor-default">
@@ -80,7 +91,7 @@ export default function UserOrders() {
           </Button>
         </div>
       </Paper>
-      {orders?.map((o, i) => (
+      {orders?.map((o) => (
         <Paper
           sx={{ backgroundColor: "#f2f2f2" }}
           className="px-4 pb-4 mx-24 mt-5 font-bebas"
@@ -90,7 +101,7 @@ export default function UserOrders() {
             <div className="tracking-wide text-sm">
               {" "}
               Order ID :{" "}
-              <span className="font-semibold text-base">{o._id}</span>
+              <span className="font-semibold text-base">{o.ordernumber}</span>
             </div>
             <div className="text-sm">
               Order Date{" "}
@@ -130,223 +141,232 @@ export default function UserOrders() {
             <div className="flex justify-between">
               <div className="space-y-4">
                 {o?.products?.map((p, i) => (
-                  <>
-                    <div className="flex justify-between" key={i}>
-                      <div className="flex items-center gap-4">
-                        <div>
-                          <img
-                            src={`${
-                              import.meta.env.VITE_APP_REACT_APP_API
-                            }/product/photo/${p._id}`}
-                            alt=""
-                            className="w-32"
-                          />
-                        </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <img
+                          src={`${
+                            import.meta.env.VITE_APP_REACT_APP_API
+                          }/product/photo/${p._id}`}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = p.image;
+                          }}
+                          className="w-24 rounded-sm"
+                        />
+                      </div>
 
-                        <div>
-                          <div className="text-sm">
-                            Name:<span>{p.name}</span>
-                          </div>
-                          <div className="text-sm">
-                            Qty: <span className="text-lg">{p.quantity}</span>
-                          </div>
-                          <div className="text-sm">
-                            PHP <span className="text-lg"> {p.price}</span>
-                          </div>
+                      <div>
+                        <div className="text-sm">
+                          Name: <span className="text-lg">{p.name}</span>
+                        </div>
+                        <div className="text-sm">
+                          Qty: <span className="text-lg">{p.quantity}</span>
+                        </div>
+                        <div className="text-sm">
+                          PHP <span className="text-lg"> {p.price}</span>
                         </div>
                       </div>
-                      {selectedOrder && (
-                        <Dialog
-                          open={dialogOpen}
-                          onClose={() => setDialogOpen(false)}
-                          sx={{
-                            backgroundColor: "lightgray",
-                          }}
-                          maxWidth="xl"
-                          ref={componentRef}
-                        >
-                          <DialogTitle
-                            sx={{
-                              backgroundColor: "lightgray",
-                            }}
-                          >
-                            <div className="flex justify-between">
-                              <span className="font-bebas">INVOICE</span>
-                              <div>
-                                <ReactToPrint
-                                  trigger={() => {
-                                    return (
-                                      <button>
-                                        <TiPrinter fontSize={25} className="" />
-                                      </button>
-                                    );
-                                  }}
-                                  content={() => componentRef.current}
-                                  documentTitle="Print Invoice"
-                                  pageStyle="print"
-                                />
-                              </div>
-                            </div>
-                          </DialogTitle>
-                          <DialogContent
-                            sx={{
-                              backgroundColor: "lightgray",
-                              maxWidth: "100rem",
-                              // or 'lg' or any other width value you prefer
-                            }}
-                          >
-                            <div className="font-bebas flex items-center justify-between gap-8 mb-5">
-                              <Paper
-                                className="p-3 h-[14.5rem] w-[20rem]"
-                                sx={{
-                                  backgroundColor: "transparent",
-                                  boxShadow: "none",
-                                }}
-                              >
-                                {/* <div>Home Delivery</div> */}
-                                <img src={logo} alt="" />
-                              </Paper>
-
-                              <Paper className="p-3  w-[20rem] h-[14.5rem]">
-                                <div className="font-bold mb-3">
-                                  Shipping Address
-                                </div>
-                                <div>
-                                  {selectedOrder?.buyer?.firstname}
-                                  {selectedOrder?.buyer?.lastname}
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.addressname},
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.street}, ,
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.barangay}
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.city},
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.postalCode}
-                                </div>
-                              </Paper>
-
-                              <Paper className="p-3  w-[20rem] h-[14.5rem]">
-                                <div className="font-bold mb-3">
-                                  Billing Address
-                                </div>
-                                <div>
-                                  {selectedOrder?.buyer?.firstname}
-                                  {selectedOrder?.buyer?.lastname}
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.addressname},
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.street}, ,
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.barangay}
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.city},
-                                </div>
-                                <div>
-                                  {selectedOrder?.shippingAddress?.postalCode}
-                                </div>
-                              </Paper>
-                            </div>
-
-                            <Paper className="font-bebas p-4">
-                              <div className="font-bold mb-4 text-lg tracking-wider">
-                                Home Delivery Items
-                              </div>
-
-                              <div className="flex justify-between">
-                                <div className="space-y-2">
-                                  {o?.products?.map((p, i) => (
-                                    <>
-                                      <div key={i}>
-                                        <img
-                                          src={`${
-                                            import.meta.env
-                                              .VITE_APP_REACT_APP_API
-                                          }/product/photo/${p._id}`}
-                                          alt=""
-                                          className="w-32"
-                                        />
-                                        <div>{p.name}</div>
-                                      </div>
-                                    </>
-                                  ))}
-                                </div>
-
-                                <div>Order-Id: {selectedOrder._id}</div>
-
-                                <div>Status: {o.status} </div>
-
-                                <div>
-                                  Order-Date :{" "}
-                                  {moment(o.createdAt).format(
-                                    "MMMM Do YYYY, h:mm:ss"
-                                  )}
-                                </div>
-
-                                <div>{selectedOrder.name}</div>
-
-                                <div>
-                                  Total-quantity: {selectedOrder.totalQuantity}
-                                </div>
-
-                                <div>
-                                  Total-Price PHP {selectedOrder.totalPrice}
-                                </div>
-                              </div>
-                            </Paper>
-                          </DialogContent>
-                          {/* <DialogActions>
-                            <Button onClick={() => setDialogOpen(false)}>
-                              Close
-                            </Button>
-                          </DialogActions> */}
-                        </Dialog>
-                      )}
                     </div>
-                  </>
+                  </div>
                 ))}
-              </div>
-
-              {/* right-side */}
-              <div className="space-y-3">
-                {/* <div>
-                <Button variant="contained" color="inherit" fullWidth>
-                  <span className="font-bebas tracking-wider">
-                    Return Product
-                  </span>
-                </Button>
-              </div> */}
-                <div>
-                  <NavLink to="/shop">
-                    <Button
-                      variant="contained"
-                      color="inherit"
-                      startIcon={<TiArrowBack />}
-                      size="small"
-                      fullWidth
-                    >
-                      <span className="font-bebas tracking-widest font-bold text-lg">
-                        Buy Again
-                      </span>
-                    </Button>
-                  </NavLink>
-                </div>
               </div>
             </div>
           </Paper>
           {/* dialog */}
         </Paper>
       ))}
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        ref={componentRef}
+      >
+        <DialogTitle sx={{ backgroundColor: "gray" }}>
+          <div className="flex justify-between w-[35rem] text-white">
+            <div className="font-bebas">
+              <img src={logo} alt="" className="w-44" />
+              <h1 className="tracking-wider text-6xl font-bold">Invoice</h1>
+            </div>
+
+            <div className="space-y-2 font-bebas mt-8">
+              <h1 className="text-xl font-bold tracking-wider">
+                Cyclecore Bikeshop
+              </h1>
+              <h1 className="tracking-wide text-xs">
+                390 Col. Bonny Serrano Ave, Project 4
+              </h1>
+              <h1 className="tracking-wide text-xs">
+                Quezon City, Metro Manila
+              </h1>
+              <h1 className="tracking-wide text-xs">Manila, Philippines</h1>
+              <h1 className="tracking-wide text-xs">1192</h1>
+            </div>
+          </div>
+        </DialogTitle>
+
+        <DialogContent>
+          {selectedOrder && (
+            <>
+              <div className="font-bebas flex justify-between mt-4">
+                <div>
+                  <h1 className="text-sm">
+                    bill to:{" "}
+                    <span className="text-base font-bold tracking-wider">
+                      {selectedOrder.buyer.firstname}{" "}
+                      {selectedOrder.buyer.lastname}
+                    </span>
+                  </h1>
+                  <h1 className="text-sm">
+                    {selectedOrder.shippingAddress.street}
+                  </h1>
+                  <h1 className="text-sm">
+                    {selectedOrder.shippingAddress.city}
+                  </h1>
+                  <h1 className="text-sm">
+                    {selectedOrder.shippingAddress.region}
+                  </h1>
+                  <h1 className="text-sm">
+                    {selectedOrder.shippingAddress.postalCode}
+                  </h1>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="text-sm">
+                    Payment Method:{" "}
+                    <span className="font-bold tracking-wider">
+                      {selectedOrder.payment?.paymentMethod}
+                    </span>
+                  </div>
+                  <div className="text-sm">
+                    Card Type:{" "}
+                    <span className="font-bold tracking-wider">
+                      {selectedOrder.payment.cardType}
+                    </span>
+                  </div>
+                  <div className="text-sm">
+                    Transaction ID:{" "}
+                    <span className="font-bold tracking-wider">
+                      {selectedOrder.payment?.id}
+                    </span>
+                  </div>
+                  <h1 className="text-xs">
+                    order id#:{" "}
+                    <span className="font-bold tracking-wider text-base">
+                      {selectedOrder.ordernumber}
+                    </span>
+                  </h1>
+                  <h1 className="text-xs">
+                    Date:{" "}
+                    <span className="font-bold tracking-wider">
+                      {moment(selectedOrder.createdAt).format(
+                        "MMMM Do YYYY, h:mm:ss"
+                      )}
+                    </span>
+                  </h1>
+                </div>
+              </div>
+
+              <div className="h-[1px] bg-gray-200 my-3" />
+
+              <div className="flex justify-between font-bebas">
+                <div>
+                  <h1 className="font-bold text-lg tracking-wide">Item</h1>
+                </div>
+                <div className="flex gap-16 text-lg font-bebas">
+                  <h1 className="font-bold">Quantity</h1>
+                  <h1 className="font-bold">Price</h1>
+                  <h1 className="font-bold">Amount</h1>
+                </div>
+              </div>
+              {selectedOrder.products.map((p, i) => (
+                <>
+                  <div key={i} className="font-bebas flex justify-between">
+                    <div>
+                      <div className="mt-2">{p.name}</div>
+                    </div>
+
+                    <div className="font-bebas flex space-x-[3rem]">
+                      <div className="text-lg">
+                        <div className="mt-2">
+                          <div className="text-center text-base">
+                            {p.quantity}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-lg">
+                        <div className="mt-2">
+                          <div className="text-center text-base">
+                            Php {p.price}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-lg">
+                        <div className="mt-2">
+                          <div className="text-base">php {p.price}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ))}
+            </>
+          )}
+        </DialogContent>
+
+        <div className="flex justify-between">
+          <DialogTitle
+            sx={{ height: "100px", backgroundColor: "gray", width: "75%" }}
+          >
+            <div className="font-bebas">
+              <img src={logo} alt="" className="w-12" />
+              <div className="text-xs text-white w-[21rem]">
+                We're preparing your order with care and attention to detail. If
+                you have any special requests, please let us know and we'll do
+                our best to accommodate them.
+              </div>
+            </div>
+          </DialogTitle>
+
+          <DialogTitle sx={{ backgroundColor: "orangered", height: "100px" }}>
+            {selectedOrder && (
+              <>
+                <div>
+                  <h1 className="font-bebas text-sm justify-end flex">total</h1>
+                  <h1 className="font-bebas text-3xl justify-end flex text-white">
+                    PHP {selectedOrder.totalPrice}
+                  </h1>
+                </div>
+              </>
+            )}
+          </DialogTitle>
+        </div>
+
+        <DialogContent>
+          <div className="flex items-center gap-1 font-bebas text-center mx-auto justify-center text-xs mt-4">
+            <TbCopyright /> Cyclecore est 2020
+          </div>
+        </DialogContent>
+
+        <DialogActions>
+          {selectedOrder && (
+            <ReactToPrint
+              trigger={() => {
+                return (
+                  <div
+                    className={`hover:underline hover:text-orange-500 cursor-pointer font-bebas flex items-center print-button`}
+                  >
+                    <TiPrinter /> print invoice
+                  </div>
+                );
+              }}
+              content={() => componentRef.current}
+              pageStyle="@media print {.MuiDialogTitle-root {-webkit-print-color-adjust: exact; print-color-adjust: exact;}}"
+              style={{ display: "none" }}
+              documentTitle={`order#: ${selectedOrder._id}`}
+            />
+          )}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

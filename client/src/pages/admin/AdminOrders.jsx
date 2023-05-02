@@ -15,6 +15,7 @@ import moment from "moment";
 import { Select } from "antd";
 import ReactToPrint from "react-to-print";
 import { BiPrinter } from "react-icons/bi";
+import Search from "../../components/forms/AdminSearchForm";
 
 export default function AdminOrders() {
   //context
@@ -62,6 +63,7 @@ export default function AdminOrders() {
   return (
     <>
       <div className="m-10">
+        <Search />
         <div>
           <ReactToPrint
             trigger={() => {
@@ -188,7 +190,7 @@ export default function AdminOrders() {
                         width: "10px",
                       }}
                     >
-                      {i + 1}
+                      {o.ordernumber}
                     </TableCell>
                     <TableCell
                       sx={{

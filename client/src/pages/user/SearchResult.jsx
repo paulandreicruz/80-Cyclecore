@@ -2,10 +2,7 @@ import Footer from "../../global/footer/Footer";
 import Navbar from "../../global/nav/Navbar";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Checkbox, Radio, Pagination } from "antd";
 import { useSearch } from "../../context/Search";
-
-import { prices } from "../../prices";
 import CustomShopCard from "../../components/cards/CustomShopCard";
 
 export default function SearchResult() {
@@ -141,26 +138,12 @@ export default function SearchResult() {
   return (
     <>
       <Navbar />
-      {/* <div className="md:flex">
-            <div className="mb-20 md:mb-0 md:block flex">
-                
-            </div>
-          <div className="md:flex-1 mx-auto justify-center items-center">
-            {products?.map((p) => (
-              <div className="items-center justify-center" key={p._id}>
-                <CustomShopCard p={p} />
-              </div>
-            ))}
-          </div>
-
-        </div> */}
-
       <div className="flex justify-center items-center mt-16">
-        <span className=" font-varela text-3xl">Search Result </span>
+        <span className=" font-bebas text-3xl">Search Result </span>
       </div>
       <div className="flex justify-center">
         <div className="text-center mt-3">
-          <span className="font-pop text-center">
+          <span className="font-bebas text-center">
             {values?.results?.length < 1
               ? "No products found"
               : `Found ${values?.results?.length} Products`}
@@ -176,18 +159,6 @@ export default function SearchResult() {
           ))}
         </div>
       </div>
-      {/* <div>
-        {products && products.length < total && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setPage(page + 1);
-            }}
-          >
-            {loading ? "Loading.." : "Load More"}
-          </button>
-        )}
-      </div> */}
       <Footer />
     </>
   );

@@ -61,7 +61,11 @@ const CartContents = () => {
                 src={`${import.meta.env.VITE_APP_REACT_APP_API}/product/photo/${
                   p._id
                 }`}
-                className="w-32 rounded-md"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = p.image;
+                }}
+                className="w-24 rounded-sm"
               />
             </Grid>
 

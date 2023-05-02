@@ -33,12 +33,14 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import Success from "./components/cards/Success";
 import EmailVerification from "./components/cards/EmailVerification";
 import { Checkout } from "./pages/user/Checkout";
-import Customize1 from "./pages/user/Customize1";
+import {Customize1} from "./pages/user/Customize1";
 import { DeliveryOption } from "./pages/user/DeliveryOption";
-import {PaymentPage} from "./pages/user/Payment";
+import { PaymentPage } from "./pages/user/Payment";
 import { UserPayment } from "./pages/user/UserPayment";
 import { Dummy } from "./pages/user/Dummy";
 import { OrderSuccess } from "./components/cards/OrderSuccess";
+import { AdminOrdersSearch } from "./pages/admin/AdminOrdersSearch";
+import { Customize3 } from "./pages/user/Customize3";
 
 function App() {
   return (
@@ -68,6 +70,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/customize" element={<NewCustomize />} />
           <Route path="/custom" element={<Customize1 />} />
+          <Route path="/custom3" element={<Customize3 />} />
+
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -90,6 +94,10 @@ function App() {
               <Route path="admin/brand" element={<AdminBrands />} />
               <Route path="admin/products" element={<AdminProducts />} />
               <Route path="admin/orders" element={<AdminOrders />} />
+              <Route
+                path="admin/orders-search"
+                element={<AdminOrdersSearch />}
+              />
               <Route
                 path="admin/products/create"
                 element={<AdminCreateProduct />}

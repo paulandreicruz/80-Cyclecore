@@ -47,34 +47,34 @@ export const UserPayment = () => {
     });
   };
 
-  const handleCheckout = async () => {
-    try {
-      const { nonce, details } = await instance.requestPaymentMethod();
-      console.log(details);
-      const { data } = await axios.post("/braintree/payment", {
-        nonce,
-        cart,
-        paymentMethod: details.type,
-        cardType: details.cardType,
-      });
+    const handleCheckout = async () => {
+      try {
+        const { nonce, details } = await instance.requestPaymentMethod();
+        console.log(details);
+        const { data } = await axios.post("/braintree/payment", {
+          nonce,
+          cart,
+          paymentMethod: details.type,
+          cardType: details.cardType,
+        });
 
-      localStorage.removeItem("cart");
-      setCart([]);
-      // navigate("/dashboard/user/ordersuccess");
-      toast.success("Payment Successful", {
-        position: "top-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        localStorage.removeItem("cart");
+        setCart([]);
+        navigate("/dashboard/user/ordersuccess");
+        toast.success("Payment Successful", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
   return (
     <>
@@ -127,9 +127,6 @@ export const UserPayment = () => {
             <DropIn
               options={{
                 authorization: clientToken,
-                paypal: {
-                  now: "vault",
-                },
                 currency: "PHP",
               }}
               onInstance={(instance) => setInstance(instance)}

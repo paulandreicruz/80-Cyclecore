@@ -21,6 +21,7 @@ import {
   addShippingAddress,
   getShippingAddress,
   send,
+  orderSearch,
 } from "../controllers/auth.js";
 
 router.post("/register", register);
@@ -40,7 +41,7 @@ router.delete("/useraddress/:addressId", requireSignin, deleteAddress);
 router.put("/add-shipping-address", requireSignin, addShippingAddress);
 router.get("/shipping-address", requireSignin, getShippingAddress);
 
-
+router.get("/orders/search/:keyword", requireSignin, isAdmin, orderSearch);
 
 //test
 router.get("/secret", requireSignin, isAdmin, secret);

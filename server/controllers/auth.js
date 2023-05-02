@@ -673,4 +673,16 @@ export const send = async (req, res) => {
     console.log(err);
     res.status(500).json({ message: "Error sending email" });
   }
+  
+};
+export const orderSearch = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const results = await Order.find({
+      $or: [{ ordernumber: { $regex: keyword, $options: "i" } }],
+    });
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+  }
 };

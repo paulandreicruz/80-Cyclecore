@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/Auth";
 import { useCart } from "../../context/Cart";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import DropIn from "braintree-web-drop-in-react";
 import Navbar from "../../global/nav/Navbar";
@@ -16,11 +16,20 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  InputLabel,
   Paper,
   TextField,
 } from "@mui/material";
 import { HiOutlineSquaresPlus } from "react-icons/hi2";
-import { TbTruckDelivery } from "react-icons/tb";
+import { TbHandLittleFinger, TbTruckDelivery } from "react-icons/tb";
+import {
+  MdOutlineLocalShipping,
+  MdOutlineSave,
+  MdSecurityUpdateGood,
+} from "react-icons/md";
+import { GiConfirmed } from "react-icons/gi";
+import { AiOutlineDislike } from "react-icons/ai";
+import { FcVlc } from "react-icons/fc";
 export const Checkout = () => {
   // state
   const [addresses, setAddresses] = useState([]);
@@ -43,6 +52,7 @@ export const Checkout = () => {
 
   //   dialog
   const [dialog, openDialog] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   // navigate hook
   const navigate = useNavigate();
@@ -119,6 +129,24 @@ export const Checkout = () => {
     try {
       await axios.delete(`/useraddress/${addressId}`);
       setAddresses(addresses.filter((a) => a._id !== addressId));
+      setDeleteDialog(false);
+      toast.success("The removal of the address was executed successfully.", {
+        position: "top-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        style: {
+          width: "300px",
+          height: "20px",
+          fontSize: "17px",
+          fontFamily: "Bebas Neue",
+        },
+      });
+      return;
     } catch (err) {
       console.log(err);
     }
@@ -183,27 +211,58 @@ export const Checkout = () => {
         <Grid container gap={3}>
           {/* Left- Side */}
           <Grid item className="flex-1">
-            <Paper elevation={5} className="p-1">
-              <div className="mt-5 text-center items-center font-bebas font-bold text-4xl tracking-widest">
-                Select Delivery Address
-              </div>
-              <div>
-                <div
-                  className="border-2 border-dotted py-10 px-20 m-5 rounded-md hover:cursor-pointer hover:border-black hover:text-black text-gray-300"
-                  onClick={() => openDialog(true)}
-                >
-                  <div>
-                    <HiOutlineSquaresPlus fontSize={50} className="mx-auto " />
-                  </div>
-                  <div>
-                    <h1 className="text-center  font-bebas tracking-wider">
-                      Add New Address
-                    </h1>
-                  </div>
+            <Paper elevation={5} className="px-5 py-3 mb-5">
+              <div className="items-center font-bebas font-bold flex justify-between text-2xl tracking-wider">
+                <div className="flex items-center gap-1">
+                  Please choose/select a delivery address
+                  <MdOutlineLocalShipping />
                 </div>
+
+                <NavLink to="/shop">
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    size="small"
+                    startIcon={<TbHandLittleFinger />}
+                  >
+                    <span className="font-bebas tracking-wider font-bold text-lg">
+                      Continue Shopping
+                    </span>
+                  </Button>
+                </NavLink>
+              </div>
+            </Paper>
+
+            <Paper elevation={5} className="p-5">
+              <div>
+                {addresses?.length !== 3 ? (
+                  <div
+                    className="border-2 border-dotted py-10 px-20 mb-5 rounded-md hover:cursor-pointer hover:border-black hover:text-black text-gray-300"
+                    onClick={() => openDialog(true)}
+                  >
+                    <div>
+                      <HiOutlineSquaresPlus
+                        fontSize={50}
+                        className="mx-auto "
+                      />
+                    </div>
+                    <div>
+                      <h1 className="text-center  font-bebas tracking-wider">
+                        Add New Address
+                      </h1>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="font-bebas text-orange-500 font-bold text-xs tracking-wide mb-3">
+                    note:{" "}
+                    <span className="text-base tracking-wider text-black">
+                      You are limited to adding only three addresses.
+                    </span>
+                  </div>
+                )}
               </div>
               {addresses?.map((a, i) => (
-                <div key={i} className="font-bebas m-5 text-sm ">
+                <div key={i} className="font-bebas text-sm ">
                   <div
                     className={
                       selectedAddressIndex === i
@@ -230,8 +289,8 @@ export const Checkout = () => {
                         {a.addressname}
                       </div>
                       <div
-                        className="rounded-md p-2 hover:bg-gray-100 hover:cursor-pointer"
-                        onClick={() => deleteAddress(a._id)}
+                        className="rounded-md p-2 hover:text-orange-500 hover:cursor-pointer"
+                        onClick={() => setDeleteDialog(true)}
                       >
                         <BsTrash fontSize={20} />
                       </div>
@@ -266,6 +325,54 @@ export const Checkout = () => {
                       <div>0{auth?.user.contactnum}</div>
                     </div>
                   </div>
+
+                  {/* delete dialog */}
+                  <Dialog
+                    open={deleteDialog}
+                    onClose={() => setDeleteDialog(false)}
+                  >
+                    <DialogTitle>
+                      {/* <span className="font-bebas tracking-wider text-lg text-gray-800">Delete Address</span> */}
+                      <InputLabel>
+                        <span className="font-bebas tracking-wider font-bold text-base flex items-center gap-1">
+                          Delete Address <FcVlc />
+                        </span>
+                      </InputLabel>
+                    </DialogTitle>
+
+                    <DialogContent>
+                      <span className="font-bebas tracking-wider font-bold text-2xl">
+                        Are You Sure You Want To Remove This Address?{" "}
+                      </span>
+                    </DialogContent>
+
+                    <DialogActions>
+                      <Button
+                        variant="contained"
+                        color="info"
+                        type="button"
+                        size="small"
+                        onClick={() => deleteAddress(a._id)}
+                        startIcon={<GiConfirmed />}
+                      >
+                        <span className="font-bebas tracking-wider font-bold text-base">
+                          Yes
+                        </span>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        type="button"
+                        size="small"
+                        onClick={() => setDeleteDialog(false)}
+                        startIcon={<AiOutlineDislike />}
+                      >
+                        <span className="font-bebas tracking-wider font-bold text-base">
+                          No
+                        </span>
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               ))}
             </Paper>
@@ -340,7 +447,11 @@ export const Checkout = () => {
 
       {/* Dialog Box */}
       <Dialog open={dialog} onClose={() => openDialog(false)}>
-        <DialogTitle>Update Your Information</DialogTitle>
+        <DialogTitle>
+          <span className="font-bebas tracking-wider text-lg font-bold flex items-center gap-1">
+            Update Your Information <MdSecurityUpdateGood />
+          </span>
+        </DialogTitle>
         <DialogContent className="my-2">
           {/* content */}
           <div className="mx-auto">
@@ -352,69 +463,159 @@ export const Checkout = () => {
                 {/* left side */}
                 <Grid item md={6} className="">
                   <div className="pr-2 space-y-4">
-                    <TextField
-                      type="text"
-                      label="Address Name"
-                      name="addressname"
-                      value={address.addressname}
-                      onChange={handleChange}
-                      required
-                      fullWidth
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          Address Name
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        type="text"
+                        name="addressname"
+                        value={address.addressname}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        fullWidth
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="barangay"
-                      type="text"
-                      fullWidth
-                      label="Select Barangay"
-                      value={address.barangay}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          barangay
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="barangay"
+                        type="text"
+                        fullWidth
+                        value={address.barangay}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="region"
-                      type="text"
-                      fullWidth
-                      label="Select Region"
-                      value={address.region}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          region
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="region"
+                        type="text"
+                        fullWidth
+                        value={address.region}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
                   </div>
                 </Grid>
                 {/* right side */}
                 <Grid item md={6} className="">
                   <div className="pl-2 space-y-4">
-                    <TextField
-                      name="street"
-                      type="text"
-                      fullWidth
-                      label="House# & Street Name"
-                      value={address.street}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          House # & Street
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="street"
+                        type="text"
+                        fullWidth
+                        value={address.street}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="city"
-                      type="text"
-                      fullWidth
-                      label="Select City"
-                      value={address.city}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          city
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="city"
+                        type="text"
+                        fullWidth
+                        value={address.city}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
 
-                    <TextField
-                      name="postalCode"
-                      type="text"
-                      fullWidth
-                      label="Postal Code"
-                      value={address.postalCode}
-                      onChange={handleChange}
-                      required
-                    />
+                    <div>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wide text-xs">
+                          postal code
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        name="postalCode"
+                        type="text"
+                        fullWidth
+                        value={address.postalCode}
+                        onChange={handleChange}
+                        required
+                        size="small"
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: "16.5px",
+                            letterSpacing: "1px",
+                          },
+                        }}
+                      />
+                    </div>
                   </div>
                 </Grid>
               </Grid>
@@ -427,8 +628,11 @@ export const Checkout = () => {
                   color="inherit"
                   type="submit"
                   fullWidth
+                  startIcon={<MdOutlineSave />}
                 >
-                  Save Information
+                  <span className="font-bebas tracking wider font-bold text-lg">
+                    Save Information
+                  </span>
                 </Button>
               </div>
             </form>

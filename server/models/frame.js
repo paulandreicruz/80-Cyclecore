@@ -9,6 +9,9 @@ const frameSchema = new Schema(
       maxLength: 160,
       required: true,
     },
+    description:{
+      type: String,
+    },
     stocks: {
       type: Number,
     },
@@ -30,7 +33,46 @@ const frameSchema = new Schema(
       type: String,
       required: true,
     },
-    size: {
+    type: {
+      type: String,
+    },
+    seatbinder: {
+      type: String,
+    },
+    seatpost: {
+      type: String,
+    },
+    stem: {
+      type: String,
+    },
+    fork: {
+      type: String,
+    },
+    stemlength: {
+      type: String,
+    },
+    seatpostlength: {
+      type: String,
+    },
+    stack: {
+      type: String,
+    },
+    reach: {
+      type: String,
+    },
+    bbheight: {
+      type: String,
+    },
+    bbdrop: {
+      type: String,
+    },
+    trail: {
+      type: String,
+    },
+    wheelbase: {
+      type: String,
+    },
+    seattubelength:{
       type: String,
     },
     price: {

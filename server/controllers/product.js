@@ -1,4 +1,5 @@
 import Product from "../models/product.js";
+import Customize from "../models/customize.js";
 import User from "../models/user.js";
 import slugify from "slugify";
 import cloudinary from "cloudinary";
@@ -7,6 +8,7 @@ import dotenv from "dotenv";
 import Order from "../models/order.js";
 import Shipping from "../models/shippingoption.js";
 import sgMail from "@sendgrid/mail";
+import { generateOrderNumber } from "../helpers/auth.js";
 
 dotenv.config();
 
@@ -67,7 +69,6 @@ export const create = async (req, res) => {
       photoUrl = uploadedPhoto.secure_url;
       photoPublicId = uploadedPhoto.public_id;
     }
-
     // Create new product
     const product = new Product({
       name,
@@ -419,7 +420,6 @@ const decrementStocks = async (cart) => {
         },
       };
     });
-
     const result = await Product.bulkWrite(bulkOps);
     console.log(result);
   } catch (err) {
@@ -447,8 +447,9 @@ export const processPayment = async (req, res) => {
         price: item.price,
         size: item.size,
         photo: {
-          url: item.photo.url,
+          url: item.photo && item.photo.url ? item.photo.url : null,
         },
+        image: item.image,
       };
     });
 
@@ -467,8 +468,10 @@ export const processPayment = async (req, res) => {
             select: "addressname region city barangay postalCode street",
           }); // populate shippingAddress with address document
           const shippingAddress = user.shippingAddress; // get shippingAddress from user document
+          const ordernumber = generateOrderNumber();
           const order = new Order({
             products: cart,
+            ordernumber: ordernumber.ordernum,
             payment: {
               id: result.transaction.id,
               status: result.transaction.status,
@@ -553,5 +556,104 @@ export const getShippingOption = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const createcustomize = async (req, res) => {
+  try {
+    const { name, description, price, shipping, category, brand, size, title } =
+      req.fields;
+    const { photo } = req.files;
+
+    // Validation
+    switch (true) {
+      case !name.trim():
+        res.json({ error: "Name is required" });
+      case !description.trim():
+        res.json({ error: "Description is required" });
+      case photo && photo.size > 10000000:
+        res.json({ error: "Image should be less than 10mb" });
+    }
+
+    // if (!req.files.photo || !req.files.photo.url) {
+    //     return res.status(400).json({ error: "Photo is required" });
+    // }
+
+    // Upload image to Cloudinary
+    let photoUrl, photoPublicId;
+    if (photo) {
+      const uploadedPhoto = await cloudinary.uploader.upload(photo.path);
+      photoUrl = uploadedPhoto.secure_url;
+      photoPublicId = uploadedPhoto.public_id;
+    }
+    // Create new product
+    const customize = new Customize({
+      name,
+      description,
+      price,
+      shipping,
+      category,
+      brand,
+      title,
+      size,
+      photo: { url: photoUrl, public_id: photoPublicId },
+      slug: slugify(name),
+    });
+
+    // Save product to database
+    await customize.save();
+    res.json(customize);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+// implement photo
+export const listcustomize = async (req, res) => {
+  try {
+    const customize = await Customize.find({})
+      .populate("category")
+      .populate("brand")
+      .select("-photo")
+      .limit(12)
+      .sort({ createdAt: -1 });
+
+    res.json(customize);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const readcustomize = async (req, res) => {
+  try {
+    const customize = await Customize.findOne({ slug: req.params.slug })
+      .select("photo")
+      .populate("category")
+      .populate("title")
+      .populate("brand")
+      .populate("name")
+      .populate("description")
+      .populate("shipping")
+      .populate("price");
+
+    res.json(customize);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const photocustomize = async (req, res) => {
+  try {
+    const customize = await Customize.findById(req.params.customizeId).select(
+      "photo"
+    );
+    if (customize.photo && customize.photo.url) {
+      return res.redirect(customize.photo.url);
+    }
+    return res.sendStatus(404);
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(404);
   }
 };

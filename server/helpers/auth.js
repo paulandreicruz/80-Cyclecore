@@ -26,3 +26,8 @@ export const generateVerificationToken = () => {
   const expiryDate = Date.now() + 5 * 60 * 1000; // Set expiry time to 5 minutes from now
   return { token, expiryDate };
 };
+
+export const generateOrderNumber = () => {
+  const ordernum = crypto.randomBytes(8).toString("hex");
+  return { ordernum };
+};

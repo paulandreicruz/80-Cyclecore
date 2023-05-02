@@ -11,7 +11,9 @@ import {
   createframe,
   creategroupset,
   createhandlebar,
+  createsaddle,
   createtire,
+  createwheelset,
   frameimg,
   framephoto,
   groupsetimg,
@@ -21,14 +23,26 @@ import {
   listframe,
   listgroupset,
   listhandlebar,
+  listsaddle,
   listtire,
+  listwheelset,
+  saddleimg,
+  saddlephoto,
   tireimg,
   tirephoto,
+  wheelsetimg,
+  wheelsetphoto,
 } from "../controllers/bike.js";
 
-router.post("/frame", requireSignin, isAdmin, formidable({
-  multiples: true,
-}), createframe);
+router.post(
+  "/frame",
+  requireSignin,
+  isAdmin,
+  formidable({
+    multiples: true,
+  }),
+  createframe
+);
 router.get("/frames", listframe);
 router.get("/frame/photo/:frameId", framephoto);
 router.get("/frame/img/:frameId", frameimg);
@@ -56,9 +70,43 @@ router.post(
 router.get("/groupsets", listgroupset);
 router.get("/groupset/photo/:groupsetId", groupsetphoto);
 router.get("/groupset/img/:groupsetId", groupsetimg);
+router.get("/wheelsets", listwheelset);
+router.get("/wheelset/photo/:wheelsetId", wheelsetphoto);
+router.get("/wheelset/img/:wheelsetId", wheelsetimg);
+router.post(
+  "/wheelset",
+  requireSignin,
+  isAdmin,
+  formidable({
+    multiples: true,
+  }),
+  createwheelset
+);
 router.post("/tire", requireSignin, isAdmin, formidable(), createtire);
 router.get("/tires", listtire);
 router.get("/tire/photo/:frameId", tirephoto);
 router.get("/tire/img/:tireId", tireimg);
+router.post(
+  "/wheelset",
+  requireSignin,
+  isAdmin,
+  formidable({
+    multiples: true,
+  }),
+  createwheelset
+);
+
+router.get("/saddles", listsaddle);
+router.get("/saddle/photo/:saddleId", saddlephoto);
+router.get("/saddle/img/:saddleId", saddleimg);
+router.post(
+  "/saddle",
+  requireSignin,
+  isAdmin,
+  formidable({
+    multiples: true,
+  }),
+  createsaddle
+);
 
 export default router;
