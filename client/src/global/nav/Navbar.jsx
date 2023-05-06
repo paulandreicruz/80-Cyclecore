@@ -81,7 +81,7 @@ const Navbar = () => {
             <div className="h-0.5 bg-[#FFA500] scale-x-0 group-hover:scale-100 transition-transform origin-center rounded-full duration-500 ease-out"></div>
           </NavLink>
           <NavLink
-            to="/customize"
+            to="/select-brand"
             className="px-4 py-0.5 group border-r border-[#77830b]"
           >
             CUSTOMIZE
@@ -243,10 +243,10 @@ const Navbar = () => {
               <div className="h-0.5 bg-black scale-x-0 w-12 group-hover:scale-100 transition-transform origin-center rounded-full duration-500 ease-out"></div>
             </li>
             <li
-              to="/customize"
+              to="/select-brand"
               className="p-4 group border-b-[1.5px] border-b-slate-600 hover:bg-gray-300 hover:rounded-md"
             >
-              <NavLink to="/customize">customize</NavLink>
+              <NavLink to="/select-brand">customize</NavLink>
               <div className="h-0.5 bg-black scale-x-0 w-[92px] group-hover:scale-100 transition-transform origin-center rounded-full duration-500 ease-out"></div>
             </li>
             <li

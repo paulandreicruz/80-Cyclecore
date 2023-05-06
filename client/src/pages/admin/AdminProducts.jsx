@@ -1,20 +1,26 @@
-
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
 //components
-import { Card,Space } from "antd";
-import { Grid } from "@mui/material"
+import { Card, Space } from "antd";
+import { DialogActions, DialogTitle, Grid, InputLabel } from "@mui/material";
 
 //icons
 import { MdSubdirectoryArrowLeft } from "react-icons/md";
-import { IoArrowBackCircleOutline, IoCreateOutline } from "react-icons/io5";
-import { TbListDetails } from "react-icons/tb";
+import {
+  IoArrowBackCircleOutline,
+  IoCreateOutline,
+  IoFish,
+} from "react-icons/io5";
+import { TbDotsVertical, TbListDetails } from "react-icons/tb";
 import { MdAdd } from "react-icons/md";
 import { Button, Paper } from "@mui/material";
-import { TiEdit } from "react-icons/ti";
+import { TiArrowBack, TiEdit, TiPrinter } from "react-icons/ti";
+import { GiNewShoot } from "react-icons/gi";
+import { BiListPlus } from "react-icons/bi";
+import { BsPlus } from "react-icons/bs";
 
 export default function AdminProducts() {
   const { Meta } = Card;
@@ -33,99 +39,131 @@ export default function AdminProducts() {
   };
 
   return (
-    <div className="font-bebas bg-gray-200 h-screen py-5">
-      <div className="mx-auto max-w-[90rem]">
-        <Paper className="p-3 mb-5">
-          <NavLink to="/dashboard/admin">
-              <Button variant="contained" color="inherit" className="items-center flex text-white gap-1" size="small">
-                <IoArrowBackCircleOutline className="text-lg"/>
-                <span className="font-bebas tracking-widest text-lg">Back</span>
-              </Button>
-            </NavLink>
-        </Paper>
-
-        <Paper className="px-5 pt-5">
-          <div className="flex justify-between mb-5">
-            <div className="flex items-center text-2xl gap-1">
-              <h1>Product List</h1> 
-              <TbListDetails/>
-            </div>
-            <div>
-              <NavLink to="/dashboard/admin/products/create">
-                <Button variant="contained" color="inherit" startIcon={<IoCreateOutline/>}><span className="font-bebas">Create Product</span></Button>
-              </NavLink>
-            </div>
+    <div className="font-bebas bg-gray-200 h-screen px-10 py-5">
+      <div className="mx-auto">
+        <div className="py-2 px-4 bg-white border-b flex items-center justify-between">
+          <div className="flex gap-1 items-center text-3xl">
+            <h1 className="font-bold tracking-wider">Product Management</h1>
+            <IoFish className="text-sky-500" />
           </div>
 
           <div>
-            {products?.map((p) => (
-              <div key={p._id} to={`/dashboard/admin/product/update/${p.slug}`}>
-                  <Grid container justifyContent="space-between">
-                    {/* left side */}
-                      <Grid item>
-
-                          <Paper elevation={5} className="p-2">
-                          <Card
-                            style={{
-                              width: 300,
-                              border: "none"
-                            }}
-                            cover={
-                              <img
-                                alt={p.name}
-                                src={`${import.meta.env.VITE_APP_REACT_APP_API}/product/photo/${p._id}`}
-                                style={{
-                                  height: 200,
-                                  width: 300,
-                                }}
-                              />
-                            }
-                          >
-                            <Meta title={p.name} className="font-bebas text-center tracking-wider"/>
-                          </Card>
-                          </Paper>
-                        
-                      </Grid>               
-                    {/* right side */}
-                      <Grid item>
-                        <div className="w-[60rem] pb-5">
-                          <Paper elevation={5} className="p-3 space-y-5 h-[280px]">
-                            <div className="flex items-center text-2xl justify-between mb-5">
-                              <div>{p.name}</div>
-                              <div>
-                              <NavLink className="text-lg" to={`/dashboard/admin/product/update/${p.slug}`}>
-                                <Button variant="contained" color="inherit" startIcon={<TiEdit/>}><span className="font-bebas tracking-wider">Edit</span></Button>
-                              </NavLink></div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <div>Price: <span className="tracking-wide text-xl">{p.price}</span></div>
-                              <div>Category: <span className="tracking-wide text-xl">{p.category.name}</span></div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                              <div>Stocks: <span className="tracking-wide text-xl">{p.stocks}</span></div>
-                              <div>Sub-Category: <span className="tracking-wide text-xl">{p.subcategory.name}</span></div>
-                            </div>
-
-                            <div>Brand: <span className="tracking-wide text-xl">{p.brand.name}</span></div>
-                            <div>
-                              Create:   
-                              <span className="tracking-wide text-xl ml-1">
-                                {moment(p.createdAt).format(
-                                    "MMMM Do YYYY, h:mm:ss"
-                                  )}
-                              </span>
-                            </div>
-                          </Paper>
-                        </div>
-                        
-                      </Grid>
-                  </Grid>
-              </div>
-            ))}
+            <NavLink to="/dashboard/admin">
+              <Button
+                variant="contained"
+                color="inherit"
+                size="small"
+                startIcon={<TiArrowBack />}
+              >
+                <span className="tracking-wider text-lg font-bebas font-bold">
+                  Back
+                </span>
+              </Button>
+            </NavLink>
           </div>
-        </Paper>
+        </div>
+
+        <div className="bg-white p-4 shadow-lg">
+          <table className="border w-full">
+            <thead className="text-xl tracking-wide border-b">
+              <tr className="bg-gray-100 text-left">
+                <th className="p-2">Product</th>
+                <th className="p-2">Category</th>
+                <th className="p-2">Sub-Category</th>
+                <th className="p-2">Brand</th>
+                <th className="p-2">Stock</th>
+                <th className="p-2">Price</th>
+                <th className="p-2">
+                  <div className="hover:cursor-pointer hover:text-yellow-500 w-[25px] flex text-[#088178] underline">
+                    <NavLink
+                      to="/dashboard/admin/products/create"
+                      className="flex"
+                    >
+                      <span>Add</span> <BsPlus />
+                    </NavLink>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {products?.map((p) => (
+                <tr key={p._id} className="border-b">
+                  <td className="p-2">
+                    <div className="flex gap-1">
+                      <div>
+                        <img
+                          src={`${
+                            import.meta.env.VITE_APP_REACT_APP_API
+                          }/product/photo/${p._id}`}
+                          alt=""
+                          className="w-16"
+                        />
+                      </div>
+
+                      <div>
+                        <div className="tracking-wide">{p.name}</div>
+                        <div className="flex items-center gap-1">
+                          <InputLabel>
+                            <div className="text-[11px] font-bebas">
+                              {p._id}
+                            </div>
+                          </InputLabel>
+                          <div className="w-[1px] h-2.5 mb-1 bg-gray-400" />
+                          <InputLabel>
+                            <div className="text-[11px] font-bebas">
+                              {moment(p.createdAt).format(
+                                "MMMM Do YYYY, h:mm:ss"
+                              )}
+                            </div>
+                          </InputLabel>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="p-2">{p.category.name}</td>
+
+                  <td className="p-2">{p.subcategory.name}</td>
+
+                  <td className="p-2">{p.brand.name}</td>
+
+                  <td className="p-2">
+                    <div>
+                      {p.stocks === 0 ? (
+                        <div className="p-0.5 rounded-sm bg-[#ffdcdc] text-[#900] w-[82px] text-center">
+                          Out Of Stock
+                        </div>
+                      ) : (
+                        <div className="p-0.5 rounded-sm bg-[#def2d0] text-[#245900] w-[82px] text-center">
+                          {p.stocks} In Stocks
+                        </div>
+                      )}
+                    </div>
+                  </td>
+
+                  <td className="p-2">
+                    {p.price.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "PHP",
+                    })}
+                  </td>
+
+                  <td className="p-2">
+                    <div className="p-1 w-[27px] rounded-sm hover:bg-gray-100 hover:cursor-pointer">
+                      <NavLink
+                        className="text-lg"
+                        to={`/dashboard/admin/product/update/${p.slug}`}
+                      >
+                        <TbDotsVertical />
+                      </NavLink>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

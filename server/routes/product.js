@@ -28,6 +28,8 @@ import {
   listcustomize,
   readcustomize,
   photocustomize,
+  updateStocks,
+  processPickup,
 } from "../controllers/product.js";
 
 router.post("/product", requireSignin, isAdmin, formidable(), create);
@@ -36,6 +38,13 @@ router.get("/product/:slug", read);
 router.get("/product/photo/:productId", photo);
 router.delete("/product/:productId", requireSignin, isAdmin, remove);
 router.put("/product/:productId", requireSignin, isAdmin, formidable(), update);
+router.post(
+  "/products/stocks/:productId/add",
+  requireSignin,
+  isAdmin,
+  formidable(),
+  updateStocks
+);
 router.post("/filtered-products", filteredProducts);
 router.get("/products-count", productsCount);
 router.get("/list-products/:page", listProducts);
@@ -46,6 +55,7 @@ router.get("/shipping-option", requireSignin, getShippingOption);
 
 router.get("/braintree/token", getToken);
 router.post("/braintree/payment", requireSignin, processPayment);
+router.post("/payment/pickup", requireSignin, processPickup);
 
 router.post("/order-status/:orderId", requireSignin, isAdmin, orderStatus);
 

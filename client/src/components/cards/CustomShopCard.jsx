@@ -115,7 +115,13 @@ function CustomShopCard({ p }) {
 
             <Box>
               <span className="text-sm">Price:</span>
-              <span className="text-lg"> PHP {p.price}</span>
+              <span className="text-lg">
+                {" "}
+                {p.price.toLocaleString("en-PH", {
+                  style: "currency",
+                  currency: "PHP",
+                })}
+              </span>
             </Box>
             <Box className="space-x-5">
               <Button

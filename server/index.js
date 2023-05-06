@@ -10,7 +10,6 @@ import productRoutes from "./routes/product.js";
 import bikeRoutes from "./routes/bikeroutes.js";
 import cors from "cors";
 import { v2 as cloudinary } from "cloudinary";
-import nodemailer from "nodemailer";
 
 dotenv.config();
 

@@ -6,6 +6,7 @@ import { useAuth } from "../../context/Auth";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbShoppingCartX } from "react-icons/tb";
+import emptycart from "../../assets/empty-cart.png";
 
 const CartContents = () => {
   const [cart, setCart] = useCart();
@@ -77,49 +78,69 @@ const CartContents = () => {
                   {p.quantity}
                 </div>
                 <div className="flex items-center gap-1 font-bold">
-                  <h1 className="font-normal">PHP</h1>
-                  {p.price}
+                  <h1 className="font-normal">PRice</h1>
+                  {p.price.toLocaleString("en-PH", {
+                    style: "currency",
+                    currency: "PHP",
+                  })}
                 </div>
               </div>
             </Grid>
           </Grid>
         ))}
 
-        <div className="space-y-3">
-          <Box className="border-b-2 border-gray-100">
-            <span className="font-bebas flex justify-center">
-              <marquee
-                direction="right"
-                className="font-bold tracking-widest text-xl"
-              >
-                YOUR CART SUMMARY
-              </marquee>
-            </span>
-          </Box>
-          <Box>
-            <span className="font-bebas flex items-center justify-between text-[17px]">
-              Total :
-              <span className="font-bold ml-2 text-[20px] tracking-wider">
-                {cartTotal()}
+        {totalQuantity() === 0 ? (
+          <>
+            <div>
+              <img src={emptycart} alt="" className="w-[30rem]" />
+            </div>
+            <div className="font-bebas text-center text-4xl tracking-wider">
+              Your Cart Is Empty
+            </div>
+            <div className="font-bebas">
+              <p className="w-64 text-center mx-auto mt-5 text-sm">
+                Looks like you haven't added anything in your cart. Please
+                explore the shopping page.
+              </p>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-3">
+            <Box className="border-b-2 border-gray-100">
+              <span className="font-bebas flex justify-center">
+                <marquee
+                  direction="right"
+                  className="font-bold tracking-widest text-xl"
+                >
+                  YOUR CART SUMMARY
+                </marquee>
               </span>
-            </span>
-          </Box>
-          <Box>
-            <Button
-              variant="contained"
-              color="inherit"
-              fullWidth
-              startIcon={<AiOutlineShoppingCart />}
-            >
-              <NavLink
-                to="/cart"
-                className="font-bebas tracking-widest text-lg"
+            </Box>
+            <Box>
+              <span className="font-bebas flex items-center justify-between text-[17px]">
+                Total :
+                <span className="font-bold ml-2 text-[20px] tracking-wider">
+                  {cartTotal()}
+                </span>
+              </span>
+            </Box>
+            <Box>
+              <Button
+                variant="contained"
+                color="inherit"
+                fullWidth
+                startIcon={<AiOutlineShoppingCart />}
               >
-                View Cart Page
-              </NavLink>
-            </Button>
-          </Box>
-        </div>
+                <NavLink
+                  to="/cart"
+                  className="font-bebas tracking-widest text-lg"
+                >
+                  View Cart Page
+                </NavLink>
+              </Button>
+            </Box>
+          </div>
+        )}
       </div>
     </>
   );

@@ -40,6 +40,27 @@ const productSchema = new mongoose.Schema(
     stocks: {
       type: Number,
     },
+    newStocksThisMonth: {
+      type: Number,
+      default: 0,
+    },
+    newlyAddedStocks: [
+      {
+        month: Number,
+        year: Number,
+        value: Number,
+        day: Number,
+      },
+    ],
+    newlyAddedStocksToday: {
+      type: Number,
+      default: 0,
+    },
+    monthAdded: {
+      type: Number,
+      default: new Date().getMonth(),
+    },
+
     size: {
       type: String,
     },

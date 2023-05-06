@@ -58,10 +58,6 @@ export const create = async (req, res) => {
         res.json({ error: "Image should be less than 10mb" });
     }
 
-    // if (!req.files.photo || !req.files.photo.url) {
-    //     return res.status(400).json({ error: "Photo is required" });
-    // }
-
     // Upload image to Cloudinary
     let photoUrl, photoPublicId;
     if (photo) {
@@ -170,7 +166,6 @@ export const update = async (req, res) => {
       name,
       description,
       price,
-      stocks,
       shipping,
       category,
       subcategory,
@@ -192,8 +187,6 @@ export const update = async (req, res) => {
         return res.json({ error: "SubCategory is required" });
       case !brand.trim():
         return res.json({ error: "Brand is required" });
-      case !stocks.trim():
-        return res.json({ error: "Name is required" });
       case !shipping.trim():
         return res.json({ error: "Name is required" });
       case photo && photo.size > 1000000:
@@ -216,7 +209,6 @@ export const update = async (req, res) => {
       name,
       description,
       price,
-      stocks,
       shipping,
       category,
       subcategory,
@@ -432,12 +424,19 @@ export const processPayment = async (req, res) => {
     console.log(req.body);
     const { nonce, cart } = req.body;
 
+    // Retrieve user to get delivery fee
+    const user = await User.findById(req.user._id);
+    const deliveryFee = user.deliveryFee;
+    console.log("deliveryFee:", deliveryFee);
     let totalPrice = 0;
     let totalQuantity = 0;
     cart.forEach((item) => {
       totalPrice += item.price * item.quantity;
       totalQuantity += item.quantity;
     });
+
+    totalPrice += deliveryFee;
+    console.log("totalPrice:", totalPrice);
 
     const products = cart.map((item) => {
       return {
@@ -468,18 +467,19 @@ export const processPayment = async (req, res) => {
             select: "addressname region city barangay postalCode street",
           }); // populate shippingAddress with address document
           const shippingAddress = user.shippingAddress; // get shippingAddress from user document
+          const deliveryOption = user.deliveryOption; // get deliveryOption from user document
+          const deliveryFee = user.deliveryFee; // get deliveryFee from user document
+          const estimatedDelivery = user.estimatedDelivery; // get estimatedDelivery from user document
           const ordernumber = generateOrderNumber();
           const order = new Order({
             products: cart,
             ordernumber: ordernumber.ordernum,
-            payment: {
-              id: result.transaction.id,
-              status: result.transaction.status,
-              paymentMethod: result.transaction.paymentInstrumentType,
-              cardType: result.transaction.creditCard.cardType,
-            },
+            payment: result,
             buyer: req.user._id,
             shippingAddress: shippingAddress, // populate shippingAddress with user document
+            deliveryOption: deliveryOption,
+            deliveryFee: deliveryFee,
+            estimatedDelivery: estimatedDelivery,
             totalQuantity: totalQuantity, // new field to store total quantity
             totalPrice: totalPrice, // new field to store total price
           });
@@ -495,6 +495,71 @@ export const processPayment = async (req, res) => {
         }
       }
     );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const processPickup = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { cart } = req.body;
+
+    const deliveryFee = 0;
+
+    let totalPrice = 0;
+    let totalQuantity = 0;
+    cart.forEach((item) => {
+      totalPrice += item.price * item.quantity;
+      totalQuantity += item.quantity;
+    });
+
+    totalPrice += deliveryFee;
+    console.log("totalPrice:", totalPrice);
+
+    const products = cart.map((item) => {
+      return {
+        product: item.product ? item.product._id : null,
+        quantity: item.quantity,
+        name: item.product ? item.product.name : null,
+        price: item.price,
+        size: item.size,
+        photo: {
+          url: item.photo && item.photo.url ? item.photo.url : null,
+        },
+        image: item.image,
+      };
+    });
+
+    // Create order object
+    const user = await User.findById(req.user._id).populate({
+      path: "shippingAddress",
+      select: "addressname region city barangay postalCode street",
+    });
+    const shippingAddress = user.shippingAddress; // get shippingAddress from user document
+    const paymentOption = user.paymentOption;
+    const deliveryOption = user.deliveryOption; // get deliveryOption from user document
+    const estimatedDelivery = user.estimatedDelivery; // get estimatedDelivery from user document
+    const ordernumber = generateOrderNumber();
+    const order = new Order({
+      products: cart,
+      ordernumber: ordernumber.ordernum,
+      buyer: req.user._id,
+      paymentOption: user.paymentOption,
+      shippingAddress: shippingAddress,
+      deliveryOption: deliveryOption,
+      estimatedDelivery: estimatedDelivery,
+      totalQuantity: totalQuantity,
+      totalPrice: totalPrice,
+    });
+
+    // Save the order to the database
+    await order.save();
+
+    // Decrement the stocks
+    await decrementStocks(cart);
+
+    res.json({ ok: true });
   } catch (err) {
     console.log(err);
   }
@@ -655,5 +720,63 @@ export const photocustomize = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.sendStatus(404);
+  }
+};
+
+export const updateStocks = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const { stocks } = req.fields;
+
+    const product = await Product.findById(productId);
+
+    // If the product is not found, return an error message
+    if (!product) {
+      return res.json({ error: "Product not found" });
+    }
+
+    // Update the stocks of the product
+    const newStocks = parseInt(stocks);
+    product.stocks += newStocks;
+
+    // Check if it's a new month and reset newStocksThisMonth if necessary
+    const currentMonth = new Date().getMonth();
+    if (product.monthAdded !== currentMonth) {
+      product.monthAdded = currentMonth;
+      product.newStocksThisMonth = 0;
+    }
+
+    // Add the new stocks to newStocksThisMonth and newlyAddedStocks
+    product.newStocksThisMonth += newStocks;
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const monthIndex = product.newlyAddedStocks.findIndex(
+      (entry) =>
+        entry.month === currentMonth &&
+        entry.year === year &&
+        entry.day === currentDate.getDate()
+    );
+    if (monthIndex !== -1) {
+      // If an entry already exists for the current month, year, and day, update the value
+      product.newlyAddedStocks[monthIndex].value += newStocks;
+    } else {
+      // Otherwise, add a new entry to the array
+      product.newlyAddedStocks.push({
+        month: currentMonth,
+        year: year,
+        day: currentDate.getDate(),
+        value: newStocks,
+      });
+    }
+
+    // Save the updated product to the database
+    await product.save();
+    console.log("Product saved successfully");
+
+    // Return the updated product
+    return res.json(product);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
   }
 };

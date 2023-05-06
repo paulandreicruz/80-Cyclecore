@@ -28,19 +28,23 @@ import Cart from "./pages/user/Cart";
 import SingleProductView from "./pages/user/SingleProductView";
 import UserProfile from "./pages/user/Profile2";
 import UserOrders from "./pages/user/Orders";
-import { NewCustomize } from "./pages/user/Customize";
 import AdminOrders from "./pages/admin/AdminOrders";
 import Success from "./components/cards/Success";
 import EmailVerification from "./components/cards/EmailVerification";
 import { Checkout } from "./pages/user/Checkout";
-import {Customize1} from "./pages/user/Customize1";
+import { Customize1 } from "./pages/user/Customize1";
 import { DeliveryOption } from "./pages/user/DeliveryOption";
-import { PaymentPage } from "./pages/user/Payment";
 import { UserPayment } from "./pages/user/UserPayment";
 import { Dummy } from "./pages/user/Dummy";
 import { OrderSuccess } from "./components/cards/OrderSuccess";
 import { AdminOrdersSearch } from "./pages/admin/AdminOrdersSearch";
 import { Customize3 } from "./pages/user/Customize3";
+import { SelectCustomize } from "./pages/user/SelectCustomize";
+import { Customize2 } from "./pages/user/Customize2";
+import AdminUserList from "./pages/admin/AdminUserList";
+import NewlyAddedStocks from "./pages/admin/AdminNewStocks";
+import OrdersPage from "./pages/admin/AverageOrder";
+import AdminStocks from "./pages/admin/AdminStocks";
 
 function App() {
   return (
@@ -68,10 +72,10 @@ function App() {
           <Route path="/search" element={<SearchResult />} />
           <Route path="/product/:slug" element={<SingleProductView />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/customize" element={<NewCustomize />} />
-          <Route path="/custom" element={<Customize1 />} />
-          <Route path="/custom3" element={<Customize3 />} />
-
+          <Route path="/select-brand" element={<SelectCustomize />} />
+          <Route path="/specialized" element={<Customize1 />} />
+          <Route path="/exploro" element={<Customize2 />} />
+          <Route path="/willer" element={<Customize3 />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -94,6 +98,10 @@ function App() {
               <Route path="admin/brand" element={<AdminBrands />} />
               <Route path="admin/products" element={<AdminProducts />} />
               <Route path="admin/orders" element={<AdminOrders />} />
+              <Route path="admin/users/list" element={<AdminUserList />} />
+              <Route path="admin/stocks/add" element={<AdminStocks />} />
+              <Route path="admin/stocks/new" element={<NewlyAddedStocks />} />
+              <Route path="admin/orders/average" element={<OrdersPage />} />
               <Route
                 path="admin/orders-search"
                 element={<AdminOrdersSearch />}

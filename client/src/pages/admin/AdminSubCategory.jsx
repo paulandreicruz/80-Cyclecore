@@ -182,10 +182,10 @@ export default function SubCategory() {
   };
 
   return (
-    <div className="font-bebas bg-gray-200 h-screen px-40 py-10">
-      <Paper className="p-3 font-bebas flex justify-between">
-        <div className="flex items-center text-2xl tracking-wide">
-          sub-category <MdCategory />
+    <div className="font-bebas bg-gray-200 h-screen px-10 py-5">
+      <div className="py-2 px-4 bg-white border-b font-bebas flex justify-between">
+        <div className="flex items-center text-3xl font-bold tracking-wider">
+          sub-category <MdCategory className="text-orange-500" />
         </div>
         <NavLink to="/dashboard/admin">
           <Button
@@ -200,9 +200,10 @@ export default function SubCategory() {
             </span>
           </Button>
         </NavLink>
-      </Paper>
+      </div>
+
       <form onSubmit={handleSubmit}>
-        <Paper className="p-4 mt-5">
+        <div className="p-4 bg-white shadow-xl">
           <div>
             <table className="table w-full border-collapse border border-gray-300">
               {/* <thead>
@@ -217,11 +218,11 @@ export default function SubCategory() {
               </tr>
             </thead> */}
               <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-3 px-4 uppercase font-semibold text-lg tracking-wider">
+                <tr className="bg-gray-100 text-xl">
+                  <th className="text-left py-3 px-4 uppercase font-semibold tracking-wider">
                     Sub-Category ID
                   </th>
-                  <th className="items-center flex text-left py-3 px-4 uppercase font-semibold text-lg tracking-wider">
+                  <th className="items-center flex text-left py-3 px-4 uppercase font-semibold tracking-wider">
                     <div className="flex-1">Sub-Category Name</div>
                     <div className="">
                       <Button
@@ -232,7 +233,7 @@ export default function SubCategory() {
                         size="small"
                         startIcon={<AiOutlineFolderAdd />}
                       >
-                        <span className="font-bebas tracking-widest font-bold text-lg">
+                        <span className="font-bebas tracking-widest text-lg font-bold ">
                           create
                         </span>
                       </Button>
@@ -292,7 +293,7 @@ export default function SubCategory() {
               </tbody>
             </table>
           </div>
-        </Paper>
+        </div>
         {showModal ? (
           <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -301,23 +302,34 @@ export default function SubCategory() {
 
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                   {/*header*/}
-                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                    <h3 className=" text-2xl font-semibold">
+                  <div className="flex items-start justify-between py-2 px-4 text border-b border-solid border-slate-200 rounded-t">
+                    <h3 className=" text-2xl font-semibold justify-center">
                       Add Sub-Category
                     </h3>
                   </div>
                   {/*body*/}
                   <div className="relative p-6 flex-auto">
+                    <InputLabel>
+                      <span className="font-bebas text-sm">
+                        Add Sub-Category
+                      </span>
+                    </InputLabel>
                     <TextField
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       type="text"
                       name="subcategory"
-                      placeholder="Write Sub-Category"
-                      label="Sub-Category"
+                      placeholder="Sub-Category"
                       size="small"
                       fullWidth
                       autoFocus={true}
+                      variant="standard"
+                      InputProps={{
+                        style: {
+                          fontFamily: "Bebas Neue",
+                          fontSize: 18,
+                        },
+                      }}
                     />
                   </div>
                   {/*footer*/}
@@ -410,7 +422,6 @@ export default function SubCategory() {
                     </div>
                   </div>
                 </form>
-
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                   <button

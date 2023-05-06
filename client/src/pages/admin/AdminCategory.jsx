@@ -3,14 +3,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Paper, TextField, Button, InputLabel } from "@mui/material";
 
-
 //icons
 import { FiEdit } from "react-icons/fi";
 import { MdEditNote, MdOutlineSystemSecurityUpdate } from "react-icons/md";
 import CustomModal from "../../components/Modal/CustomModal";
-import { BiCategory } from 'react-icons/bi'
+import { BiCategory } from "react-icons/bi";
 import { AiOutlineFolderAdd, AiTwotoneSave } from "react-icons/ai";
-import { CgErase, CgEditMarkup } from 'react-icons/cg'
+import { CgErase, CgEditMarkup } from "react-icons/cg";
 import { TiArrowBack } from "react-icons/ti";
 import { NavLink } from "react-router-dom";
 import { FaRegWindowClose } from "react-icons/fa";
@@ -181,108 +180,114 @@ export default function AdminCategory() {
   };
 
   return (
-    <div className="px-56 py-10 bg-gray-200 h-screen">
-      <Paper className="p-3 font-bebas flex justify-between">
-        <div className="text-3xl tracking-wider flex gap-0.5 font-bold"><BiCategory/>Categories</div>
+    <div className="px-10 py-5 bg-gray-200 h-screen">
+      <div className="py-2 px-4 bg-white border-b font-bebas flex justify-between">
+        <div className="text-3xl tracking-wider flex gap-0.5 font-bold">
+          Categories
+          <BiCategory className="text-violet-500" />
+        </div>
         <div>
           <NavLink to="/dashboard/admin">
-          <Button variant="contained" color="inherit" size="small" startIcon={<TiArrowBack/>}><span className="tracking-wider text-lg font-bebas font-bold">Back</span></Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              size="small"
+              startIcon={<TiArrowBack />}
+            >
+              <span className="tracking-wider text-lg font-bebas font-bold">
+                Back
+              </span>
+            </Button>
           </NavLink>
         </div>
-      </Paper>
+      </div>
 
-      <Paper className="p-5 font-bebas mt-5">
-          <form onSubmit={handleSubmit}>
-          {/* <div className=" text-4xl font-bold  flex place-content-center w-full border border-gray-200 ">
-            <h1>Categories</h1>
-            <Button type="primary" onClick={showModal}>
-              Open Modal with async logic
-            </Button>
-            
-          </div> */}
-            <div>
-              <table className="table w-full border-collapse border-r border-l shadow-md ">
-                {/* <thead>
-                <tr>
-                  <td>CategoryID</td>
-                  <td>Category Name</td>
-                  <td></td>
-                  <td>Order Date</td>
-                  <td>Order Total</td>
-                  <td>Shippin Address</td>
-                  <td>Order Status</td>
+      <div className="p-4 font-bebas bg-white shadow-md">
+        <form onSubmit={handleSubmit}>
+          <div>
+            <table className="table w-full border">
+              <thead>
+                <tr className="bg-gray-100 border-b border-gray-300 ">
+                  <th className="text-left py-3 px-4 uppercase font-semibold text-xl tracking-wider">
+                    Category ID
+                  </th>
+                  <th className="flex items-center text-left py-3 px-4 uppercase font-semibold text-sm">
+                    <div className="flex-1 text-xl tracking-wider">
+                      Category Name
+                    </div>
+                    <div className="">
+                      <Button
+                        type="button"
+                        onClick={() => setShowModal(true)}
+                        variant="contained"
+                        color="success"
+                        size="small"
+                        startIcon={<AiOutlineFolderAdd />}
+                      >
+                        <span className="font-bebas tracking-widest text-lg font-bold">
+                          CREATE
+                        </span>
+                      </Button>
+                    </div>
+                  </th>
                 </tr>
-              </thead> */}
-                <thead>
-                  <tr className="bg-gray-100 border-b border-gray-300 ">
-                    <th className="text-left py-3 px-4 uppercase font-semibold text-xl tracking-wider">
-                      Category ID
-                    </th>
-                    <th className="flex items-center text-left py-3 px-4 uppercase font-semibold text-sm">
-                      <div className="flex-1 text-xl tracking-wider">Category Name</div>
-                      <div className="">
-                        <Button
-                          type="button"
-                          onClick={() => setShowModal(true)}
-                          variant="contained"
-                          color="success"
-                          size="small"
-                          startIcon={<AiOutlineFolderAdd/>}
-                        >
-                          <span className="font-bebas tracking-widest text-lg font-bold">CREATE</span>
-                        </Button>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="">
-                  {categories?.map((category) => (
-                    <tr key={category._id} className="border-b border-gray-300">
-                      <td className="text-left py-3 px-4 tracking-wide">{category._id}</td>
-                      <td className="text-left py-3 px-4 ">
-                        <div className="flex items-center  space-x-2 ">
-                          <div className="flex-1">
-                            <span className="mr-4 tracking-wide">{category.name}</span>
-                          </div>
-                          <div className="flex">
-                            <Button
-                              onClick={() => {
-                                updatesetShowModal(true);
-                                setSelected(category);
-                                setUpdatingName(category.name);
-                              }}
-                              type="button"
-                              variant="contained"
-                              color="info"
-                              size="small"
-                              startIcon={<CgEditMarkup />}
-                            >
-                              <span className="font-bebas tracking-widest text-lg font-bold">Edit</span>
-                            </Button>
-                          </div>
-                          <div className="flex">
-                            <Button
-                              onClick={() => {
-                                deletesetShowModal(true);
-                                setSelected(category);
-                                setUpdatingName(category.name);
-                              }}
-                              type="button"
-                              variant="contained"
-                              color="error"
-                              size="small"
-                              startIcon={<CgErase/>}
-                              >
-                              <span className="font-bebas text-lg tracking-widest font-bold">Delete</span>
-                            </Button>
-                          </div>
+              </thead>
+              <tbody className="">
+                {categories?.map((category) => (
+                  <tr key={category._id} className="border-b border-gray-300">
+                    <td className="text-left py-3 px-4 tracking-wide">
+                      {category._id}
+                    </td>
+                    <td className="text-left py-3 px-4 ">
+                      <div className="flex items-center  space-x-2 ">
+                        <div className="flex-1">
+                          <span className="mr-4 tracking-wide">
+                            {category.name}
+                          </span>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        <div className="flex">
+                          <Button
+                            onClick={() => {
+                              updatesetShowModal(true);
+                              setSelected(category);
+                              setUpdatingName(category.name);
+                            }}
+                            type="button"
+                            variant="contained"
+                            color="info"
+                            size="small"
+                            startIcon={<CgEditMarkup />}
+                          >
+                            <span className="font-bebas tracking-widest text-lg font-bold">
+                              Edit
+                            </span>
+                          </Button>
+                        </div>
+                        <div className="flex">
+                          <Button
+                            onClick={() => {
+                              deletesetShowModal(true);
+                              setSelected(category);
+                              setUpdatingName(category.name);
+                            }}
+                            type="button"
+                            variant="contained"
+                            color="error"
+                            size="small"
+                            startIcon={<CgErase />}
+                          >
+                            <span className="font-bebas text-lg tracking-widest font-bold">
+                              Delete
+                            </span>
+                          </Button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           {showModal ? (
             <>
               <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -292,23 +297,29 @@ export default function AdminCategory() {
                   <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                     {/*header*/}
                     <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                      <h3 className=" text-2xl font-semibold">
-                        Add Category
-                      </h3>
+                      <h3 className=" text-2xl font-semibold">Add Category</h3>
                     </div>
                     {/*body*/}
                     <div className="relative p-6 flex-auto">
-                      <InputLabel><span className="font-bebas text-xs tracking-wide"></span></InputLabel>
+                      <InputLabel>
+                        <span className="font-bebas text-xs tracking-wide"></span>
+                      </InputLabel>
                       <TextField
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         type="text"
                         name="category"
                         placeholder="Write Category"
-                        label="Category"
                         size="small"
                         fullWidth
                         autoFocus={true}
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: 18,
+                          },
+                        }}
                       />
                     </div>
                     {/*footer*/}
@@ -338,7 +349,7 @@ export default function AdminCategory() {
             </>
           ) : null}
         </form>
-      </Paper>
+      </div>
       {updateshowModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none font-bebas">
@@ -350,7 +361,7 @@ export default function AdminCategory() {
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                   <h3 className=" text-2xl font-semibold tracking-wider justify-center flex items-center mx-auto">
                     Update Category
-                    <MdOutlineSystemSecurityUpdate/>
+                    <MdOutlineSystemSecurityUpdate />
                   </h3>
                   {/* <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -362,7 +373,11 @@ export default function AdminCategory() {
                   <div>
                     <div className="flex">
                       <div className="relative p-6 flex-auto">
-                        <InputLabel><span className="font-bebas tracking-wider text-xs">Category</span></InputLabel>
+                        <InputLabel>
+                          <span className="font-bebas tracking-wider text-xs">
+                            Category
+                          </span>
+                        </InputLabel>
                         <TextField
                           value={updatingName}
                           onChange={(e) => {
@@ -378,9 +393,9 @@ export default function AdminCategory() {
                           InputProps={{
                             style: {
                               fontFamily: "Bebas Neue",
-                              fontSize: "16.5px",
-                              letterSpacing: "1px"
-                            }
+                              fontSize: "18px",
+                              letterSpacing: "1px",
+                            },
                           }}
                         />
                         {/* {categories?.map((c) => (
@@ -402,13 +417,13 @@ export default function AdminCategory() {
                 </form>
 
                 {/*footer*/}
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                <div className="flex items-center justify-end p-2 border-t border-solid border-slate-200 rounded-b">
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 tracking-widest flex items-center gap-1 bg-re"
                     type="button"
                     onClick={() => updatesetShowModal(false)}
                   >
-                    <FaRegWindowClose/>
+                    <FaRegWindowClose />
                     Close
                   </button>
                   <button
@@ -419,7 +434,7 @@ export default function AdminCategory() {
                       updatesetShowModal(false);
                     }}
                   >
-                    <AiTwotoneSave/>
+                    <AiTwotoneSave />
                     Save Changes
                   </button>
                 </div>
@@ -439,7 +454,7 @@ export default function AdminCategory() {
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                   <h3 className=" text-2xl font-semibold flex items-center gap-1 mx-auto tracking-widest">
-                    Delete Category <BsTrash/>
+                    Delete Category <BsTrash />
                   </h3>
                   {/* <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -463,6 +478,13 @@ export default function AdminCategory() {
                           size="small"
                           fullWidth
                           disabled
+                          variant="standard"
+                          InputProps={{
+                            style: {
+                              fontFamily: "Bebas Neue",
+                              fontSize: 18,
+                            },
+                          }}
                         />
                         {/* {categories?.map((c) => (
                           <button
@@ -489,7 +511,7 @@ export default function AdminCategory() {
                     type="button"
                     onClick={() => deletesetShowModal(false)}
                   >
-                    <FaRegWindowClose/>
+                    <FaRegWindowClose />
                     Close
                   </button>
                   <button
@@ -500,7 +522,7 @@ export default function AdminCategory() {
                       deletesetShowModal(false);
                     }}
                   >
-                    <AiTwotoneSave/>
+                    <AiTwotoneSave />
                     Save Changes
                   </button>
                 </div>

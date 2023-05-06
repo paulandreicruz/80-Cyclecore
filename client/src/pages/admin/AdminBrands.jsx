@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Paper, TextField, Button } from "@mui/material";
+import { Paper, TextField, Button, InputLabel } from "@mui/material";
 
 //icons
 import { FiEdit } from "react-icons/fi";
@@ -9,7 +9,8 @@ import { MdEditNote, MdOutlineNewLabel } from "react-icons/md";
 import CustomModal from "../../components/Modal/CustomModal";
 import { BsFlower1 } from "react-icons/bs";
 import { TbEditCircle } from "react-icons/tb";
-import { TiDelete } from "react-icons/ti";
+import { TiArrowBack, TiDelete } from "react-icons/ti";
+import { NavLink } from "react-router-dom";
 
 export default function AdminBrands() {
   const [brands, setBrands] = useState([]);
@@ -176,101 +177,111 @@ export default function AdminBrands() {
   };
 
   return (
-    <div className="font-bebas p-10">
-      <form onSubmit={handleSubmit}>
-        <div className=" text-4xl font-bold flex place-content-center w-full gap-2 tracking-wider">
+    <div className="font-bebas px-10 py-5 bg-gray-200 h-screen">
+      <div className="py-2 bg-white px-4 text-3xl font-bold flex gap-1 tracking-wider border-b justify-between">
+        <div className="flex items-center gap-1">
           <h1> Product Brands</h1>
-          <BsFlower1 />
-          {/* <Button type="primary" onClick={showModal}>
-            Open Modal with async logic
-          </Button> */}
+          <BsFlower1 className="text-pink-500" />
         </div>
-        <Paper className="bg-white px-4 pt-3 pb-4 border border-gray-200 flex-1 items-center m-5 rounded-lg">
-          <div className="mt-3">
-            <table className="table w-full border-collapse border border-gray-300">
-              {/* <thead>
-              <tr>
-                <td>CategoryID</td>
-                <td>Category Name</td>
-                <td></td>
-                <td>Order Date</td>
-                <td>Order Total</td>
-                <td>Shippin Address</td>
-                <td>Order Status</td>
+
+        <div>
+          <NavLink to="/dashboard/admin">
+            <Button
+              variant="contained"
+              color="inherit"
+              size="small"
+              startIcon={<TiArrowBack />}
+            >
+              <span className="tracking-wider text-lg font-bebas font-bold">
+                Back
+              </span>
+            </Button>
+          </NavLink>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit}>
+        <div className="bg-white p-4 shadow-md">
+          <table className="table w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100 border-b border-gray-300 ">
+                <th className="text-left py-3 px-4 uppercase font-semibold tracking-wider text-xl">
+                  Brand ID
+                </th>
+                <th className="flex items-center text-left py-3 px-4 uppercase font-semibold text-sm">
+                  <div className="flex-1 tracking-wider text-xl">
+                    Brand Name
+                  </div>
+                  <div className="">
+                    <Button
+                      type="button"
+                      onClick={() => setShowModal(true)}
+                      variant="contained"
+                      color="success"
+                      startIcon={<MdOutlineNewLabel />}
+                      size="small"
+                    >
+                      <span className="font-bebas tracking-wider font-bold text-lg">
+                        Create
+                      </span>
+                    </Button>
+                  </div>
+                </th>
               </tr>
-            </thead> */}
-              <thead>
-                <tr className="bg-gray-100 border-b border-gray-300 ">
-                  <th className="text-left py-3 px-4 uppercase font-semibold tracking-wider text-xl">
-                    Brand ID
-                  </th>
-                  <th className="flex items-center text-left py-3 px-4 uppercase font-semibold text-sm">
-                    <div className="flex-1 tracking-wider text-xl">
-                      Category Name
-                    </div>
-                    <div className="">
-                      <Button
-                        type="button"
-                        onClick={() => setShowModal(true)}
-                        variant="contained"
-                        color="success"
-                        startIcon={<MdOutlineNewLabel />}
-                      >
-                        <span className="font-bebas tracking-wider text-lg">
-                          Create
-                        </span>
-                      </Button>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="tracking-wider">
-                {brands?.map((brand) => (
-                  <tr key={brand._id} className="border-b border-gray-300">
-                    <td className="text-left py-3 px-4">{brand._id}</td>
-                    <td className="text-left py-3 px-4 ">
-                      <div className="flex items-center  space-x-2 ">
-                        <div className="flex-1">
-                          <span className="mr-4">{brand.name}</span>
-                        </div>
-                        <div className="flex">
-                          <Button
-                            onClick={() => {
-                              updatesetShowModal(true);
-                              setSelected(brand);
-                              setUpdatingName(brand.name);
-                            }}
-                            type="button"
-                            variant="contained"
-                            color="inherit"
-                            startIcon={<TbEditCircle />}
-                          >
-                            <span className="font-bebas text-lg">Edit</span>
-                          </Button>
-                        </div>
-                        <div className="flex">
-                          <Button
-                            onClick={() => {
-                              deletesetShowModal(true);
-                              setSelected(brand);
-                              setUpdatingName(brand.name);
-                            }}
-                            type="button"
-                            variant="contained"
-                            color="error"
-                            startIcon={<TiDelete />}
-                          >
-                            <span className="font-bebas text-lg">Delete</span>
-                          </Button>
-                        </div>
+            </thead>
+            <tbody className="tracking-wide">
+              {brands?.map((brand) => (
+                <tr key={brand._id} className="border-b border-gray-300">
+                  <td className="text-left py-3 px-4">{brand._id}</td>
+                  <td className="text-left py-3 px-4 ">
+                    <div className="flex items-center  space-x-2 ">
+                      <div className="flex-1">
+                        <span className="mr-4">{brand.name}</span>
                       </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Paper>
+                      <div className="flex">
+                        <Button
+                          onClick={() => {
+                            updatesetShowModal(true);
+                            setSelected(brand);
+                            setUpdatingName(brand.name);
+                          }}
+                          type="button"
+                          variant="contained"
+                          color="info"
+                          startIcon={<TbEditCircle />}
+                          size="small"
+                        >
+                          <span className="font-bebas font-bold text-lg">
+                            Edit
+                          </span>
+                        </Button>
+                      </div>
+                      <div className="flex">
+                        <Button
+                          onClick={() => {
+                            deletesetShowModal(true);
+                            setSelected(brand);
+                            setUpdatingName(brand.name);
+                          }}
+                          type="button"
+                          variant="contained"
+                          color="error"
+                          startIcon={<TiDelete />}
+                          size="small"
+                        >
+                          <span className="font-bebas font-bold text-lg">
+                            Delete
+                          </span>
+                        </Button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         {showModal ? (
           <>
             <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -279,21 +290,30 @@ export default function AdminBrands() {
 
                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                   {/*header*/}
-                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                  <div className="flex items-start justify-between py-2 px-4 border-b border-solid border-slate-200 rounded-t">
                     <h3 className=" text-2xl font-semibold">Add Brand</h3>
                   </div>
                   {/*body*/}
                   <div className="relative p-6 flex-auto">
+                    <InputLabel>
+                      <span className="font-bebas text-sm">Create Brand</span>
+                    </InputLabel>
                     <TextField
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       type="text"
                       name="brand"
-                      placeholder="Write Brand"
-                      label="Brand"
+                      placeholder="Brand"
                       size="small"
                       fullWidth
                       autoFocus={true}
+                      variant="standard"
+                      InputProps={{
+                        style: {
+                          fontFamily: "Bebas Neue",
+                          fontSize: 18,
+                        },
+                      }}
                     />
                   </div>
                   {/*footer*/}
@@ -306,7 +326,7 @@ export default function AdminBrands() {
                       Close
                     </button>
                     <button
-                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      className="bg-emerald-500 text-white tracking-wider active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="submit"
                       onClick={() => {
                         handleSubmit();
@@ -350,11 +370,17 @@ export default function AdminBrands() {
                           }}
                           type="text"
                           name="updatebrand"
-                          placeholder=""
-                          label="Brand"
+                          placeholder={name}
                           size="small"
                           fullWidth
                           autoFocus={true}
+                          variant="standard"
+                          InputProps={{
+                            style: {
+                              fontFamily: "Bebas Neue",
+                              fontSize: 18,
+                            },
+                          }}
                         />
                         {/* {categories?.map((c) => (
                           <button
@@ -408,7 +434,7 @@ export default function AdminBrands() {
 
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
-                <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                <div className="flex items-start justify-between px-4 py-2 border-b border-solid border-slate-200 rounded-t">
                   <h3 className=" text-2xl font-semibold">Delete Brand</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -427,11 +453,16 @@ export default function AdminBrands() {
                           }}
                           type="text"
                           name="deletebrand"
-                          placeholder=""
-                          label="Brand"
                           size="small"
                           fullWidth
                           disabled
+                          variant="standard"
+                          InputProps={{
+                            style: {
+                              fontFamily: "Bebas Neue",
+                              fontSize: 18,
+                            },
+                          }}
                         />
                         {/* {categories?.map((c) => (
                           <button

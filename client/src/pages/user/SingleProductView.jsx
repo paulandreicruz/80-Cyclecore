@@ -181,11 +181,11 @@ const SingleProductView = () => {
               <div className="">
                 <span className="flex items-center gap-1  pt-3">
                   <b>Size :</b>
-                  <p>IM820BJLFPNA100</p>
+                  <p>46"</p>
                 </span>
                 <span className="flex items-center gap-1  pt-3">
                   <b>Est. Weight :</b>
-                  <p>312 grams (0.69 lbs)</p>
+                  <p>10420 grams</p>
                 </span>
                 <span className="flex items-center gap-1 pt-3">
                   <b>Available:</b>

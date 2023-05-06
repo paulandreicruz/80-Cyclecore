@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   Box,
   Grid,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -16,6 +17,8 @@ import { Select } from "antd";
 import ReactToPrint from "react-to-print";
 import { BiPrinter } from "react-icons/bi";
 import Search from "../../components/forms/AdminSearchForm";
+import { MdOutlineHistoryEdu } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 export default function AdminOrders() {
   //context
@@ -30,6 +33,9 @@ export default function AdminOrders() {
     "Cancelled",
   ]);
   const [changedStatus, setChangedStatus] = useState("");
+  const [selectedOrderProducts, setSelectedOrderProducts] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const { Option } = Select;
 
@@ -60,19 +66,26 @@ export default function AdminOrders() {
     }
   };
 
+  // handleOrderDetailsClick
+  const handleOrderDetailsClick = (orders) => {
+    setDialogOpen(true);
+    setSelectedOrder(orders);
+    setSelectedOrderProducts(orders.products);
+  };
+
+  console.log(typeof orders.createdAt);
+
   return (
     <>
-      <div className="m-10">
-        <Search />
-        <div>
+      <div className="px-10 py-5 font-bebas bg-gray-200 h-screen">
+        <div className="flex justify-between mb-3">
+          <Search />
           <ReactToPrint
             trigger={() => {
               return (
-                <button>
-                  <BiPrinter
-                    fontSize={25}
-                    className="hover:text-sky-300 rounded-sm"
-                  />
+                <button className="flex items-center gap-1 hover:text-orange-500">
+                  <BiPrinter fontSize={25} />
+                  print order
                 </button>
               );
             }}
@@ -81,233 +94,79 @@ export default function AdminOrders() {
             pageStyle="print"
           />
         </div>
-        <strong>ORDER HISTORY</strong>
-        <div ref={componentRef}>
-          <TableContainer style={{ maxHeight: "unset" }}>
-            <Table style={{ tableLayout: "auto" }}>
-              <TableHead>
-                <TableRow style={{ height: "20px" }}>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "5px",
-                    }}
-                  >
-                    <span>Order#</span>
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    PRODUCT
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    PRODUCT NAME
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "5px",
-                    }}
-                  >
-                    PRICE
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    STATUS
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    BUYER
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    ORDERED
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "10px",
-                    }}
-                  >
-                    PAYMENT
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: 1,
-                      textAlign: "center",
-                      fontSize: "10px",
-                      width: "5px",
-                    }}
-                  >
-                    QUANTITY
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {orders?.map((o, i) => (
-                  <TableRow key={o._id} style={{ height: "20px" }}>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        width: "10px",
-                      }}
-                    >
-                      {o.ordernumber}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "10px",
-                      }}
-                    >
-                      {o?.products?.map((o, i) => (
-                        <div key={i}>
-                          <img
-                            src={`${
-                              import.meta.env.VITE_APP_REACT_APP_API
-                            }/product/photo/${o._id}`}
-                            alt=""
-                            className="w-32 mx-auto"
-                          />
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        width: "10px",
-                      }}
-                    >
+
+        <div>
+          <Paper>
+            <div className="py-2 px-4 border-b bg-white">
+              <strong className="text-3xl tracking-wider flex items-center gap-1">
+                ORDER HISTORY{" "}
+                <MdOutlineHistoryEdu className="text-yellow-500" />
+              </strong>
+            </div>
+
+            <div className="p-4 bg-white">
+              <table
+                className="w-[100%] justify-evenly border"
+                ref={componentRef}
+              >
+                <thead className="border-b">
+                  <tr className="text-left text-xl tracking-wide bg-gray-100">
+                    <th className="p-2">Order Id</th>
+                    <th className="p-2">User</th>
+                    <th className="p-2">product</th>
+                    <th className="p-2">price</th>
+                    <th className="p-2">email</th>
+                    <th className="p-2">order date</th>
+                    <th className="p-2">view</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {orders?.map((o, i) => (
+                    <>
                       {o?.products?.map((p, i) => (
-                        <div key={i}>
-                          <h1 className="w-20 text-center mb-2 mx-auto">
-                            {p.name}
-                          </h1>
-                        </div>
+                        <>
+                          <tr key={i} className="border-b">
+                            <td className="p-2">{o?.ordernumber}</td>
+
+                            <td className="p-2">
+                              {o?.buyer?.lastname},{o?.buyer?.firstname}
+                            </td>
+
+                            <td className="p-2">{p.name}</td>
+
+                            <td className="p-2">
+                              {p.price.toLocaleString("en-US", {
+                                style: "currency",
+                                currency: "PHP",
+                              })}
+                            </td>
+
+                            <td className="p-2">{o?.buyer?.email}</td>
+
+                            <td className="p-2">
+                              {moment(o.createdAt).format(
+                                "MMMM Do YYYY, h:mm:ss"
+                              )}
+                            </td>
+
+                            <td className="p-2">
+                              <button
+                                className="p-1"
+                                onClick={handleOrderDetailsClick}
+                              >
+                                <BsThreeDotsVertical />
+                              </button>
+                            </td>
+                          </tr>
+                        </>
                       ))}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "5px",
-                      }}
-                    >
-                      {o?.products?.map((o, i) => (
-                        <div key={i} className="mb-2">
-                          ₱{o.price}
-                        </div>
-                      ))}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "2px",
-                        maxWidth: "5px",
-                      }}
-                    >
-                      <Select
-                        style={{ width: "20%" }}
-                        bordered={false}
-                        onChange={(value) => handleChange(o._id, value)}
-                        defaultValue={o?.status}
-                      >
-                        {status?.map((s, i) => (
-                          <Option key={i} value={s}>
-                            {s}
-                          </Option>
-                        ))}
-                      </Select>
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "10px",
-                      }}
-                    >
-                      {o?.buyer?.lastname},{o?.buyer?.firstname}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "10px",
-                      }}
-                    >
-                      {moment(o.createdAt).format("MMMM Do YYYY, h:mm:ss")}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "10px",
-                      }}
-                    >
-                      {o?.payment?.success ? "Success" : "Failed"}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        border: 1,
-                        textAlign: "center",
-                        fontSize: "10px",
-                        maxWidth: "10px",
-                      }}
-                    >
-                      {o?.products?.length}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                    </>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Paper>
         </div>
       </div>
     </>

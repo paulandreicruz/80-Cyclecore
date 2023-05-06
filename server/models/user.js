@@ -91,7 +91,18 @@ const userSchema = new Schema(
         },
       },
     },
-
+    paymentOption: {
+      type: String,
+    },
+    deliveryOption: {
+      type: String,
+    },
+    estimatedDelivery: {
+      type: String,
+    },
+    deliveryFee: {
+      type: Number,
+    },
     contactnum: {
       type: Number,
       required: true,

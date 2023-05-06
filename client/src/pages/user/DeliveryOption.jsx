@@ -19,12 +19,15 @@ import { MdPayment } from "react-icons/md";
 import { BiCycling } from "react-icons/bi";
 import { TiArrowBackOutline } from "react-icons/ti";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
+import DropIn from "braintree-web-drop-in-react";
 
 export const DeliveryOption = () => {
   //state
   const [shippingAddress, setShippingAddress] = useState({});
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [proceedToPayment, setProceedToPayment] = useState(false);
+  const [selectedDeliveryOptionIndex, setSelectedDeliveryOptionIndex] =
+    useState(null);
 
   const selectedDeliveryOption =
     selectedOptionIndex !== null
@@ -41,13 +44,42 @@ export const DeliveryOption = () => {
     setSelectedOption(index);
   };
 
+  // const handleAccordionChange = (index) => {
+  //   if (index === selectedOptionIndex) {
+  //     setSelectedOptionIndex(null);
+  //   } else {
+  //     setSelectedOptionIndex(index);
+  //   }
+  // };
+
+  // accordion change
   const handleAccordionChange = (index) => {
     if (index === selectedOptionIndex) {
       setSelectedOptionIndex(null);
+      setSelectedDeliveryOptionIndex(null); // added line
     } else {
       setSelectedOptionIndex(index);
+      setSelectedDeliveryOptionIndex(index); // added line
     }
   };
+
+  useEffect(() => {
+    if (selectedDeliveryOptionIndex !== null) {
+      const selectedOption = paymentData[selectedDeliveryOptionIndex];
+      axios
+        .put("/add-delivery-option", {
+          deliveryOption: selectedOption.deliveryOption,
+          deliveryFee: selectedOption.deliveryFee,
+          estimatedDelivery: selectedOption.estimatedDelivery,
+        })
+        .then((response) => {
+          // handle response
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedDeliveryOptionIndex]);
 
   //hookjs
   const [auth, setAuth] = useAuth();
@@ -115,6 +147,81 @@ export const DeliveryOption = () => {
       total += item.quantity;
     });
     return total;
+  };
+
+  const [clientToken, setClientToken] = useState("");
+  const [instance, setInstance] = useState("");
+
+  useEffect(() => {
+    if (auth?.token) {
+      getClientToken();
+    }
+  }, [auth?.token]);
+
+  const getClientToken = async () => {
+    try {
+      const { data } = await axios.get("/braintree/token");
+      setClientToken(data.clientToken);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleCheckout = async () => {
+    try {
+      const { nonce, details } = await instance.requestPaymentMethod();
+      console.log(details);
+      const { data } = await axios.post("/braintree/payment", {
+        nonce,
+        cart,
+        paymentMethod: details.type,
+        cardType: details.cardType,
+      });
+
+      localStorage.removeItem("cart");
+      setCart([]);
+      navigate("/dashboard/user/ordersuccess");
+      toast.success("Payment Successful", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleCheckoutPickup = async () => {
+    try {
+      // Perform any necessary validation or data processing here
+
+      // Create a new axios post request to a different endpoint, e.g. "/pickup"
+      const { data } = await axios.post("/payment/pickup", {
+        cart,
+      });
+
+      // Clear the cart and display a success message
+      localStorage.removeItem("cart");
+      setCart([]);
+      navigate("/dashboard/user/ordersuccess");
+      toast.success("Order placed for pickup", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -278,36 +385,79 @@ export const DeliveryOption = () => {
 
                   <div className="border rounded-md px-2 py-3">
                     {paymentOptions.map((p, i) => (
-                      <div
-                        key={i}
-                        onClick={() => setSelectedOption(i)}
-                        className="flex items-center hover:cursor-pointer"
-                      >
-                        <div>
-                          {p.chkbx && (
-                            <Checkbox
-                              size="small"
-                              checked={selectedOption === i}
-                            />
-                          )}
+                      <>
+                        <div
+                          key={i}
+                          onClick={() => setSelectedOption(i)}
+                          className="flex items-center hover:cursor-pointer"
+                        >
+                          <div>
+                            {p.chkbx && (
+                              <Checkbox
+                                size="small"
+                                checked={selectedOption === i}
+                              />
+                            )}
+                          </div>
+                          <div>{p.paymentOption}</div>
                         </div>
-                        <div>{p.paymentOption}</div>
-                      </div>
+                      </>
                     ))}
 
-                    <div className="flex justify-end">
-                      <NavLink to="/dashboard/user/payment-option">
-                        <button className="flex items-center gap-1 bg-yellow-300 p-3 rounded-md tracking-wide hover:scale-105 duration-200 ease-in-out">
+                    {selectedOption === 1 ? (
+                      <div className="max-w-md mx-auto">
+                        {!clientToken || !cart?.length ? (
+                          ""
+                        ) : (
+                          <DropIn
+                            options={{
+                              authorization: clientToken,
+                              currency: "PHP",
+                            }}
+                            onInstance={(instance) => setInstance(instance)}
+                          />
+                        )}
+                      </div>
+                    ) : null}
+                    {selectedOption === 1 ? (
+                      <>
+                        <div className="flex justify-end">
+                          <button
+                            onClick={handleCheckout}
+                            className="flex items-center gap-1 bg-yellow-300 p-3 rounded-md tracking-wide hover:scale-105 duration-200 ease-in-out"
+                          >
+                            <MdPayment />
+                            Check - Out
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-end">
+                        <button
+                          onClick={handleCheckoutPickup}
+                          className="flex items-center gap-1 bg-yellow-300 p-3 rounded-md tracking-wide hover:scale-105 duration-200 ease-in-out"
+                        >
                           <MdPayment />
                           Check - Out
                         </button>
-                      </NavLink>
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </Paper>
               </>
             )}
           </Grid>
+
+          {/* <Button
+                            variant="contained"
+                            color="inherit"
+                            fullWidth
+                            startIcon={<IoBagCheckOutline/>}
+                            onClick={handleCheckout}
+                            className="shadow bg-gray-700 hover:bg-blue-900 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded cursor-pointer"
+                          >
+                            <span className="font-bebas text-lg tracking-wider">Checkout</span>
+                          </Button> */}
 
           {/* cart side */}
           <Grid item>
@@ -317,30 +467,37 @@ export const DeliveryOption = () => {
                   Order Summary
                 </div>
 
-                {cart?.map((c, i) => (
+                {cart?.map((p, i) => (
                   <div key={i}>
                     <div className="flex justify-between mb-5">
                       <div>
                         <img
                           src={`${
                             import.meta.env.VITE_APP_REACT_APP_API
-                          }/product/photo/${c._id}`}
-                          className="w-32 rounded-lg"
+                          }/product/photo/${p._id}`}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = p.image;
+                          }}
+                          className="w-24 rounded-sm"
                         />
                       </div>
                       <div className="tracking-widest">
-                        <h1 className="text-xl font-bold">{c.name}</h1>
+                        <h1 className="text-xl font-bold">{p.name}</h1>
                         <div className="flex justify-between">
-                          <h1 className="text-xs tracking-wide">
+                          <h1 className="text-xs tracking-wide mr-2">
                             Quantity:{" "}
                             <span className="text-sm font-bold">
-                              {c.quantity}
+                              {p.quantity}
                             </span>
                           </h1>
                           <h1 className="text-xs tracking-wide">
-                            PHP:{" "}
+                            Price: {""}
                             <span className="font-bold text-sm ">
-                              {c.price}
+                              {p.price.toLocaleString("en-PH", {
+                                style: "currency",
+                                currency: "PHP",
+                              })}
                             </span>
                           </h1>
                         </div>

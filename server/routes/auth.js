@@ -22,6 +22,21 @@ import {
   getShippingAddress,
   send,
   orderSearch,
+  addDeliveryOption,
+  getUsers,
+  getOrderCount,
+  getTotalSales,
+  getAllUsers,
+  getfiveOrders,
+  deleteUserById,
+  getSalesInMay,
+  getSalesByWeek,
+  getHottestProducts,
+  getTotalStocks,
+  getNewlyAddedStocks,
+  getNewlyAddedStocksForToday,
+  getAverageOrders,
+  getTotalSold,
 } from "../controllers/auth.js";
 
 router.post("/register", register);
@@ -40,6 +55,7 @@ router.get("/useraddress", requireSignin, getAddress);
 router.delete("/useraddress/:addressId", requireSignin, deleteAddress);
 router.put("/add-shipping-address", requireSignin, addShippingAddress);
 router.get("/shipping-address", requireSignin, getShippingAddress);
+router.put("/add-delivery-option", requireSignin, addDeliveryOption);
 
 router.get("/orders/search/:keyword", requireSignin, isAdmin, orderSearch);
 
@@ -52,5 +68,31 @@ router.post("/send-email", send);
 //orders
 router.get("/orders", requireSignin, getOrders);
 router.get("/all-orders", requireSignin, isAdmin, allOrders);
+router.get("/orders/count", requireSignin, isAdmin, getOrderCount);
+router.get("/orders/count/sales", requireSignin, isAdmin, getTotalSales);
+router.get("/latestorder", requireSignin, isAdmin, getfiveOrders);
+router.get("/sales", requireSignin, isAdmin, getSalesInMay);
+router.get("/weeklysales", requireSignin, isAdmin, getSalesByWeek);
+router.get("/hottestproducts", requireSignin, isAdmin, getHottestProducts);
+router.get("/totalstocks", requireSignin, isAdmin, getTotalStocks);
+router.get(
+  "/products/total-stocks",
+  requireSignin,
+  isAdmin,
+  getNewlyAddedStocks
+);
+router.get(
+  "/products/total-stocks/today",
+  requireSignin,
+  isAdmin,
+  getNewlyAddedStocksForToday
+);
+router.get("/orders/averageorders", requireSignin, isAdmin, getAverageOrders);
+router.get("/totalsold", requireSignin, isAdmin, getTotalSold),
+
+//users
+router.get("/users/count", requireSignin, isAdmin, getUsers);
+router.get("/allusers", requireSignin, isAdmin, getAllUsers);
+router.delete("/users/:id", requireSignin, isAdmin, deleteUserById);
 
 export default router;

@@ -1,4 +1,5 @@
 import User from "../models/user.js";
+import Product from "../models/product.js";
 import {
   hashPassword,
   comparePassword,
@@ -9,6 +10,7 @@ import dotenv from "dotenv";
 import Order from "../models/order.js";
 import sgMail from "@sendgrid/mail";
 import nodemailer from "nodemailer";
+import moment from "moment";
 
 dotenv.config();
 
@@ -635,7 +637,7 @@ export const allOrders = async (req, res) => {
   try {
     const orders = await Order.find({})
       .populate("products", "-photo")
-      .populate("buyer", "firstname lastname shippingAddress")
+      .populate("buyer", "firstname lastname shippingAddress email")
       .sort({ createdAt: "-1" });
     res.json(orders);
   } catch (err) {
@@ -673,7 +675,6 @@ export const send = async (req, res) => {
     console.log(err);
     res.status(500).json({ message: "Error sending email" });
   }
-  
 };
 export const orderSearch = async (req, res) => {
   try {
@@ -686,3 +687,316 @@ export const orderSearch = async (req, res) => {
     console.log(err);
   }
 };
+
+export const addDeliveryOption = async (req, res) => {
+  try {
+    const { deliveryOption, deliveryFee, estimatedDelivery } = req.body;
+
+    // Get the user ID from the authenticated user's token
+    const userId = req.user._id;
+
+    // Find the user by their ID
+    const user = await User.findById(userId);
+
+    // Set the selected delivery option as the user's delivery option
+    user.deliveryOption = deliveryOption;
+    user.deliveryFee = deliveryFee;
+    user.estimatedDelivery = estimatedDelivery;
+
+    // Save the updated user object to the database
+    await user.save();
+
+    // Return the updated user object as the response
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getUsers = async (req, res) => {
+  try {
+    const count = await User.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getOrderCount = async (req, res) => {
+  try {
+    const count = await Order.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTotalSales = async (req, res) => {
+  try {
+    const totalSales = await Order.aggregate([
+      {
+        $match: {
+          "payment.success": true,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+    res.json({ totalSales: totalSales[0].total });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({})
+    res.json(users);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getfiveOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({})
+      .populate("products", "-photo")
+      .populate("buyer", "firstname lastname shippingAddress email")
+      .limit(5)
+      .sort({ createdAt: "-1" });
+    res.json(orders);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteUserById = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (deletedUser) {
+      res.status(200).json({
+        message: "User deleted successfully",
+        deletedUser: deletedUser,
+      });
+    } else {
+      res.status(404).json({
+        message: "User not found",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Error deleting user",
+    });
+  }
+};
+
+export const getSalesInMay = async (req, res) => {
+  try {
+    const monthlySales = await Order.aggregate([
+      {
+        $match: {
+          "payment.success": true,
+          createdAt: {
+            $gte: new Date("2023-01-01T00:00:00.000Z"), // start of January
+            $lte: new Date("2023-12-31T23:59:59.999Z"), // end of December
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // group by month
+          totalSales: { $sum: "$totalPrice" },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+    res.json({ monthlySales });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getSalesByWeek = async (req, res) => {
+  try {
+    const totalSales = await Order.aggregate([
+      {
+        $match: {
+          "payment.success": true,
+          createdAt: { $gte: moment().subtract(7, "days").toDate() }, // filter by last 7 days
+        },
+      },
+      {
+        $group: {
+          _id: { $week: "$createdAt" }, // group by week number
+          total: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+    res.json({ totalSales: totalSales });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getHottestProducts = async (req, res) => {
+  try {
+    const hottestProducts = await Product.find()
+      .sort({ sold: -1 }) // sort by sold value in descending order
+      .limit(10); // return top 10 products
+    res.json(hottestProducts);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getTotalStocks = async (req, res) => {
+  try {
+    const pipeline = [
+      {
+        $group: {
+          _id: null,
+          totalStocks: { $sum: "$stocks" },
+        },
+      },
+    ];
+
+    const result = await Product.aggregate(pipeline);
+    const totalStocks = result[0].totalStocks;
+
+    res.json({ totalStocks });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getNewlyAddedStocks = async (req, res) => {
+  try {
+    const { month, year } = req.query;
+    const products = await Product.find();
+    const monthlyData = {};
+
+    console.log(`Products: ${products}`);
+
+    // Loop through all products and collect monthly data for the specified month and year
+    products.forEach((product) => {
+      if (product.newlyAddedStocks) {
+        product.newlyAddedStocks.forEach((entry) => {
+          const { year: y, month: m, value } = entry;
+          if (y == year && m == month) {
+            const productName = product.name;
+            if (!monthlyData[productName]) {
+              monthlyData[productName] = { value: 0 };
+            }
+            monthlyData[productName].value += value;
+          }
+        });
+      }
+    });
+
+    console.log(`Monthly Data: ${monthlyData}`);
+
+    // Return the monthly data for the specified month and year
+    return res.json(monthlyData);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+export const getNewlyAddedStocksForToday = async (req, res) => {
+  try {
+    const currentMonth = new Date().getMonth();
+    const currentDate = new Date().getDate();
+    const currentYear = new Date().getFullYear();
+
+    const products = await Product.find({ monthAdded: currentMonth });
+
+    let totalNewlyAddedStocks = 0;
+    products.forEach((product) => {
+      const newlyAddedStock = product.newlyAddedStocks.find(
+        (entry) =>
+          entry.day === currentDate &&
+          entry.month === currentMonth &&
+          entry.year === currentYear
+      );
+      if (newlyAddedStock) {
+        totalNewlyAddedStocks += newlyAddedStock.value;
+      }
+    });
+
+    return res.json({ totalNewlyAddedStocks });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+export const getAverageOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+    const ordersPerDay = {};
+
+    orders.forEach((order) => {
+      const orderDate = moment(order.createdAt).format("YYYY-MM-DD");
+      if (ordersPerDay[orderDate]) {
+        ordersPerDay[orderDate]++;
+      } else {
+        ordersPerDay[orderDate] = 1;
+      }
+    });
+
+    const dates = Object.keys(ordersPerDay);
+    const totalOrders = dates.reduce(
+      (acc, date) => acc + ordersPerDay[date],
+      0
+    );
+    const averageOrdersPerDay = totalOrders / dates.length;
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        averageOrdersPerDay,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const getTotalSold = async (req, res) => {
+  try {
+    const pipeline = [
+      {
+        $group: {
+          _id: null,
+          totalSold: { $sum: "$sold" },
+        },
+      },
+    ];
+
+    const result = await Product.aggregate(pipeline);
+    const totalSold = result[0].totalSold;
+
+    res.json({ totalSold });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+

@@ -385,30 +385,37 @@ export const Checkout = () => {
                   Order Summary
                 </div>
 
-                {cart?.map((c, i) => (
+                {cart?.map((p, i) => (
                   <div key={i}>
                     <div className="flex gap-8 mb-5">
                       <div>
                         <img
                           src={`${
                             import.meta.env.VITE_APP_REACT_APP_API
-                          }/product/photo/${c._id}`}
-                          className="w-32 rounded-lg"
+                          }/product/photo/${p._id}`}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = p.image;
+                          }}
+                          className="w-24 rounded-sm"
                         />
                       </div>
                       <div className="tracking-wider">
-                        <h1 className="text-xl font-bold">{c.name}</h1>
+                        <h1 className="text-xl font-bold">{p.name}</h1>
                         <div className="flex gap-4">
                           <h1 className="text-xs">
                             Quantity:{" "}
                             <span className="text-sm font-bold">
-                              {c.quantity}
+                              {p.quantity}
                             </span>
                           </h1>
                           <h1 className="text-xs">
                             PHP:{" "}
                             <span className="font-bold text-sm ">
-                              {c.price}
+                              {p.price.toLocaleString("en-PH", {
+                                style: "currency",
+                                currency: "PHP",
+                              })}
                             </span>
                           </h1>
                         </div>

@@ -14,3 +14,4 @@ export const paymentData = [
     deliveryFee: 0,
   },
 ];
+

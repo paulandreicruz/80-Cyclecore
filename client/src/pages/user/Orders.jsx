@@ -75,8 +75,7 @@ export default function UserOrders() {
       <Paper className="p-3 mx-24 mt-5 mb-0 font-bebas">
         <div className="flex items-center justify-between">
           <span className="tracking-wide flex hover:text-[#00BFFF] hover:cursor-default">
-            Orders & Returns{" "}
-            <TbTruckReturn fontSize={21} className="pt-[1px] ml-0.5" />
+            Orders <TbTruckReturn fontSize={21} className="pt-[1px] ml-0.5" />
           </span>
           <Button
             variant="contained"
@@ -118,9 +117,10 @@ export default function UserOrders() {
           <Paper className="p-2.5">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="tracking-wide text-xs">Home Delivery</h1>
+                <h1 className="tracking-wide text-xs">{o.deliveryOption}</h1>
                 <h1 className="flex gap-1 text-xl">
-                  Delivering On 5-7 Working Days <BsCloudSun />
+                  {o.estimatedDelivery}
+                  <BsCloudSun />
                 </h1>
               </div>
 
@@ -234,25 +234,36 @@ export default function UserOrders() {
                   <div className="text-sm">
                     Payment Method:{" "}
                     <span className="font-bold tracking-wider">
-                      {selectedOrder.payment?.paymentMethod}
+                      {selectedOrder.payment?.transaction?.creditCard?.cardType ? selectedOrder.payment?.transaction?.creditCard?.cardType : 'Not processd' }
                     </span>
                   </div>
                   <div className="text-sm">
                     Card Type:{" "}
                     <span className="font-bold tracking-wider">
-                      {selectedOrder.payment.cardType}
+                      {selectedOrder.payment?.transaction?.paymentInstrumentType
+                        ? selectedOrder.payment?.transaction
+                            ?.paymentInstrumentType
+                        : "Not processed"}
                     </span>
                   </div>
                   <div className="text-sm">
                     Transaction ID:{" "}
                     <span className="font-bold tracking-wider">
-                      {selectedOrder.payment?.id}
+                      {selectedOrder.payment?.transaction.id
+                        ? selectedOrder.payment.transaction.id
+                        : "Not processed"}
                     </span>
                   </div>
                   <h1 className="text-xs">
                     order id#:{" "}
                     <span className="font-bold tracking-wider text-base">
                       {selectedOrder.ordernumber}
+                    </span>
+                  </h1>
+                  <h1 className="text-xs">
+                    Payment Status:{" "}
+                    <span className="font-bold tracking-wider text-base">
+                      {selectedOrder.payment?.success ? "Success" : "Failed"}
                     </span>
                   </h1>
                   <h1 className="text-xs">
@@ -331,6 +342,9 @@ export default function UserOrders() {
             {selectedOrder && (
               <>
                 <div>
+                  <h1 className="font-bebas text-sm justify-end flex">
+                    Delivery Fee +{selectedOrder.deliveryFee}
+                  </h1>
                   <h1 className="font-bebas text-sm justify-end flex">total</h1>
                   <h1 className="font-bebas text-3xl justify-end flex text-white">
                     PHP {selectedOrder.totalPrice}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 // CART
 import { useCart } from "../../context/Cart";
@@ -14,8 +15,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  Modal,
   Paper,
+  Button,
+  DialogContentText,
 } from "@mui/material";
 
 // ICONS
@@ -23,88 +25,91 @@ import { TbCameraPlus } from "react-icons/tb";
 import { BiReset } from "react-icons/bi";
 import { FaRegHandPointRight } from "react-icons/fa";
 import { CgClose, CgCloseR } from "react-icons/cg";
+import { FiShoppingCart } from "react-icons/fi";
+import { IoWarning } from "react-icons/io5";
 
 // BIKE LOGO
 import bcl from "../../assets/bcl.png";
 import load from "../../assets/load.gif";
 
 // FRAME COMBINATION
-import f1 from "../../assets/combination/frame/f1.png";
+import f1 from "../../assets/frame1Combinations/frame/f1.png";
 
 // HANDLEBAR COMBINATIONS
-import f1b2 from "../../assets/combination/handlebar/f1b2.png";
-import f1b3 from "../../assets/combination/handlebar/f1b3.png";
+import f1b2 from "../../assets/frame1Combinations/handlebar/f1b2.png";
+import f1b3 from "../../assets/frame1Combinations/handlebar/f1b3.png";
 
 // GROUPSET COMBINATIONS
-import f1b2g5 from "../../assets/combination/groupset/f1b2g5.png";
-import f1b3g5 from "../../assets/combination/groupset/f1b3g5.png";
-import f1b2g4 from "../../assets/combination/groupset/f1b2g4.png";
-import f1b3g4 from "../../assets/combination/groupset/f1b3g4.png";
+import f1b2g5 from "../../assets/frame1Combinations/groupset/f1b2g5.png";
+import f1b3g5 from "../../assets/frame1Combinations/groupset/f1b3g5.png";
+import f1b2g4 from "../../assets/frame1Combinations/groupset/f1b2g4.png";
+import f1b3g4 from "../../assets/frame1Combinations/groupset/f1b3g4.png";
 // WHEELSET COMBINATIONS
-import f1b3g5w7 from "../../assets/combination/wheelset/f1b3g5w7.png";
-import f1b2g5w7 from "../../assets/combination/wheelset/f1b2g5w7.png";
-import f1b3g4w7 from "../../assets/combination/wheelset/f1b3g4w7.png";
-import f1b2g4w7 from "../../assets/combination/wheelset/f1b2g4w7.png";
-import f1b3g5w6 from "../../assets/combination/wheelset/f1b3g5w6.png";
-import f1b2g5w6 from "../../assets/combination/wheelset/f1b2g5w6.png";
-import f1b2g4w6 from "../../assets/combination/wheelset/f1b2g4w6.png";
-import f1b3g4w6 from "../../assets/combination/wheelset/f1b3g4w6.png";
+import f1b3g5w7 from "../../assets/frame1Combinations/wheelset/f1b3g5w7.png";
+import f1b2g5w7 from "../../assets/frame1Combinations/wheelset/f1b2g5w7.png";
+import f1b3g4w7 from "../../assets/frame1Combinations/wheelset/f1b3g4w7.png";
+import f1b2g4w7 from "../../assets/frame1Combinations/wheelset/f1b2g4w7.png";
+import f1b3g5w6 from "../../assets/frame1Combinations/wheelset/f1b3g5w6.png";
+import f1b2g5w6 from "../../assets/frame1Combinations/wheelset/f1b2g5w6.png";
+import f1b2g4w6 from "../../assets/frame1Combinations/wheelset/f1b2g4w6.png";
+import f1b3g4w6 from "../../assets/frame1Combinations/wheelset/f1b3g4w6.png";
 // TIRE COMBINATIONS
-import f1b3g5w7t9 from "../../assets/combination/tire/f1b3g5w7t9.png";
-import f1b2g5w7t9 from "../../assets/combination/tire/f1b2g5w7t9.png";
-import f1b3g4w7t9 from "../../assets/combination/tire/f1b3g4w7t9.png";
-import f1b3g4w6t9 from "../../assets/combination/tire/f1b3g4w6t9.png";
-import f1b2g5w6t9 from "../../assets/combination/tire/f1b2g5w6t9.png";
-import f1b2g4w7t9 from "../../assets/combination/tire/f1b2g4w7t9.png";
-import f1b2g4w6t9 from "../../assets/combination/tire/f1b2g4w6t9.png";
-import f1b3g5w6t9 from "../../assets/combination/tire/f1b3g5w6t9.png";
-import f1b2g4w6t8 from "../../assets/combination/tire/f1b2g4w6t8.png";
-import f1b2g4w7t8 from "../../assets/combination/tire/f1b2g4w7t8.png";
-import f1b2g5w6t8 from "../../assets/combination/tire/f1b2g5w6t8.png";
-import f1b3g4w6t8 from "../../assets/combination/tire/f1b3g4w6t8.png";
-import f1b2g5w7t8 from "../../assets/combination/tire/f1b2g5w7t8.png";
-import f1b3g4w7t8 from "../../assets/combination/tire/f1b3g4w7t8.png";
-import f1b3g5w6t8 from "../../assets/combination/tire/f1b3g5w6t8.png";
-import f1b3g5w7t8 from "../../assets/combination/tire/f1b3g5w7t8.png";
+import f1b3g5w7t9 from "../../assets/frame1Combinations/tire/f1b3g5w7t9.png";
+import f1b2g5w7t9 from "../../assets/frame1Combinations/tire/f1b2g5w7t9.png";
+import f1b3g4w7t9 from "../../assets/frame1Combinations/tire/f1b3g4w7t9.png";
+import f1b3g4w6t9 from "../../assets/frame1Combinations/tire/f1b3g4w6t9.png";
+import f1b2g5w6t9 from "../../assets/frame1Combinations/tire/f1b2g5w6t9.png";
+import f1b2g4w7t9 from "../../assets/frame1Combinations/tire/f1b2g4w7t9.png";
+import f1b2g4w6t9 from "../../assets/frame1Combinations/tire/f1b2g4w6t9.png";
+import f1b3g5w6t9 from "../../assets/frame1Combinations/tire/f1b3g5w6t9.png";
+import f1b2g4w6t8 from "../../assets/frame1Combinations/tire/f1b2g4w6t8.png";
+import f1b2g4w7t8 from "../../assets/frame1Combinations/tire/f1b2g4w7t8.png";
+import f1b2g5w6t8 from "../../assets/frame1Combinations/tire/f1b2g5w6t8.png";
+import f1b3g4w6t8 from "../../assets/frame1Combinations/tire/f1b3g4w6t8.png";
+import f1b2g5w7t8 from "../../assets/frame1Combinations/tire/f1b2g5w7t8.png";
+import f1b3g4w7t8 from "../../assets/frame1Combinations/tire/f1b3g4w7t8.png";
+import f1b3g5w6t8 from "../../assets/frame1Combinations/tire/f1b3g5w6t8.png";
+import f1b3g5w7t8 from "../../assets/frame1Combinations/tire/f1b3g5w7t8.png";
 
 // SADDLE COMBINATION
-import f1b3g5w7t9s11 from "../../assets/combination/saddle/f1b3g5w7t9s11.png";
-import f1b3g5w7t8s11 from "../../assets/combination/saddle/f1b3g5w7t8s11.png";
-import f1b3g5w6t9s11 from "../../assets/combination/saddle/f1b3g5w6t9s11.png";
-import f1b3g5w6t8s11 from "../../assets/combination/saddle/f1b3g5w6t8s11.png";
-import f1b3g4w7t9s11 from "../../assets/combination/saddle/f1b3g4w7t9s11.png";
-import f1b3g4w7t8s11 from "../../assets/combination/saddle/f1b3g4w7t8s11.png";
-import f1b3g4w6t9s11 from "../../assets/combination/saddle/f1b3g4w6t9s11.png";
-import f1b3g4w6t8s11 from "../../assets/combination/saddle/f1b3g4w6t8s11.png";
-import f1b2g5w7t9s11 from "../../assets/combination/saddle/f1b2g5w7t9s11.png";
-import f1b2g5w7t8s11 from "../../assets/combination/saddle/f1b2g5w7t8s11.png";
-import f1b2g5w6t9s11 from "../../assets/combination/saddle/f1b2g5w6t9s11.png";
-import f1b2g5w6t8s11 from "../../assets/combination/saddle/f1b2g5w6t8s11.png";
-import f1b2g4w7t9s11 from "../../assets/combination/saddle/f1b2g4w7t9s11.png";
-import f1b2g4w7t8s11 from "../../assets/combination/saddle/f1b2g4w7t8s11.png";
-import f1b2g4w6t9s11 from "../../assets/combination/saddle/f1b2g4w6t9s11.png";
-import f1b2g4w6t8s11 from "../../assets/combination/saddle/f1b2g4w6t8s11.png";
-import f1b3g5w7t9s10 from "../../assets/combination/saddle/f1b3g5w7t9s10.png";
-import f1b3g5w7t8s10 from "../../assets/combination/saddle/f1b3g5w7t8s10.png";
-import f1b3g5w6t9s10 from "../../assets/combination/saddle/f1b3g5w6t9s10.png";
-import f1b3g5w6t8s10 from "../../assets/combination/saddle/f1b3g5w6t8s10.png";
-import f1b3g4w7t9s10 from "../../assets/combination/saddle/f1b3g4w7t9s10.png";
-import f1b3g4w7t8s10 from "../../assets/combination/saddle/f1b3g4w7t8s10.png";
-import f1b3g4w6t9s10 from "../../assets/combination/saddle/f1b3g4w6t9s10.png";
-import f1b3g4w6t8s10 from "../../assets/combination/saddle/f1b3g4w6t8s10.png";
-import f1b2g5w7t9s10 from "../../assets/combination/saddle/f1b2g5w7t9s10.png";
-import f1b2g5w7t8s10 from "../../assets/combination/saddle/f1b2g5w7t8s10.png";
-import f1b2g5w6t9s10 from "../../assets/combination/saddle/f1b2g5w6t9s10.png";
-import f1b2g5w6t8s10 from "../../assets/combination/saddle/f1b2g5w6t8s10.png";
-import f1b2g4w7t9s10 from "../../assets/combination/saddle/f1b2g4w7t9s10.png";
-import f1b2g4w7t8s10 from "../../assets/combination/saddle/f1b2g4w7t8s10.png";
-import f1b2g4w6t9s10 from "../../assets/combination/saddle/f1b2g4w6t9s10.png";
-import f1b2g4w6t8s10 from "../../assets/combination/saddle/f1b2g4w6t8s10.png";
+import f1b3g5w7t9s11 from "../../assets/frame1Combinations/saddle/f1b3g5w7t9s11.png";
+import f1b3g5w7t8s11 from "../../assets/frame1Combinations/saddle/f1b3g5w7t8s11.png";
+import f1b3g5w6t9s11 from "../../assets/frame1Combinations/saddle/f1b3g5w6t9s11.png";
+import f1b3g5w6t8s11 from "../../assets/frame1Combinations/saddle/f1b3g5w6t8s11.png";
+import f1b3g4w7t9s11 from "../../assets/frame1Combinations/saddle/f1b3g4w7t9s11.png";
+import f1b3g4w7t8s11 from "../../assets/frame1Combinations/saddle/f1b3g4w7t8s11.png";
+import f1b3g4w6t9s11 from "../../assets/frame1Combinations/saddle/f1b3g4w6t9s11.png";
+import f1b3g4w6t8s11 from "../../assets/frame1Combinations/saddle/f1b3g4w6t8s11.png";
+import f1b2g5w7t9s11 from "../../assets/frame1Combinations/saddle/f1b2g5w7t9s11.png";
+import f1b2g5w7t8s11 from "../../assets/frame1Combinations/saddle/f1b2g5w7t8s11.png";
+import f1b2g5w6t9s11 from "../../assets/frame1Combinations/saddle/f1b2g5w6t9s11.png";
+import f1b2g5w6t8s11 from "../../assets/frame1Combinations/saddle/f1b2g5w6t8s11.png";
+import f1b2g4w7t9s11 from "../../assets/frame1Combinations/saddle/f1b2g4w7t9s11.png";
+import f1b2g4w7t8s11 from "../../assets/frame1Combinations/saddle/f1b2g4w7t8s11.png";
+import f1b2g4w6t9s11 from "../../assets/frame1Combinations/saddle/f1b2g4w6t9s11.png";
+import f1b2g4w6t8s11 from "../../assets/frame1Combinations/saddle/f1b2g4w6t8s11.png";
+import f1b3g5w7t9s10 from "../../assets/frame1Combinations/saddle/f1b3g5w7t9s10.png";
+import f1b3g5w7t8s10 from "../../assets/frame1Combinations/saddle/f1b3g5w7t8s10.png";
+import f1b3g5w6t9s10 from "../../assets/frame1Combinations/saddle/f1b3g5w6t9s10.png";
+import f1b3g5w6t8s10 from "../../assets/frame1Combinations/saddle/f1b3g5w6t8s10.png";
+import f1b3g4w7t9s10 from "../../assets/frame1Combinations/saddle/f1b3g4w7t9s10.png";
+import f1b3g4w7t8s10 from "../../assets/frame1Combinations/saddle/f1b3g4w7t8s10.png";
+import f1b3g4w6t9s10 from "../../assets/frame1Combinations/saddle/f1b3g4w6t9s10.png";
+import f1b3g4w6t8s10 from "../../assets/frame1Combinations/saddle/f1b3g4w6t8s10.png";
+import f1b2g5w7t9s10 from "../../assets/frame1Combinations/saddle/f1b2g5w7t9s10.png";
+import f1b2g5w7t8s10 from "../../assets/frame1Combinations/saddle/f1b2g5w7t8s10.png";
+import f1b2g5w6t9s10 from "../../assets/frame1Combinations/saddle/f1b2g5w6t9s10.png";
+import f1b2g5w6t8s10 from "../../assets/frame1Combinations/saddle/f1b2g5w6t8s10.png";
+import f1b2g4w7t9s10 from "../../assets/frame1Combinations/saddle/f1b2g4w7t9s10.png";
+import f1b2g4w7t8s10 from "../../assets/frame1Combinations/saddle/f1b2g4w7t8s10.png";
+import f1b2g4w6t9s10 from "../../assets/frame1Combinations/saddle/f1b2g4w6t9s10.png";
+import f1b2g4w6t8s10 from "../../assets/frame1Combinations/saddle/f1b2g4w6t8s10.png";
 
 export const Customize1 = () => {
   // FRAME STATES
   const [frame, setFrame] = useState([]);
   const [selectedFrame, setSelectedFrame] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // LOAD FRAME
   const loadFrame = async () => {
@@ -654,6 +659,7 @@ export const Customize1 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          built: true,
           name: "Specialized Frame Custom Build",
           price:
             selectedFrame.price +
@@ -668,6 +674,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -698,6 +715,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -728,6 +756,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -758,6 +797,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -788,6 +838,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -818,6 +879,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -848,6 +920,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -878,6 +961,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -908,6 +1002,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -938,6 +1043,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -968,6 +1084,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -998,6 +1125,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1028,6 +1166,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1058,6 +1207,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1088,6 +1248,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1118,6 +1289,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1148,6 +1330,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1178,6 +1371,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1208,6 +1412,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1238,6 +1453,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1268,6 +1494,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1298,6 +1535,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1328,6 +1576,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1358,6 +1617,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1388,6 +1658,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1418,6 +1699,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1448,6 +1740,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1478,6 +1781,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1508,6 +1822,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1538,6 +1863,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1568,6 +1904,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1598,6 +1945,17 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
       if (
         selectedFrame &&
@@ -1628,6 +1986,19 @@ export const Customize1 = () => {
         };
         setCart([...cart, p]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        console.log(cart);
       }
     } catch (error) {
       console.log(error);
@@ -2815,54 +3186,101 @@ export const Customize1 = () => {
                   <div className="flex justify-between">
                     Selected frame:{" "}
                     <span className="font-bold">{selectedFrame.name}</span>
+                    <span>
+                      {selectedFrame.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedHandleBar && (
                   <div className="flex justify-between">
                     Selected Handlebar:{" "}
-                    <span className="font-bold">{selectedHandleBar.name}</span>
+                    <span className="font-bold">{selectedHandleBar.name}</span>{" "}
+                    <span>
+                      {selectedHandleBar.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedGroupSet && (
                   <div className="flex justify-between">
                     Selected groupset:{" "}
-                    <span className="font-bold">{selectedGroupSet.name}</span>
+                    <span className="font-bold">{selectedGroupSet.name}</span>{" "}
+                    <span>
+                      {selectedGroupSet.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedWheelSet && (
                   <div className="flex justify-between">
                     Selected wheelset:{" "}
                     <span className="font-bold">{selectedWheelSet.name}</span>
+                    <span>
+                      {selectedWheelSet.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedTire && (
                   <div className="flex justify-between">
                     Selected tire:{" "}
                     <span className="font-bold">{selectedTire.name}</span>
+                    <span>
+                      {selectedTire.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedSaddle && (
                   <div className="flex justify-between">
                     Selected saddle:{" "}
                     <span className="font-bold">{selectedSaddle.name}</span>
+                    <span>
+                      {selectedSaddle.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
-                {selectedSaddle && (
-                  <div className="flex justify-between">
-                    Selected saddle:{" "}
-                    <span className="font-bold">{selectedSaddle.name}</span>
+                {selectedSaddle && selectedSaddle.name ? (
+                  <div className="h-[1px] bg-gray-200 my-4" />
+                ) : null}
+                {selectedSaddle.name ? (
+                  <div className="flex items-center justify-between text-lg font-bold tracking-wide">
+                    <span className="text-sm">Total</span>
+                    {selectedItemsTotal().toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "PHP",
+                    })}
                   </div>
-                )}
+                ) : null}
                 <div className="h-[1px] bg-gray-200 my-4" />
-                <div className="flex items-center justify-between text-lg font-bold tracking-wide">
-                  <span className="text-sm">Total</span>php{" "}
-                  {selectedItemsTotal()}
-                </div>
+                
               </div>
               <div>
                 <button
                   className="p-3 w-full bg-orange-500 rounded-sm"
-                  onClick={handleAddToCart}
+                  onClick={() => setIsDialogOpen(true)}
+                  disabled={
+                    !selectedFrame ||
+                    !selectedHandleBar ||
+                    !selectedWheelSet ||
+                    !selectedGroupSet ||
+                    !selectedTire ||
+                    !selectedSaddle
+                  }
                 >
                   Add To Cart
                 </button>
@@ -2870,6 +3288,37 @@ export const Customize1 = () => {
             </Paper>
           </Grid>
         </Grid>
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <DialogTitle>
+            <span className="flex items-center justify-between font-bebas tracking-wide">
+              Add To Cart?
+              <IoWarning className="text-yellow-300 mr-1" fontSize={32} />
+            </span>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <span className="font-bebas tracking-wide">
+                Are you sure you want to add this custom build to your cart?
+              </span>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={handleAddToCart}
+            >
+              <span className="font-bebas tracking-wide">Add to cart</span>
+            </Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              <span className="font-bebas tracking-wide">NO</span>
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   );

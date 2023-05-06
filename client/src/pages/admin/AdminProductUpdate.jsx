@@ -17,11 +17,14 @@ import ProductCustUpload from "../../components/upload/AdminProductsUpload";
 //icons image
 import productlogo from "../../assets/product.png";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { MdOutlineSecurityUpdateGood, MdSubdirectoryArrowLeft } from "react-icons/md";
+import {
+  MdOutlineSecurityUpdateGood,
+  MdSubdirectoryArrowLeft,
+} from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 import { Grid } from "@mui/material";
-import { TiUploadOutline } from "react-icons/ti"
-import { RiDeleteBin5Line, RiUploadCloudLine } from 'react-icons/ri'
+import { TiUploadOutline } from "react-icons/ti";
+import { RiDeleteBin5Line, RiUploadCloudLine } from "react-icons/ri";
 import { RxUpdate } from "react-icons/rx";
 
 export default function AdminUpdateProduct() {
@@ -36,7 +39,6 @@ export default function AdminUpdateProduct() {
   const [subcategory, setSubcategory] = useState("");
   const [brand, setBrand] = useState("");
   const [shipping, setShipping] = useState("");
-  const [stocks, setStocks] = useState("");
   const [id, setId] = useState("");
 
   const navigate = useNavigate();
@@ -88,7 +90,7 @@ export default function AdminUpdateProduct() {
 
   const styles = {
     input: {
-      fontFamily: 'Arial',
+      fontFamily: "Arial",
     },
   };
 
@@ -101,7 +103,6 @@ export default function AdminUpdateProduct() {
       setCategory(data.category._id);
       setSubcategory(data.subcategory._id);
       setBrand(data.brand._id);
-      setStocks(data.stocks);
       setShipping(data.shipping);
       setId(data._id);
       console.log("data =>", data);
@@ -120,7 +121,6 @@ export default function AdminUpdateProduct() {
       productData.append("category", category);
       productData.append("subcategory", subcategory);
       productData.append("brand", brand);
-      productData.append("stocks", stocks);
       productData.append("shipping", shipping);
       productData.append("price", price);
 
@@ -190,18 +190,29 @@ export default function AdminUpdateProduct() {
 
   return (
     <div className="">
-      
-      <div className="font-bebas p-12 max-w-[95rem] mx-auto">
-        <Paper className="p-3 mb-5">
-          <NavLink to="/dashboard/admin">
-            <Button variant="contained" color="inherit" className="items-center flex text-white gap-1" size="small">
-              <IoArrowBackCircleOutline className="text-lg"/>
-              <span className="font-bebas tracking-widest text-lg">Back</span>
+      <div className="font-bebas py-5 px-10 max-w-[95rem] mx-auto">
+        <div className="px-4 py-2 bg-white border-b flex justify-between">
+          <h1 className="flex items-center text-3xl font-bold gap-2 tracking-wider">
+            Update Product
+            <RxUpdate />
+          </h1>
+
+          <NavLink to="/dashboard/admin/products">
+            <Button
+              variant="contained"
+              color="inherit"
+              className="items-center flex text-white gap-1"
+              size="small"
+            >
+              <IoArrowBackCircleOutline className="text-lg" />
+              <span className="font-bebas tracking-widest text-lg font-bold">
+                Back
+              </span>
             </Button>
           </NavLink>
-        </Paper>
+        </div>
 
-        <Paper className="py-10 px-44">
+        <div className="py-10 px-44 bg-white shadow-lg">
           <Grid container justifyContent="space-between">
             {/* left side */}
             <Grid item>
@@ -209,135 +220,158 @@ export default function AdminUpdateProduct() {
                 {/* <div className="text-center">
                   {name}
                 </div> */}
-                <img 
-                  src={`${import.meta.env.VITE_APP_REACT_APP_API}/product/photo/${id}?${new Date().getTime()}`} 
-                  alt="" 
+                <img
+                  src={`${
+                    import.meta.env.VITE_APP_REACT_APP_API
+                  }/product/photo/${id}?${new Date().getTime()}`}
+                  alt=""
                   className="w-[35rem]"
                 />
               </div>
             </Grid>
-            
+
             {/* right side */}
             <Grid item>
               <div>
-                <h1 className="text-center mx-auto justify-center flex items-center text-3xl gap-2 tracking-wider">   
-                  <RxUpdate />
-                  Update Product
-                </h1>
-
                 <form onSubmit={handleSubmit}>
                   <div className="space-y-5">
                     <div>
-                      <InputLabel id="category-label"><span className="font-bebas tracking-wider">Category</span></InputLabel>
+                      <InputLabel id="category-label">
+                        <span className="font-bebas tracking-wider">
+                          Category
+                        </span>
+                      </InputLabel>
                       <Select
-                          disablesearch="true"
-                          labelId="category-label"
-                          id="demo-simple-select-autowidth"
-                          autoWidth
-                          onChange={(e) => setCategory(e.target.value)}
-                          size="small"
-                          label="Category"
-                          sx={{ minWidth: 400,}}
-                          value={category}
-                          variant="standard"
-                        >
+                        disablesearch="true"
+                        labelId="category-label"
+                        id="demo-simple-select-autowidth"
+                        autoWidth
+                        onChange={(e) => setCategory(e.target.value)}
+                        size="small"
+                        label="Category"
+                        sx={{ minWidth: 400 }}
+                        value={category}
+                        variant="standard"
+                      >
                         {categories?.map((c) => (
                           <MenuItem key={c._id} value={c._id}>
-                            <span className="font-bebas tracking-wider text-xl">{c.name}</span>
+                            <span className="font-bebas tracking-wider text-xl">
+                              {c.name}
+                            </span>
                           </MenuItem>
                         ))}
                       </Select>
                     </div>
-                    
+
                     <div>
-                      <InputLabel id="demo-simple-select-autowidth-label"><span className="font-bebas tracking-wider">Sub-Category</span></InputLabel>
+                      <InputLabel id="demo-simple-select-autowidth-label">
+                        <span className="font-bebas tracking-wider">
+                          Sub-Category
+                        </span>
+                      </InputLabel>
                       <Select
-                          disablesearch="true"
-                          labelId="demo-simple-select-autowidth-label"
-                          id="demo-simple-select-autowidth"
-                          autoWidth
-                          onChange={(e) => setSubcategory(e.target.value)}
-                          size="small"
-                          label="Sub-Category"
-                          sx={{ minWidth: 400 }}
-                          value={subcategory}
-                          variant="standard"
-                        >
-                          {subcategories?.map((s) => (
-                            <MenuItem key={s._id} value={s._id}>
-                              <span className="font-bebas tracking-wider text-xl">{s.name}</span>
-                            </MenuItem>
-                          ))}
+                        disablesearch="true"
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        autoWidth
+                        onChange={(e) => setSubcategory(e.target.value)}
+                        size="small"
+                        label="Sub-Category"
+                        sx={{ minWidth: 400 }}
+                        value={subcategory}
+                        variant="standard"
+                      >
+                        {subcategories?.map((s) => (
+                          <MenuItem key={s._id} value={s._id}>
+                            <span className="font-bebas tracking-wider text-xl">
+                              {s.name}
+                            </span>
+                          </MenuItem>
+                        ))}
                       </Select>
                     </div>
 
                     <div>
-                    <InputLabel id="demo-simple-select-autowidth-label"><span className="font-bebas tracking-wider">Brand</span></InputLabel>
-                    <Select
-                      disablesearch="true"
-                      labelId="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      autoWidth
-                      onChange={(e) => setBrand(e.target.value)}
-                      size="small"
-                      label="Brands"
-                      value={brand}
-                      sx={{ minWidth: 400 }}
-                      variant="standard"
-                    >
+                      <InputLabel id="demo-simple-select-autowidth-label">
+                        <span className="font-bebas tracking-wider">Brand</span>
+                      </InputLabel>
+                      <Select
+                        disablesearch="true"
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        autoWidth
+                        onChange={(e) => setBrand(e.target.value)}
+                        size="small"
+                        label="Brands"
+                        value={brand}
+                        sx={{ minWidth: 400 }}
+                        variant="standard"
+                      >
                         {brands?.map((b) => (
                           <MenuItem key={b._id} value={b._id}>
-                            <span className="font-bebas tracking-wider text-xl">{b.name}</span>
+                            <span className="font-bebas tracking-wider text-xl">
+                              {b.name}
+                            </span>
                           </MenuItem>
                         ))}
-                    </Select>
+                      </Select>
                     </div>
 
                     <div>
-                      <InputLabel id="name-id"><span className="font-bebas tracking-wider">Product Name</span></InputLabel>
-                        <TextField
-                          type="text"
-                          labelId="name-id"
-                          name="name"
-                          placeholder="Product Name"
-                          size="small"
-                          fullWidth
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                          variant="standard"
-                          InputProps={{
-                            style: {
-                              fontFamily: 'Bebas Neue',
-                              fontSize: 19
-                            }
-                          }}
-                        />
+                      <InputLabel id="name-id">
+                        <span className="font-bebas tracking-wider">
+                          Product Name
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        type="text"
+                        labelId="name-id"
+                        name="name"
+                        placeholder="Product Name"
+                        size="small"
+                        fullWidth
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: 19,
+                          },
+                        }}
+                      />
                     </div>
 
                     <div>
-                        <InputLabel><span className="font-bebas tracking-wider">Product Description</span></InputLabel>
-                        <TextField
-                          type="text"
-                          name="description"
-                          placeholder="Description"
-                          size="small"
-                          fullWidth
-                          rows={5}
-                          multiline
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          variant="standard"
-                          InputProps={{
-                            style: {
-                              fontFamily: 'Bebas Neue',
-                              fontSize: 19
-                            }
-                          }}
-                        />
+                      <InputLabel>
+                        <span className="font-bebas tracking-wider">
+                          Product Description
+                        </span>
+                      </InputLabel>
+                      <TextField
+                        type="text"
+                        name="description"
+                        placeholder="Description"
+                        size="small"
+                        fullWidth
+                        rows={5}
+                        multiline
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        variant="standard"
+                        InputProps={{
+                          style: {
+                            fontFamily: "Bebas Neue",
+                            fontSize: 19,
+                          },
+                        }}
+                      />
                     </div>
-                      
+
                     <div>
-                      <InputLabel id="price-id"><span className="font-bebas tracking-wider">Price</span></InputLabel>
+                      <InputLabel id="price-id">
+                        <span className="font-bebas tracking-wider">Price</span>
+                      </InputLabel>
                       <TextField
                         type="number"
                         name="stocks"
@@ -349,35 +383,19 @@ export default function AdminUpdateProduct() {
                         variant="standard"
                         InputProps={{
                           style: {
-                            fontFamily: 'Bebas Neue',
-                            fontSize: 19
-                          }
+                            fontFamily: "Bebas Neue",
+                            fontSize: 19,
+                          },
                         }}
                       />
                     </div>
 
                     <div>
-                      <InputLabel><span className="font-bebas tracking-wider">Stocks</span></InputLabel>
-                      <TextField
-                        type="number"
-                        name="stocks"
-                        placeholder="stocks"
-                        size="small"
-                        fullWidth
-                        value={stocks}
-                        onChange={(e) => setStocks(e.target.value)}
-                        InputProps={{
-                          style: {
-                            fontFamily: 'Bebas Neue',
-                            fontSize: 19
-                          }
-                        }}
-                        variant="standard"
-                      />
-                    </div>
-
-                    <div>
-                      <InputLabel><span className="font-bebas tracking-wider">Shipping</span></InputLabel>
+                      <InputLabel>
+                        <span className="font-bebas tracking-wider">
+                          Shipping
+                        </span>
+                      </InputLabel>
                       <Select
                         disablesearch="true"
                         labelId="demo-simple-select-autowidth-label"
@@ -390,22 +408,39 @@ export default function AdminUpdateProduct() {
                         value={shipping ? "1" : "0"}
                         variant="standard"
                       >
-                        <MenuItem value="0"><span className="font-bebas tracking-wider text-xl">No</span></MenuItem>
-                        <MenuItem value="1"><span className="font-bebas tracking-wider text-xl">Yes</span></MenuItem>
+                        <MenuItem value="0">
+                          <span className="font-bebas tracking-wider text-xl">
+                            No
+                          </span>
+                        </MenuItem>
+                        <MenuItem value="1">
+                          <span className="font-bebas tracking-wider text-xl">
+                            Yes
+                          </span>
+                        </MenuItem>
                       </Select>
                     </div>
 
                     <div>
-                      <InputLabel><span className="font-bebas tracking-wider">Upload Image</span></InputLabel>
-                      
+                      <InputLabel>
+                        <span className="font-bebas tracking-wider">
+                          Upload Image
+                        </span>
+                      </InputLabel>
+
                       {photo ? (
                         <label className="px-3 py-5 flex items-center justify-center border border-gray-600 border-dotted hover:cursor-pointer hover:text-slate-300 hover:border-slate-300 rounded-sm">
-                          <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
-                          <TiUploadOutline /><span>Upload File</span>
+                          <input
+                            type="file"
+                            name="photo"
+                            accept="image/*"
+                            onChange={(e) => setPhoto(e.target.files[0])}
+                            hidden
+                          />
+                          <TiUploadOutline />
+                          <span>Upload File</span>
                         </label>
-                      ) : (
-                        null
-                      )}
+                      ) : null}
 
                       {photo ? (
                         <div className="text-center mx-auto justify-center flex items-center ml-20 pt-2">
@@ -424,38 +459,55 @@ export default function AdminUpdateProduct() {
                             alt="product photo"
                             className="object-scale down h-32 mx-auto justify-center flex opacity-30"
                           />
-                        
-                        <div className="text-center opacity-25">{name}.jpg</div>
-                          
-                         <div>{ photo ? photo.name : null}</div>
-                         <label className="p-3 flex items-center gap-1 underline hover:cursor-pointer hover:text-slate-300 mx-auto justify-center">
-                            <input type="file" name="change image" id="" onChange={(e) => setPhoto(e.target.files[0])} hidden/>
+
+                          <div className="text-center opacity-25">
+                            {name}.jpg
+                          </div>
+
+                          <div>{photo ? photo.name : null}</div>
+                          <label className="p-3 flex items-center gap-1 underline hover:cursor-pointer hover:text-slate-300 mx-auto justify-center">
+                            <input
+                              type="file"
+                              name="change image"
+                              id=""
+                              onChange={(e) => setPhoto(e.target.files[0])}
+                              hidden
+                            />
                             <RiUploadCloudLine />
                             <h1>Change Image</h1>
-                         </label>
+                          </label>
                         </div>
                       )}
                     </div>
 
                     <div className="justify-between flex">
-                      <Button type="submit" variant="contained" startIcon={<MdOutlineSecurityUpdateGood/>} >
-                        <span className="font-bebas tracking-wider">Update Product</span>
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        startIcon={<MdOutlineSecurityUpdateGood />}
+                      >
+                        <span className="font-bebas tracking-wider">
+                          Update Product
+                        </span>
                       </Button>
-                      <Button variant="contained" color="error" onClick={handleDelete} startIcon={<RiDeleteBin5Line/>}>
-                        <span className="font-bebas tracking-wider">Delete Product</span>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleDelete}
+                        startIcon={<RiDeleteBin5Line />}
+                      >
+                        <span className="font-bebas tracking-wider">
+                          Delete Product
+                        </span>
                       </Button>
                     </div>
-                    
                   </div>
                 </form>
-
               </div>
             </Grid>
-            
           </Grid>
-        </Paper>
+        </div>
       </div>
-{/* old */}
     </div>
   );
 }

@@ -40,10 +40,10 @@ const orderSchema = new Schema(
     ],
 
     payment: {
-      id: String, // Braintree transaction ID
-      status: String, // Braintree transaction status
-      paymentMethod: String, // Payment method selected by user
-      cardType: String,
+      // id: String, // Braintree transaction ID
+      // status: String, // Braintree transaction status
+      // paymentMethod: String, // Payment method selected by user
+      // cardType: String,
     },
     buyer: {
       type: ObjectId,
@@ -78,7 +78,15 @@ const orderSchema = new Schema(
     ordernumber: {
       type: String,
     },
-
+    deliveryOption: {
+      type: String,
+    },
+    estimatedDelivery: {
+      type: String,
+    },
+    deliveryFee: {
+      type: Number,
+    },
     status: {
       type: String,
       default: "Not Processed",

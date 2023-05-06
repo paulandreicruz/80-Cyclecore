@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 // CART
 import { useCart } from "../../context/Cart";
@@ -14,8 +15,9 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
-  Modal,
   Paper,
+  Button,
+  DialogContentText,
 } from "@mui/material";
 
 // ICONS
@@ -23,6 +25,7 @@ import { TbCameraPlus } from "react-icons/tb";
 import { BiReset } from "react-icons/bi";
 import { FaRegHandPointRight } from "react-icons/fa";
 import { CgCloseR } from "react-icons/cg";
+import { IoWarning } from "react-icons/io5";
 
 // BIKE LOGO
 import bcl from "../../assets/bcl.png";
@@ -74,6 +77,7 @@ export const Customize3 = () => {
   // FRAME STATES
   const [frame, setFrame] = useState([]);
   const [selectedFrame, setSelectedFrame] = useState(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // LOAD FRAME
   const loadFrame = async () => {
@@ -101,7 +105,7 @@ export const Customize3 = () => {
 
   // LOAD GROUPSET
   const loadGroupSet = async () => {
-    const response = await axios.get("/groupsets3");
+    const response = await axios.get("/groupsets");
     setGroupSet(response.data);
   };
 
@@ -126,7 +130,7 @@ export const Customize3 = () => {
 
   // LOAD WHEELSET
   const loadWheelSet = async () => {
-    const response = await axios.get("/wheelsets3");
+    const response = await axios.get("/wheelsets");
     setWheelSet(response.data);
   };
 
@@ -162,7 +166,7 @@ export const Customize3 = () => {
 
   // LOAD TIRE
   const loadTire = async () => {
-    const response = await axios.get("/tires3");
+    const response = await axios.get("/tires");
     setTire(response.data);
   };
 
@@ -223,7 +227,7 @@ export const Customize3 = () => {
 
   // LOAD SADDLE
   const loadSaddle = async () => {
-    const response = await axios.get("/saddles3");
+    const response = await axios.get("/saddles");
     setSaddle(response.data);
   };
 
@@ -378,8 +382,18 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-
       if (
         selectedFrame &&
         selectedGroupSet &&
@@ -405,6 +419,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -432,6 +457,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -459,6 +495,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -486,6 +533,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -513,6 +571,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -540,6 +609,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -567,6 +647,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -594,6 +685,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -621,8 +723,18 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-
       if (
         selectedFrame &&
         selectedGroupSet &&
@@ -648,6 +760,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -675,6 +798,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -702,6 +836,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -729,6 +874,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -756,6 +912,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
 
       if (
@@ -783,6 +950,17 @@ export const Customize3 = () => {
         };
         setCart([...cart, { p }]);
         localStorage.setItem("cart", JSON.stringify([...cart, { ...p }]));
+        setIsDialogOpen(false);
+        toast.success("Added to Cart", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         window.location.reload();
       } else {
         console.log(cart);
@@ -984,7 +1162,7 @@ export const Customize3 = () => {
 
                                 <span
                                   className="text-[11px] font-normal hover:underline hover:cursor-pointer flex items-center gap-1"
-                                  onMouseEnter={() => setDialog(true)}
+                                  onClick={() => setDialog(true)}
                                 >
                                   <FaRegHandPointRight className="text-blue-500" />
                                   view specs
@@ -1025,7 +1203,7 @@ export const Customize3 = () => {
                                 <img
                                   src={`${
                                     import.meta.env.VITE_APP_REACT_APP_API
-                                  }/frame3/photo/${f._id}`}
+                                  }/frame/photo/${f._id}`}
                                   alt=""
                                   className="w-[70%] mx-auto"
                                 />
@@ -1037,29 +1215,79 @@ export const Customize3 = () => {
                                 </span>
                               </span>
                               <div className="text-sm tracking-wide flex justify-between">
-                                <span>Brand:</span>
-                                <span>3t exploro</span>
+                                <span>Category:</span>
+                                <span>{f?.category?.name}</span>
                               </div>
                               <div className="text-sm tracking-wide flex justify-between">
-                                <span>Brand ID</span>
-                                <span>{f.brand}</span>
+                                <span>Brand:</span>
+                                <span>{f?.brand?.name}</span>
                               </div>
                               <div className="text-xs tracking-wider px">
                                 <p className="mb-2 text-sm">Description</p>
-                                {f.description} Lorem ipsum dolor sit amet
-                                consectetur adipisicing elit. Odit
-                                necessitatibus obcaecati eligendi atque adipisci
-                                repellendus ex harum dolor velit! Asperiores
-                                facere voluptatum adipisci perspiciatis
-                                repellendus praesentium dolorem ex natus
-                                dolores.
+                                {f.description}
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Type:</span>
+                                <span>{f.type}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Seat Binder:</span>
+                                <span>{f.seatbinder}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Seat Post:</span>
+                                <span>{f.seatpost}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Stem:</span>
+                                <span>{f.stem}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>fork:</span>
+                                <span>{f.fork}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Stem Length:</span>
+                                <span>{f.stemlength}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>SeatPost Length:</span>
+                                <span>{f.seatpostlength}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Stack:</span>
+                                <span>{f.stack}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Reach:</span>
+                                <span>{f.reach}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>BB-Height:</span>
+                                <span>{f.bbheight}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>BB-Drop:</span>
+                                <span>{f.bbdrop}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Trail:</span>
+                                <span>{f.trail}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>Wheelbase:</span>
+                                <span>{f.wheelbase}</span>
+                              </div>
+                              <div className="text-sm tracking-wide flex justify-between">
+                                <span>SeatTube Length:</span>
+                                <span>{f.seattubelength}</span>
                               </div>
                               <div className="text-sm tracking-wide">
                                 <span>Color</span>
                                 <div className="p-2 border-2 flex items-center gap-2 border-orange-400 rounded-sm">
-                                  Brown/ Dirt{" "}
-                                  <div className="p-3 bg-[#b4b490] rounded-sm" />{" "}
-                                  <div className="p-3 bg-[#b08c72] rounded-sm" />
+                                  Red/ Black{" "}
+                                  <div className="p-3 bg-[#d41313] rounded-sm" />{" "}
+                                  <div className="p-3 bg-[#000000] rounded-sm" />
                                 </div>
                               </div>
                             </div>
@@ -1097,7 +1325,7 @@ export const Customize3 = () => {
                             <img
                               src={`${
                                 import.meta.env.VITE_APP_REACT_APP_API
-                              }/groupset3/photo/${g._id}`}
+                              }/groupset/photo/${g._id}`}
                               alt=""
                             />
                           </div>
@@ -1152,7 +1380,7 @@ export const Customize3 = () => {
                                     <img
                                       src={`${
                                         import.meta.env.VITE_APP_REACT_APP_API
-                                      }/groupset3/photo/${g._id}`}
+                                      }/groupset/photo/${g._id}`}
                                       alt=""
                                       className="w-[70%] mx-auto"
                                     />
@@ -1164,22 +1392,59 @@ export const Customize3 = () => {
                                     </span>
                                   </span>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand:</span>
-                                    <span>3t exploro</span>
+                                    <span>Category:</span>
+                                    <span>{g?.category?.name}</span>
                                   </div>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand ID</span>
-                                    <span>{g.brand}</span>
+                                    <span>Brand:</span>
+                                    <span>{g?.brand?.name}</span>
                                   </div>
+
                                   <div className="text-xs tracking-wider px">
                                     <p className="mb-2 text-sm">Description</p>
-                                    {g.description} Lorem ipsum dolor sit amet
-                                    consectetur adipisicing elit. Odit
-                                    necessitatibus obcaecati eligendi atque
-                                    adipisci repellendus ex harum dolor velit!
-                                    Asperiores facere voluptatum adipisci
-                                    perspiciatis repellendus praesentium dolorem
-                                    ex natus dolores.
+                                    {g.description}
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Type:</span>
+                                    <span>{g.type}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Weight:</span>
+                                    <span>{g.weigth}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Chainring combination:</span>
+                                    <span>{g.chain}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Crank arm length:</span>
+                                    <span>{g.armlength}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Connectors:</span>
+                                    <span>{g.connectors}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Battery Charging cable:</span>
+                                    <span>{g.charging}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>
+                                      Force measurement Number of strain sensor:
+                                    </span>
+                                    <span>{g.sensor}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Casette:</span>
+                                    <span>{g.cassette}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Brakes:</span>
+                                    <span>{g.weigth}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Functionality:</span>
+                                    <span>{g.functionality}</span>
                                   </div>
                                   <div className="text-sm tracking-wide">
                                     <span>Color</span>
@@ -1227,7 +1492,7 @@ export const Customize3 = () => {
                             <img
                               src={`${
                                 import.meta.env.VITE_APP_REACT_APP_API
-                              }/wheelset3/photo/${w._id}`}
+                              }/wheelset/photo/${w._id}`}
                               alt=""
                             />
                           </div>
@@ -1283,7 +1548,7 @@ export const Customize3 = () => {
                                     <img
                                       src={`${
                                         import.meta.env.VITE_APP_REACT_APP_API
-                                      }/wheelset3/photo/${w._id}`}
+                                      }/wheelset/photo/${w._id}`}
                                       alt=""
                                       className="w-[70%] mx-auto"
                                     />
@@ -1295,22 +1560,60 @@ export const Customize3 = () => {
                                     </span>
                                   </span>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand:</span>
-                                    <span>3t exploro</span>
+                                    <span>Category:</span>
+                                    <span>{w?.category?.name}</span>
                                   </div>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand ID</span>
-                                    <span>{w.brand}</span>
+                                    <span>Brand:</span>
+                                    <span>{w?.brand?.name}</span>
                                   </div>
                                   <div className="text-xs tracking-wider px">
                                     <p className="mb-2 text-sm">Description</p>
-                                    {w.description} Lorem ipsum dolor sit amet
-                                    consectetur adipisicing elit. Odit
-                                    necessitatibus obcaecati eligendi atque
-                                    adipisci repellendus ex harum dolor velit!
-                                    Asperiores facere voluptatum adipisci
-                                    perspiciatis repellendus praesentium dolorem
-                                    ex natus dolores.
+                                    {w.description}
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Type:</span>
+                                    <span>{w.type}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Diameter:</span>
+                                    <span>{w.diamter}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Cassette compatibility:</span>
+                                    <span>{w.compatibilty}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Hub width:</span>
+                                    <span>{w.width}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Holes:</span>
+                                    <span>{w.holes}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Valve:</span>
+                                    <span>{w.valve}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Cross section:</span>
+                                    <span>{w.dual}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Material:</span>
+                                    <span>{w.material}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Weigth:</span>
+                                    <span>{w.weight}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Brake type:</span>
+                                    <span>{w.brake}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Tube Type:</span>
+                                    <span>{w.tube}</span>
                                   </div>
                                   <div className="text-sm tracking-wide">
                                     <span>Color</span>
@@ -1358,7 +1661,7 @@ export const Customize3 = () => {
                             <img
                               src={`${
                                 import.meta.env.VITE_APP_REACT_APP_API
-                              }/tire3/photo/${t._id}`}
+                              }/tire/photo/${t._id}`}
                               alt=""
                             />
                           </div>
@@ -1413,7 +1716,7 @@ export const Customize3 = () => {
                                     <img
                                       src={`${
                                         import.meta.env.VITE_APP_REACT_APP_API
-                                      }/tire3/photo/${t._id}`}
+                                      }/tire/photo/${t._id}`}
                                       alt=""
                                       className="w-[70%] mx-auto"
                                     />
@@ -1425,23 +1728,42 @@ export const Customize3 = () => {
                                     </span>
                                   </span>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand:</span>
-                                    <span>3t exploro</span>
+                                    <span>Category:</span>
+                                    <span>{t?.category?.name}</span>
                                   </div>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand ID</span>
-                                    <span>{t.brand}</span>
+                                    <span>Brand:</span>
+                                    <span>{t?.brand?.name}</span>
                                   </div>
                                   <div className="text-xs tracking-wider px">
                                     <p className="mb-2 text-sm">Description</p>
-                                    {t.description} Lorem ipsum dolor sit amet
-                                    consectetur adipisicing elit. Odit
-                                    necessitatibus obcaecati eligendi atque
-                                    adipisci repellendus ex harum dolor velit!
-                                    Asperiores facere voluptatum adipisci
-                                    perspiciatis repellendus praesentium dolorem
-                                    ex natus dolores.
+                                    {t.description}
                                   </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Type:</span>
+                                    <span>{t.type}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Casing:</span>
+                                    <span>{t.casing}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Bead:</span>
+                                    <span>{t.bead}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Compound:</span>
+                                    <span>{t.compound}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Flat Protection:</span>
+                                    <span>{t.flat}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Weight:</span>
+                                    <span>{t.weight}</span>
+                                  </div>
+
                                   <div className="text-sm tracking-wide">
                                     <span>Color</span>
                                     <div className="p-2 border-2 flex items-center gap-2 border-orange-400 rounded-sm">
@@ -1488,7 +1810,7 @@ export const Customize3 = () => {
                             <img
                               src={`${
                                 import.meta.env.VITE_APP_REACT_APP_API
-                              }/saddle3/photo/${s._id}`}
+                              }/saddle/photo/${s._id}`}
                               alt=""
                             />
                           </div>
@@ -1543,7 +1865,7 @@ export const Customize3 = () => {
                                     <img
                                       src={`${
                                         import.meta.env.VITE_APP_REACT_APP_API
-                                      }/saddle3/photo/${s._id}`}
+                                      }/saddle/photo/${s._id}`}
                                       alt=""
                                       className="w-[70%] mx-auto"
                                     />
@@ -1555,23 +1877,51 @@ export const Customize3 = () => {
                                     </span>
                                   </span>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand:</span>
-                                    <span>3t exploro</span>
+                                    <span>Category:</span>
+                                    <span>{s?.category?.name}</span>
                                   </div>
                                   <div className="text-sm tracking-wide flex justify-between">
-                                    <span>Brand ID</span>
-                                    <span>{s.brand}</span>
+                                    <span>Brand:</span>
+                                    <span>{s?.brand?.name}</span>
                                   </div>
                                   <div className="text-xs tracking-wider px">
                                     <p className="mb-2 text-sm">Description</p>
-                                    {s.description} Lorem ipsum dolor sit amet
-                                    consectetur adipisicing elit. Odit
-                                    necessitatibus obcaecati eligendi atque
-                                    adipisci repellendus ex harum dolor velit!
-                                    Asperiores facere voluptatum adipisci
-                                    perspiciatis repellendus praesentium dolorem
-                                    ex natus dolores.
+                                    {s.description}
                                   </div>
+
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Size:</span>
+                                    <span>{s.size}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Body:</span>
+                                    <span>{s.body}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Weigth Description:</span>
+                                    <span>{s.weightdesc}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Concave:</span>
+                                    <span>{s.concave}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Weight:</span>
+                                    <span>{s.weight}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Compatibility:</span>
+                                    <span>{s.compatible}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Technology:</span>
+                                    <span>{s.technology}</span>
+                                  </div>
+                                  <div className="text-sm tracking-wide flex justify-between">
+                                    <span>Note:</span>
+                                    <span>{s.note}</span>
+                                  </div>
+
                                   <div className="text-sm tracking-wide">
                                     <span>Color</span>
                                     <div className="p-2 border-2 flex items-center gap-2 border-orange-400 rounded-sm">
@@ -1613,35 +1963,60 @@ export const Customize3 = () => {
                   <div className="flex justify-between">
                     Selected frame:{" "}
                     <span className="font-bold">{selectedFrame.name}</span>
-                    <span>{selectedFrame.price}</span>
+                    <span>
+                      {selectedFrame.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedGroupSet && (
                   <div className="flex justify-between">
                     Selected groupset:{" "}
                     <span className="font-bold">{selectedGroupSet.name}</span>{" "}
-                    <span>{selectedGroupSet.price}</span>
+                    <span>
+                      {selectedGroupSet.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedWheelSet && (
                   <div className="flex justify-between">
                     Selected wheelset:{" "}
                     <span className="font-bold">{selectedWheelSet.name}</span>
-                    <span>{selectedWheelSet.price}</span>
+                    <span>
+                      {selectedWheelSet.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedTire && (
                   <div className="flex justify-between">
                     Selected tire:{" "}
                     <span className="font-bold">{selectedTire.name}</span>
-                    <span>{selectedTire.price}</span>
+                    <span>
+                      {selectedTire.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedSaddle && (
                   <div className="flex justify-between">
                     Selected saddle:{" "}
                     <span className="font-bold">{selectedSaddle.name}</span>
-                    <span>{selectedSaddle.price}</span>
+                    <span>
+                      {selectedSaddle.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "PHP",
+                      })}
+                    </span>
                   </div>
                 )}
                 {selectedSaddle && selectedSaddle.name ? (
@@ -1649,15 +2024,25 @@ export const Customize3 = () => {
                 ) : null}
                 {selectedSaddle.name ? (
                   <div className="flex items-center justify-between text-lg font-bold tracking-wide">
-                    <span className="text-sm">Total</span>php{" "}
-                    {selectedItemsTotal()}
+                    <span className="text-sm">Total</span>
+                    {selectedItemsTotal().toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "PHP",
+                    })}
                   </div>
                 ) : null}
               </div>
               <div>
                 <button
                   className="p-3 w-full bg-orange-500 rounded-sm"
-                  onClick={handleAddToCart}
+                  onClick={() => setIsDialogOpen(true)}
+                  disabled={
+                    !selectedFrame ||
+                    !selectedWheelSet ||
+                    !selectedGroupSet ||
+                    !selectedTire ||
+                    !selectedSaddle
+                  }
                 >
                   Add To Cart
                 </button>
@@ -1665,6 +2050,37 @@ export const Customize3 = () => {
             </Paper>
           </Grid>
         </Grid>
+        <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+          <DialogTitle>
+            <span className="flex items-center justify-between font-bebas tracking-wide">
+              Add To Cart?
+              <IoWarning className="text-yellow-300 mr-1" fontSize={32} />
+            </span>
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              <span className="font-bebas tracking-wide">
+                Are you sure you want to add this custom build to your cart?
+              </span>
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={handleAddToCart}
+            >
+              <span className="font-bebas tracking-wide">Add to cart</span>
+            </Button>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => setIsDialogOpen(false)}
+            >
+              <span className="font-bebas tracking-wide">NO</span>
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   );
