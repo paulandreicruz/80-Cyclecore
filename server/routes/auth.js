@@ -37,6 +37,8 @@ import {
   getNewlyAddedStocksForToday,
   getAverageOrders,
   getTotalSold,
+  getSalesByDay,
+  deleteOrder,
 } from "../controllers/auth.js";
 
 router.post("/register", register);
@@ -68,11 +70,13 @@ router.post("/send-email", send);
 //orders
 router.get("/orders", requireSignin, getOrders);
 router.get("/all-orders", requireSignin, isAdmin, allOrders);
+router.delete("/deleteorders/:id", requireSignin, isAdmin, deleteOrder);
 router.get("/orders/count", requireSignin, isAdmin, getOrderCount);
 router.get("/orders/count/sales", requireSignin, isAdmin, getTotalSales);
 router.get("/latestorder", requireSignin, isAdmin, getfiveOrders);
 router.get("/sales", requireSignin, isAdmin, getSalesInMay);
 router.get("/weeklysales", requireSignin, isAdmin, getSalesByWeek);
+router.get("/daysales", requireSignin, isAdmin, getSalesByDay);
 router.get("/hottestproducts", requireSignin, isAdmin, getHottestProducts);
 router.get("/totalstocks", requireSignin, isAdmin, getTotalStocks);
 router.get(
@@ -89,9 +93,8 @@ router.get(
 );
 router.get("/orders/averageorders", requireSignin, isAdmin, getAverageOrders);
 router.get("/totalsold", requireSignin, isAdmin, getTotalSold),
-
-//users
-router.get("/users/count", requireSignin, isAdmin, getUsers);
+  //users
+  router.get("/users/count", requireSignin, isAdmin, getUsers);
 router.get("/allusers", requireSignin, isAdmin, getAllUsers);
 router.delete("/users/:id", requireSignin, isAdmin, deleteUserById);
 

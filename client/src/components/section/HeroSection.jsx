@@ -96,7 +96,7 @@ const HeroSection = () => {
               type="button"
               className="flex gap-2 items-center justify-center bg-[#FFA500] hover:scale-105 font-bebas tracking-widest duration-300 rounded my-5 py-2 w-full cursor-pointer active:scale-90"
             >
-              <NavLink to="/customize">CUSTOMIZE NOW </NavLink>
+              <NavLink to="/select-brand">CUSTOMIZE NOW </NavLink>
               <BsFillGearFill fontSize={20} className="animate-spin" />
             </button>
           </div>

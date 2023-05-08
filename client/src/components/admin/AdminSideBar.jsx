@@ -17,8 +17,8 @@ import {
   BiCircle,
   BiShapePolygon,
 } from "react-icons/bi";
-import { GiBasketballBall } from "react-icons/gi";
-import { FaHome, FaMailchimp, FaUserSecret } from "react-icons/fa";
+import { GiBasketballBall, GiStoneBlock } from "react-icons/gi";
+import { FaHome, FaMailchimp, FaPiggyBank, FaUserSecret } from "react-icons/fa";
 import { FaPowerOff } from "react-icons/fa";
 
 import logo from "../../assets/logo3.png";
@@ -49,6 +49,8 @@ const AdminDashboardSideBar = () => {
   const [openProduct, setOpenProduct] = useState(false);
   const [openOrder, setOpenOrder] = useState(false);
   const [openUser, setOpenUser] = useState(false);
+  const [openStock, setOpenStock] = useState(false);
+  const [openSale, setOpenSale] = useState(false);
   const [dialog, setDialog] = useState(false);
   const { pathname } = useLocation();
 
@@ -104,9 +106,10 @@ const AdminDashboardSideBar = () => {
             <NavLink
               to="/dashboard/admin"
               className={`${
-                pathname === "/dashboard/admin" &&
-                "bg-[#33cabb] hover:bg-[#33cabb]"
-              } flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
+                ["/dashboard/admin"].includes(pathname)
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:bg-[#3f4a59]"
+              } flex items-center text-white  hover:cursor-pointer py-1`}
             >
               {!open ? (
                 <h1 className="flex-1 ml-6 text-xl font-bold tracking-widest">
@@ -148,11 +151,11 @@ const AdminDashboardSideBar = () => {
                   "/dashboard/admin/stocks",
                   "/dashboard/admin/products",
                 ].includes(pathname)
-                  ? "bg-[#33cabb]"
-                  : null
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:bg-[#3f4a59]"
               } ${
                 openProduct && "bg-[#455160]"
-              } py-1 flex items-center hover:bg-[#3f4a59] hover:cursor-pointer text-white`}
+              } py-1 flex items-center  hover:cursor-pointer text-white`}
               onClick={() => setOpenProduct(!openProduct)}
             >
               <h1 className="ml-6 flex-1 text-xl font-bold tracking-widest">
@@ -250,29 +253,6 @@ const AdminDashboardSideBar = () => {
 
               <li>
                 <NavLink
-                  to="/dashboard/admin/stocks"
-                  className={` flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
-                >
-                  {!open ? (
-                    <h1 className="flex-1 ml-6 font-bold tracking-widest">
-                      Stocks
-                    </h1>
-                  ) : null}
-
-                  <div className={`${open ? "mx-auto" : "mr-5"}`}>
-                    <BiCircle
-                      fontSize={10}
-                      className={`${
-                        pathname === "/dashboard/admin/stocks" &&
-                        "text-[#33cabb] bg-[#33cabb]"
-                      } rounded-full`}
-                    />
-                  </div>
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink
                   to="/dashboard/admin/products"
                   className={`flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
                 >
@@ -308,11 +288,11 @@ const AdminDashboardSideBar = () => {
             <div
               className={`${
                 ["/dashboard/admin/orders"].includes(pathname)
-                  ? "bg-[#33cabb]"
-                  : null
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:hover:bg-[#3f4a59]"
               } ${
                 openProduct && "bg-[#455160]"
-              } py-1 flex items-center hover:bg-[#3f4a59] hover:cursor-pointer text-white`}
+              } py-1 flex items-center hover:cursor-pointer text-white`}
               onClick={() => setOpenOrder(!openOrder)}
             >
               <h1 className="ml-6 flex-1 text-xl font-bold tracking-widest">
@@ -373,12 +353,12 @@ const AdminDashboardSideBar = () => {
 
             <div
               className={`${
-                ["/dashboard/admin/users"].includes(pathname)
-                  ? "bg-[#33cabb]"
-                  : null
+                ["/dashboard/admin/users/list"].includes(pathname)
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:hover:bg-[#3f4a59]"
               } ${
                 openUser && "bg-[#455160]"
-              } py-1 flex items-center hover:bg-[#3f4a59] hover:cursor-pointer text-white`}
+              } py-1 flex items-center hover:cursor-pointer text-white`}
               onClick={() => setOpenUser(!openUser)}
             >
               <h1 className="ml-6 flex-1 text-xl font-bold tracking-widest">
@@ -400,7 +380,7 @@ const AdminDashboardSideBar = () => {
 
             <ul
               className={`${
-                !openUser && "scale-y-0"
+                !openUser && "scale-y-0 max-h-0"
               } transition-all duration-700 ease-in-out origin-top bg-[#505b6996]`}
             >
               <li>
@@ -418,7 +398,167 @@ const AdminDashboardSideBar = () => {
                     <BiCircle
                       fontSize={10}
                       className={`${
-                        pathname === "/dashboard/admin/users" &&
+                        pathname === "/dashboard/admin/users/list" &&
+                        "text-[#33cabb] bg-[#33cabb]"
+                      } rounded-full`}
+                    />
+                  </div>
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+
+          {/* container of  stock management */}
+          <div className="transition-all duration-500 ease-in-out overflow-hidden z-20">
+            <div className="flex items-center ml-6 text-slate-300">
+              <h1 className="flex-1 tracking-wider text-[10.5px]">Stocks</h1>
+              <h1 className="tracking-[3px] text-[10.5px]">
+                -----------------------------------
+              </h1>
+            </div>
+
+            <div
+              className={`${
+                [
+                  "/dashboard/admin/stocks/new",
+                  "/dashboard/admin/stocks/add",
+                ].includes(pathname)
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:bg-[#3f4a59]"
+              } ${
+                openStock && "bg-[#455160]"
+              } py-1 flex items-center hover:cursor-pointer text-white`}
+              onClick={() => setOpenStock(!openStock)}
+            >
+              <h1 className="ml-6 flex-1 text-lg font-bold tracking-widest">
+                Inventory Management
+              </h1>
+
+              <div className="flex items-center gap-2">
+                <div
+                  className={`${
+                    openStock && "rotate-90"
+                  } transition-all duration-700 ease-in-out`}
+                >
+                  <BiChevronRight />
+                </div>
+                <div className="p-2.5 bg-[#00000017] rounded-md mr-3">
+                  <GiStoneBlock />
+                </div>
+              </div>
+            </div>
+
+            <ul
+              className={`${
+                !openStock && "scale-y-0 max-h-0"
+              } transition-all duration-700 ease-in-out origin-top bg-[#505b6996]`}
+            >
+              <li>
+                <NavLink
+                  to="/dashboard/admin/stocks/add"
+                  className={` flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
+                >
+                  {!open ? (
+                    <h1 className="flex-1 ml-6 font-bold tracking-widest">
+                      Add Stocks
+                    </h1>
+                  ) : null}
+
+                  <div className={`${open ? "mx-auto" : "mr-5"}`}>
+                    <BiCircle
+                      fontSize={10}
+                      className={`${
+                        pathname === "/dashboard/admin/stocks/add" &&
+                        "text-[#33cabb] bg-[#33cabb]"
+                      } rounded-full`}
+                    />
+                  </div>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/dashboard/admin/stocks/new"
+                  className={` flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
+                >
+                  {!open ? (
+                    <h1 className="flex-1 ml-6 font-bold tracking-widest">
+                      Stock History
+                    </h1>
+                  ) : null}
+
+                  <div className={`${open ? "mx-auto" : "mr-5"}`}>
+                    <BiCircle
+                      fontSize={10}
+                      className={`${
+                        pathname === "/dashboard/admin/stocks/new" &&
+                        "text-[#33cabb] bg-[#33cabb]"
+                      } rounded-full`}
+                    />
+                  </div>
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+
+          {/* container of sales management */}
+          <div className="transition-all duration-500 ease-in-out overflow-hidden z-20">
+            <div className="flex items-center ml-6 text-slate-300">
+              <h1 className="flex-1 tracking-wider text-[10.5px]">Sales</h1>
+              <h1 className="tracking-[3px] text-[10.5px]">
+                -----------------------------------
+              </h1>
+            </div>
+
+            <div
+              className={`${
+                ["/dashboard/admin/stocks/newsadasd"].includes(pathname)
+                  ? "bg-[#33cabb] hover:bg-[#33cabb]"
+                  : "hover:bg-[#3f4a59]"
+              } ${
+                openStock && "bg-[#455160]"
+              } py-1 flex items-center hover:cursor-pointer text-white`}
+              onClick={() => setOpenSale(!openSale)}
+            >
+              <h1 className="ml-6 flex-1 text-xl font-bold tracking-widest">
+                Sales Management
+              </h1>
+
+              <div className="flex items-center gap-2">
+                <div
+                  className={`${
+                    openStock && "rotate-90"
+                  } transition-all duration-700 ease-in-out`}
+                >
+                  <BiChevronRight />
+                </div>
+                <div className="p-2.5 bg-[#00000017] rounded-md mr-3">
+                  <FaPiggyBank />
+                </div>
+              </div>
+            </div>
+
+            <ul
+              className={`${
+                !openSale && "scale-y-0"
+              } transition-all duration-700 ease-in-out origin-top bg-[#505b6996]`}
+            >
+              <li>
+                <NavLink
+                  to="/dashboard/admin/sales/management"
+                  className={` flex items-center text-white hover:bg-[#3f4a59] hover:cursor-pointer py-1`}
+                >
+                  {!open ? (
+                    <h1 className="flex-1 ml-6 font-bold tracking-widest">
+                      Sales History
+                    </h1>
+                  ) : null}
+
+                  <div className={`${open ? "mx-auto" : "mr-5"}`}>
+                    <BiCircle
+                      fontSize={10}
+                      className={`${
+                        pathname === "/dashboard/admin/stocks/newasds" &&
                         "text-[#33cabb] bg-[#33cabb]"
                       } rounded-full`}
                     />

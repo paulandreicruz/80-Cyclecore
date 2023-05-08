@@ -6,7 +6,6 @@ import { Paper, TextField, Button, InputLabel } from "@mui/material";
 //icons
 import { FiEdit } from "react-icons/fi";
 import { MdEditNote, MdOutlineSystemSecurityUpdate } from "react-icons/md";
-import CustomModal from "../../components/Modal/CustomModal";
 import { BiCategory } from "react-icons/bi";
 import { AiOutlineFolderAdd, AiTwotoneSave } from "react-icons/ai";
 import { CgErase, CgEditMarkup } from "react-icons/cg";

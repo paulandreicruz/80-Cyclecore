@@ -248,11 +248,11 @@ export default function UserOrders() {
                   </div>
                   <div className="text-sm">
                     Transaction ID:{" "}
-                    <span className="font-bold tracking-wider">
+                    {/* <span className="font-bold tracking-wider">
                       {selectedOrder.payment?.transaction.id
                         ? selectedOrder.payment.transaction.id
                         : "Not processed"}
-                    </span>
+                    </span> */}
                   </div>
                   <h1 className="text-xs">
                     order id#:{" "}

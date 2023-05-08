@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import Announcement from "./components/announcement/Announcement";
@@ -34,8 +33,6 @@ import EmailVerification from "./components/cards/EmailVerification";
 import { Checkout } from "./pages/user/Checkout";
 import { Customize1 } from "./pages/user/Customize1";
 import { DeliveryOption } from "./pages/user/DeliveryOption";
-import { UserPayment } from "./pages/user/UserPayment";
-import { Dummy } from "./pages/user/Dummy";
 import { OrderSuccess } from "./components/cards/OrderSuccess";
 import { AdminOrdersSearch } from "./pages/admin/AdminOrdersSearch";
 import { Customize3 } from "./pages/user/Customize3";
@@ -45,6 +42,7 @@ import AdminUserList from "./pages/admin/AdminUserList";
 import NewlyAddedStocks from "./pages/admin/AdminNewStocks";
 import OrdersPage from "./pages/admin/AverageOrder";
 import AdminStocks from "./pages/admin/AdminStocks";
+import { AdminSalesHistory } from "./pages/admin/AdminSalesHistory";
 
 function App() {
   return (
@@ -84,8 +82,6 @@ function App() {
             <Route path="user/profile" element={<UserProfile />} />
             <Route path="user/checkout" element={<Checkout />} />
             <Route path="user/deliveryoption" element={<DeliveryOption />} />
-            <Route path="user/dummy" element={<Dummy />} />
-            <Route path="user/payment-option" element={<UserPayment />} />
             <Route path="user/ordersuccess" element={<OrderSuccess />} />
             <Route path="user/orders" element={<UserOrders />} />
           </Route>
@@ -102,6 +98,7 @@ function App() {
               <Route path="admin/stocks/add" element={<AdminStocks />} />
               <Route path="admin/stocks/new" element={<NewlyAddedStocks />} />
               <Route path="admin/orders/average" element={<OrdersPage />} />
+              <Route path="admin/sales/management" element={<AdminSalesHistory />} />
               <Route
                 path="admin/orders-search"
                 element={<AdminOrdersSearch />}

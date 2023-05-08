@@ -633,6 +633,21 @@ export const getOrders = async (req, res) => {
   }
 };
 
+export const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findOneAndDelete({
+      _id: req.params.id,
+    });
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+    res.json({ message: "Order deleted successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const allOrders = async (req, res) => {
   try {
     const orders = await Order.find({})
@@ -676,12 +691,15 @@ export const send = async (req, res) => {
     res.status(500).json({ message: "Error sending email" });
   }
 };
+
 export const orderSearch = async (req, res) => {
   try {
     const { keyword } = req.params;
     const results = await Order.find({
       $or: [{ ordernumber: { $regex: keyword, $options: "i" } }],
-    });
+    })
+      .populate("buyer", "firstname lastname email")
+      .populate("products", "photo name price");
     res.json(results);
   } catch (err) {
     console.log(err);
@@ -754,7 +772,7 @@ export const getTotalSales = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({})
+    const users = await User.find({});
     res.json(users);
   } catch (err) {
     console.log(err);
@@ -776,21 +794,21 @@ export const getfiveOrders = async (req, res) => {
 
 export const deleteUserById = async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.params.id);
-    if (deletedUser) {
+    const deletedOrder = await Order.findByIdAndDelete(req.params.id);
+    if (deletedOrder) {
       res.status(200).json({
-        message: "User deleted successfully",
-        deletedUser: deletedUser,
+        message: "Order deleted successfully",
+        deletedOrder: deletedOrder,
       });
     } else {
       res.status(404).json({
-        message: "User not found",
+        message: "Order not found",
       });
     }
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Error deleting user",
+      message: "Error deleting order",
     });
   }
 };
@@ -828,23 +846,79 @@ export const getSalesInMay = async (req, res) => {
 
 export const getSalesByWeek = async (req, res) => {
   try {
+    const currentWeek = moment().week();
     const totalSales = await Order.aggregate([
       {
         $match: {
           "payment.success": true,
-          createdAt: { $gte: moment().subtract(7, "days").toDate() }, // filter by last 7 days
+          createdAt: { $gte: moment().startOf("week").toDate() }, // filter by current week
         },
       },
       {
         $group: {
-          _id: { $week: "$createdAt" }, // group by week number
+          _id: { $dayOfYear: "$createdAt" }, // group by day of year
+          total: { $sum: "$totalPrice" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          dayOfYear: "$_id",
+          total: 1,
+        },
+      },
+      {
+        $group: {
+          _id: "$dayOfYear",
+          total: { $sum: "$total" },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    // Reset total sales to 0 for each new day
+    const salesByDay = totalSales.reduce((acc, curr) => {
+      if (curr._id <= moment().dayOfYear()) {
+        acc[curr._id] = curr.total;
+      } else {
+        acc[curr._id] = 0;
+      }
+      return acc;
+    }, {});
+
+    res.json({ salesByDay: salesByDay });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSalesByDay = async (req, res) => {
+  try {
+    const startOfDay = moment().startOf("day").toDate();
+    const endOfDay = moment().endOf("day").toDate();
+
+    const totalSales = await Order.aggregate([
+      {
+        $match: {
+          "payment.success": true,
+          createdAt: { $gte: startOfDay, $lte: endOfDay }, // filter by today's date
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // group by date
           total: { $sum: "$totalPrice" },
         },
       },
     ]);
-    res.json({ totalSales: totalSales });
+    res.json({ totalSales });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -889,20 +963,23 @@ export const getNewlyAddedStocks = async (req, res) => {
     console.log(`Products: ${products}`);
 
     // Loop through all products and collect monthly data for the specified month and year
-    products.forEach((product) => {
+    for (const product of products) {
       if (product.newlyAddedStocks) {
-        product.newlyAddedStocks.forEach((entry) => {
+        for (const entry of product.newlyAddedStocks) {
           const { year: y, month: m, value } = entry;
           if (y == year && m == month) {
             const productName = product.name;
             if (!monthlyData[productName]) {
-              monthlyData[productName] = { value: 0 };
+              monthlyData[productName] = {
+                value: 0,
+                photoUrl: product.photo.url,
+              };
             }
             monthlyData[productName].value += value;
           }
-        });
+        }
       }
-    });
+    }
 
     console.log(`Monthly Data: ${monthlyData}`);
 
@@ -998,5 +1075,3 @@ export const getTotalSold = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-

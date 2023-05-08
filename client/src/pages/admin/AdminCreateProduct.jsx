@@ -8,11 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import CustomModal from "../../components/Modal/CustomModal";
 import { Button, Grid, Paper, TextField } from "@mui/material";
-import ProductCustomSelect from "../../components/select/AdminProductsSelect";
-import ProductCustUpload from "../../components/upload/AdminProductsUpload";
 
 //icons image
 import productlogo from "../../assets/product.png";

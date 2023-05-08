@@ -6,7 +6,6 @@ import { Paper, TextField, Button, InputLabel } from "@mui/material";
 //icons
 import { FiEdit } from "react-icons/fi";
 import { MdEditNote, MdOutlineNewLabel } from "react-icons/md";
-import CustomModal from "../../components/Modal/CustomModal";
 import { BsFlower1 } from "react-icons/bs";
 import { TbEditCircle } from "react-icons/tb";
 import { TiArrowBack, TiDelete } from "react-icons/ti";

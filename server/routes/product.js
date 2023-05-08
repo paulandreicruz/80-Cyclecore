@@ -57,7 +57,7 @@ router.get("/braintree/token", getToken);
 router.post("/braintree/payment", requireSignin, processPayment);
 router.post("/payment/pickup", requireSignin, processPickup);
 
-router.post("/order-status/:orderId", requireSignin, isAdmin, orderStatus);
+router.put("/order-status/:orderId", requireSignin, isAdmin, orderStatus);
 
 router.post(
   "/customize",

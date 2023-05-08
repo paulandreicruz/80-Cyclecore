@@ -162,15 +162,8 @@ export const remove = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      price,
-      shipping,
-      category,
-      subcategory,
-      brand,
-    } = req.fields;
+    const { name, description, price, shipping, category, subcategory, brand } =
+      req.fields;
     const { photo } = req.files;
 
     // Validation
@@ -581,7 +574,7 @@ export const orderStatus = async (req, res) => {
       from: process.env.SENDGRID_EMAIL,
       to: order.buyer.email,
       subject: "Order Status",
-      html: `  <h1>Hi ${order.buyer.name}, Your order's status is: <span style="color:red;">${order.status}</span></h1>
+      html: `  <h1>Hi ${order.buyer.firstname}, Your order's status is: <span style="color:red;">${order.status}</span></h1>
       <p>Visit <a href="${process.env.CLIENT_URL}/dashboard/user/orders">your dashboard</a> for more details</p>`,
     };
 
