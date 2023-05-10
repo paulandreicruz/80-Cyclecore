@@ -660,6 +660,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -700,6 +712,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -740,6 +764,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -780,6 +816,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -820,6 +868,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -860,6 +920,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -900,6 +972,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -937,6 +1021,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -977,6 +1073,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1017,6 +1125,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1057,6 +1177,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1097,6 +1229,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1137,6 +1281,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1177,6 +1333,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1217,6 +1385,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1257,6 +1437,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1297,6 +1489,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 0
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1337,6 +1541,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1377,6 +1593,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1417,6 +1645,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1457,6 +1697,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1497,6 +1749,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1537,6 +1801,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1577,6 +1853,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1617,6 +1905,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1657,6 +1957,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1697,6 +2009,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1737,6 +2061,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1777,6 +2113,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1817,6 +2165,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1857,6 +2217,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1897,6 +2269,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +
@@ -1937,6 +2321,18 @@ export const Customize2 = () => {
         saddle.indexOf(selectedSaddle) === 1
       ) {
         const p = {
+          customframename: selectedFrame.name,
+          customframeprice: selectedFrame.price,
+          customhandlebarname: selectedHandleBar.name,
+          customhandlebarprice: selectedHandleBar.price,
+          customgroupsetname: selectedGroupSet.name,
+          customgroupsetprice: selectedGroupSet.price,
+          customwheelsetname: selectedWheelSet.name,
+          customwheelsetprice: selectedWheelSet.price,
+          customtirename: selectedTire.name,
+          customtireprice: selectedTire.price,
+          customtsaddlename: selectedSaddle.name,
+          customsaddleprice: selectedSaddle.price,
           name: "Exploro Frame Custom Build",
           price:
             selectedFrame.price +

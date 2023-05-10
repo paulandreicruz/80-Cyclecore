@@ -442,6 +442,18 @@ export const processPayment = async (req, res) => {
           url: item.photo && item.photo.url ? item.photo.url : null,
         },
         image: item.image,
+        customframename: item.customframename,
+        customframeprice: item.customframeprice,
+        customhandlebarname: item.customhandlebarname,
+        customhandlebarprice: item.customhandlebarprice,
+        customgroupsetname: item.customhandlebarname,
+        customgroupsetprice: item.customhandlebarprice,
+        customwheelsetname: item.customwheelsetname,
+        customwheelsetprice: item.customwheelsetprice,
+        customtirename: item.customtirename,
+        customtireprice: item.customtireprice,
+        customtsaddlename: item.customtsaddlename,
+        customsaddleprice: item.customsaddleprice,
       };
     });
 
@@ -521,6 +533,18 @@ export const processPickup = async (req, res) => {
           url: item.photo && item.photo.url ? item.photo.url : null,
         },
         image: item.image,
+        customframename: item.customframename,
+        customframeprice: item.customframeprice,
+        customhandlebarname: item.customhandlebarname,
+        customhandlebarprice: item.customhandlebarprice,
+        customgroupsetname: item.customhandlebarname,
+        customgroupsetprice: item.customhandlebarprice,
+        customwheelsetname: item.customwheelsetname,
+        customwheelsetprice: item.customwheelsetprice,
+        customtirename: item.customtirename,
+        customtireprice: item.customtireprice,
+        customtsaddlename: item.customtsaddlename,
+        customsaddleprice: item.customsaddleprice,
       };
     });
 
@@ -538,7 +562,7 @@ export const processPickup = async (req, res) => {
       products: cart,
       ordernumber: ordernumber.ordernum,
       buyer: req.user._id,
-      paymentOption: user.paymentOption,
+      paymentOption: paymentOption,
       shippingAddress: shippingAddress,
       deliveryOption: deliveryOption,
       estimatedDelivery: estimatedDelivery,

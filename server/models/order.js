@@ -36,6 +36,42 @@ const orderSchema = new Schema(
         image: {
           type: String,
         },
+        customframename: {
+          type: String,
+        },
+        customframeprice: {
+          type: String,
+        },
+        customhandlebarname: {
+          type: String,
+        },
+        customhandlebarprice: {
+          type: String,
+        },
+        customgroupsetname: {
+          type: String,
+        },
+        customgroupsetprice: {
+          type: String,
+        },
+        customwheelsetname: {
+          type: String,
+        },
+        customwheelsetprice: {
+          type: String,
+        },
+        customtirename: {
+          type: String,
+        },
+        customtireprice: {
+          type: String,
+        },
+        customtsaddlename: {
+          type: String,
+        },
+        customsaddleprice: {
+          type: String,
+        },
       },
     ],
 
@@ -86,6 +122,9 @@ const orderSchema = new Schema(
     },
     deliveryFee: {
       type: Number,
+    },
+    paymentOption: {
+      type: String,
     },
     status: {
       type: String,

@@ -84,6 +84,42 @@ const productSchema = new mongoose.Schema(
       required: false,
       type: Boolean,
     },
+    customframename: {
+      type: String,
+    },
+    customframeprice: {
+      type: String,
+    },
+    customhandlebarname: {
+      type: String,
+    },
+    customhandlebarprice: {
+      type: String,
+    },
+    customgroupsetname: {
+      type: String,
+    },
+    customgroupsetprice: {
+      type: String,
+    },
+    customwheelsetname: {
+      type: String,
+    },
+    customwheelsetprice: {
+      type: String,
+    },
+    customtirename: {
+      type: String,
+    },
+    customtireprice: {
+      type: String,
+    },
+    customtsaddlename: {
+      type: String,
+    },
+    customsaddleprice: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

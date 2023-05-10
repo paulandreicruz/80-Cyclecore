@@ -56,7 +56,6 @@ export default function UserProfile() {
   //state
   const [firstname, setfirstName] = useState("");
   const [lastname, setlastName] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
@@ -134,10 +133,9 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (auth?.user) {
-      const { firstname, lastname, email } = auth.user;
+      const { firstname, lastname } = auth.user;
       setfirstName(firstname || "");
       setlastName(lastname || "");
-      setEmail(email || "");
     }
   }, [auth?.user]);
 
@@ -162,7 +160,6 @@ export default function UserProfile() {
           theme: "light",
         });
       } else {
-        console.log(email);
         // console.log("profile updated =>", data);
         setAuth({ ...auth, user: data });
         //local storage update
@@ -284,64 +281,6 @@ export default function UserProfile() {
                 </Accordion>
 
                 {/* Email */}
-                <Accordion
-                  expanded={expanded2}
-                  onChange={() => setExpanded2(!expanded2)}
-                  // sx={{backgroundColor: "#e6e6e6"}}
-                >
-                  <AccordionSummary
-                    expandIcon={
-                      expanded2 ? (
-                        <AiOutlineClose fontSize={25} />
-                      ) : (
-                        <TbEdit fontSize={25} />
-                      )
-                    }
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                  >
-                    <div>
-                      <Typography>
-                        <span className="font-bebas text-xl tracking-wide">
-                          Email
-                        </span>
-                      </Typography>
-                      <div
-                        className={
-                          expanded2 ? "hidden" : `flex items-center space-x-1`
-                        }
-                      >
-                        <Typography>
-                          <span className="font-bebas tracking-wider">
-                            {email}
-                          </span>
-                        </Typography>
-                      </div>
-                    </div>
-                  </AccordionSummary>
-                  <AccordionDetails className="space-y-3">
-                    <InputLabel>
-                      <span className="font-bebas text-xs">Email</span>
-                    </InputLabel>
-                    <TextField
-                      variant="standard"
-                      size="small"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <div>
-                      <Button
-                        variant="contained"
-                        color="inherit"
-                        startIcon={<GiConfirmed />}
-                      >
-                        <span className="font-bebas tracking-wider font-bold">
-                          Verify
-                        </span>
-                      </Button>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
 
                 <div className="mt-4">
                   <Button

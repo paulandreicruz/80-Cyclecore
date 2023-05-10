@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import Announcement from "./components/announcement/Announcement";
 import Register from "./pages/auth/Register";
 import Home from "./pages/home/Home";
 import { Login } from "./pages/auth/Login";
@@ -43,6 +42,8 @@ import NewlyAddedStocks from "./pages/admin/AdminNewStocks";
 import OrdersPage from "./pages/admin/AverageOrder";
 import AdminStocks from "./pages/admin/AdminStocks";
 import { AdminSalesHistory } from "./pages/admin/AdminSalesHistory";
+import Loading from "./global/loading/Loading";
+import LoginLoader from "./global/loading/LoginLoader";
 
 function App() {
   return (
@@ -74,8 +75,9 @@ function App() {
           <Route path="/specialized" element={<Customize1 />} />
           <Route path="/exploro" element={<Customize2 />} />
           <Route path="/willer" element={<Customize3 />} />
-
           <Route path="/login" element={<Login />} />
+          <Route path="/loading" element={<Loading />} />
+          <Route path="/login-loader" element={<LoginLoader />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<PrivateRoute />}>
             <Route path="user" element={<Dashboard />} />
@@ -98,7 +100,10 @@ function App() {
               <Route path="admin/stocks/add" element={<AdminStocks />} />
               <Route path="admin/stocks/new" element={<NewlyAddedStocks />} />
               <Route path="admin/orders/average" element={<OrdersPage />} />
-              <Route path="admin/sales/management" element={<AdminSalesHistory />} />
+              <Route
+                path="admin/sales/management"
+                element={<AdminSalesHistory />}
+              />
               <Route
                 path="admin/orders-search"
                 element={<AdminOrdersSearch />}

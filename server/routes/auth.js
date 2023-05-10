@@ -39,6 +39,7 @@ import {
   getTotalSold,
   getSalesByDay,
   deleteOrder,
+  addPaymentOption,
 } from "../controllers/auth.js";
 
 router.post("/register", register);
@@ -58,6 +59,7 @@ router.delete("/useraddress/:addressId", requireSignin, deleteAddress);
 router.put("/add-shipping-address", requireSignin, addShippingAddress);
 router.get("/shipping-address", requireSignin, getShippingAddress);
 router.put("/add-delivery-option", requireSignin, addDeliveryOption);
+router.put("/add-payment-option", requireSignin, addPaymentOption);
 
 router.get("/orders/search/:keyword", requireSignin, isAdmin, orderSearch);
 

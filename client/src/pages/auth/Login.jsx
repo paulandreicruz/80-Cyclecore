@@ -5,12 +5,7 @@ import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/Auth";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Button,
-  Input,
-  InputAdornment,
-  InputLabel,
-} from "@mui/material";
+import { Button, Input, InputAdornment, InputLabel } from "@mui/material";
 import { ImEnter } from "react-icons/im";
 import { GiNewBorn } from "react-icons/gi";
 import { MdOutlineMailOutline } from "react-icons/md";
@@ -32,7 +27,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`/login`, {
+      const { data } = await axios.post("/login", {
         email,
         password,
       });
@@ -61,10 +56,12 @@ export const Login = () => {
           progress: undefined,
           theme: "light",
         });
-        navigate(
-          location.state ||
-            `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`
-        );
+        setTimeout(() => {
+          const dashboardPath = data?.user?.role === 1 ? "/admin" : "/user";
+          navigate(`/dashboard${dashboardPath}`, { replace: true });
+        }, 3000);
+
+        navigate(`${location.state || "/login-loader"}`, { replace: true });
       }
     } catch (err) {
       console.log(err);

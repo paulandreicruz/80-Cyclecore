@@ -21,7 +21,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 // impor icons
-import empty from "../../assets/empty.png"
+import empty from "../../assets/empty.png";
 
 // import DropIn from "braintree-web-drop-in-react";
 import { toast } from "react-toastify";
@@ -38,7 +38,6 @@ export default function Cart() {
   const [auth, setAuth] = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState({});
-
   //state
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
@@ -106,7 +105,7 @@ export default function Cart() {
           <div>
             <Grid container justifyContent="center" gap={2}>
               <Grid item className="flex-1">
-                <div className="flex p-2 items-center justify-between border-b bg-white">
+                <div className="flex p-2 items-center justify-between border-b bg-white rounded-t-sm">
                   <h5 className="text-sm tracking-wide">
                     Cart Total Items:
                     <span className="ml-1 text-lg">{cart.length}</span>
@@ -125,30 +124,31 @@ export default function Cart() {
                 </div>
                 {cart.length === 0 ? (
                   <div className="bg-white p-4 shadow-lg space-y-6">
-                      <div className="justify-center flex">
-                        <img src={empty} alt="" />
+                    <div className="justify-center flex">
+                      <img src={empty} alt="" />
+                    </div>
+
+                    <div className="font-bold text-4xl tracking-wider text-center">
+                      Your cart is Empty!
+                    </div>
+
+                    <InputLabel className="text-center">
+                      <div className="font-bebas">
+                        You Have No Items In Your Cart.
                       </div>
+                      <div className="font-bebas"> Let's go buy something!</div>
+                    </InputLabel>
 
-                      <div className="font-bold text-4xl tracking-wider text-center">
-                        Your cart is Empty!
-                      </div>
-
-                      <InputLabel className="text-center">
-                        <div className="font-bebas">You Have No Items In Your Cart.</div>
-                        <div className="font-bebas"> Let's go buy something!</div>
-                      </InputLabel>
-
-                      
-                        <div className="text-center">
-                          <NavLink to="/shop">
-                            <button className="p-1.5 px-4 text-white bg-red-500 hover:bg-red-600 rounded-full font-bold tracking-widest text-lg">Shop Now</button>
-                          </NavLink>
-                        </div>
-                      
-                      
+                    <div className="text-center">
+                      <NavLink to="/shop">
+                        <button className="p-1.5 px-4 text-white bg-red-500 hover:bg-red-600 rounded-full font-bold tracking-widest text-lg">
+                          Shop Now
+                        </button>
+                      </NavLink>
+                    </div>
                   </div>
                 ) : (
-                  <Paper className=" border p-2 rounded-md tracking-wide">
+                  <div className="p-2 rounded-b-sm tracking-wide bg-white shadow-xl">
                     {cart?.map((p, index) => (
                       <Grid
                         container
@@ -156,8 +156,15 @@ export default function Cart() {
                         alignItems="center"
                         mb="5px"
                         justifyContent="space-between"
+                        sx={{
+                          flexDirection: { xs: "column", sm: "row" }, // set direction to column on small screens and row on larger screens
+                          gap: 2, // add gap between items
+                          "& .MuiTextField-root": {
+                            width: { xs: "100%", sm: "200px" },
+                          }, // set width to 100% on small screens and 200px on larger screens
+                        }}
                       >
-                        <Grid item>
+                        <Grid item sx={{ width: "18%" }}>
                           <h1 className="text-sm">Product Name</h1>
                           <div className=" text-xl">{p.name}</div>
                         </Grid>
@@ -224,12 +231,12 @@ export default function Cart() {
                                   </ButtonGroup>
                                 ),
                               }}
-                              sx={{width: "200px"}}
+                              sx={{ width: "200px" }}
                             />
                             {p.quantity >= p.stocks ? (
                               <div>
                                 <h1 className="text-red-600">
-                                  Maximum stocks reached!
+                                  Cannot exceed maximum stocks!
                                 </h1>
                               </div>
                             ) : null}
@@ -253,7 +260,7 @@ export default function Cart() {
                         </Grid>
                       </Grid>
                     ))}
-                  </Paper>
+                  </div>
                 )}
               </Grid>
 
@@ -300,7 +307,7 @@ export default function Cart() {
                       disabled={cart.length === 0} // Disable button if cart is empty
                       className="shadow bg-gray-700 hover:bg-blue-900 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded cursor-pointer"
                     >
-                      <span className="font-bebas tracking-widest text-lg">
+                      <span className="font-bebas tracking-widest text-lg font-bold">
                         Check-out
                       </span>
                     </Button>
@@ -312,7 +319,7 @@ export default function Cart() {
                       onClick={() => navigate("/login", { state: "/checkout" })}
                       className="shadow bg-gray-700 hover:bg-blue-900 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded cursor-pointer"
                     >
-                      <span className="font-bebas tracking-widest text-lg">
+                      <span className="font-bebas tracking-widest text-lg font-bold">
                         Login to Checkout
                       </span>
                     </Button>

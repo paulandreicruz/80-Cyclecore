@@ -20,6 +20,7 @@ import { BiCycling } from "react-icons/bi";
 import { TiArrowBackOutline } from "react-icons/ti";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
 import DropIn from "braintree-web-drop-in-react";
+import { toast } from "react-toastify";
 
 export const DeliveryOption = () => {
   //state
@@ -28,6 +29,18 @@ export const DeliveryOption = () => {
   const [proceedToPayment, setProceedToPayment] = useState(false);
   const [selectedDeliveryOptionIndex, setSelectedDeliveryOptionIndex] =
     useState(null);
+  const [selectedPaymentOptionIndex, setSelectedPaymentOptionIndex] =
+    useState(null);
+
+  //hookjs
+  const [auth, setAuth] = useAuth();
+  const [cart, setCart] = useCart();
+
+  //   expanded
+  const [expanded, setExpanded] = useState(
+    new Array(paymentData.length).fill(false)
+  );
+  const [expandedIndex, setExpandedIndex] = useState(-1);
 
   const selectedDeliveryOption =
     selectedOptionIndex !== null
@@ -56,10 +69,12 @@ export const DeliveryOption = () => {
   const handleAccordionChange = (index) => {
     if (index === selectedOptionIndex) {
       setSelectedOptionIndex(null);
-      setSelectedDeliveryOptionIndex(null); // added line
+      setSelectedDeliveryOptionIndex(null);
+      setSelectedPaymentOptionIndex(null); // added line
     } else {
       setSelectedOptionIndex(index);
-      setSelectedDeliveryOptionIndex(index); // added line
+      setSelectedDeliveryOptionIndex(index);
+      setSelectedPaymentOptionIndex(index); // added line
     }
   };
 
@@ -81,15 +96,21 @@ export const DeliveryOption = () => {
     }
   }, [selectedDeliveryOptionIndex]);
 
-  //hookjs
-  const [auth, setAuth] = useAuth();
-  const [cart, setCart] = useCart();
-
-  //   expanded
-  const [expanded, setExpanded] = useState(
-    new Array(paymentData.length).fill(false)
-  );
-  const [expandedIndex, setExpandedIndex] = useState(-1);
+  useEffect(() => {
+    if (selectedPaymentOptionIndex !== null) {
+      const selectedOption = paymentOptions[selectedPaymentOptionIndex];
+      axios
+        .put("/add-payment-option", {
+          paymentOption: selectedOption.paymentOption,
+        })
+        .then((response) => {
+          // handle response
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [selectedPaymentOptionIndex]);
 
   useEffect(() => {
     if (auth?.token) loadShippingAddress();
@@ -181,7 +202,7 @@ export const DeliveryOption = () => {
       localStorage.removeItem("cart");
       setCart([]);
       navigate("/dashboard/user/ordersuccess");
-      toast.success("Payment Successful", {
+      toast.success("Payment Successful, Order has been placed", {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
@@ -209,7 +230,7 @@ export const DeliveryOption = () => {
       localStorage.removeItem("cart");
       setCart([]);
       navigate("/dashboard/user/ordersuccess");
-      toast.success("Order placed for pickup", {
+      toast.success("Order has been placed", {
         position: "top-center",
         autoClose: 2000,
         hideProgressBar: false,
@@ -224,6 +245,10 @@ export const DeliveryOption = () => {
     }
   };
 
+  console.log("payment", selectedPaymentOptionIndex);
+  console.log("index", selectedOption);
+  console.log("delivery", selectedDeliveryOptionIndex);
+
   return (
     <>
       <Navbar />
@@ -231,7 +256,7 @@ export const DeliveryOption = () => {
         <Grid container gap={4} className="justify-center">
           {/* payment side */}
           <Grid item>
-            <Paper className="font-bebas flex items-center justify-between gap-2 p-3 mb-5">
+            <div className="font-bebas flex items-center justify-between gap-2 p-3 bg-white rounded-t-sm border-b">
               <div className="flex items-center gap-2 font-bold tracking-wider">
                 <div className="text-xs font-normal tracking-wide">
                   Delivering to:
@@ -254,10 +279,10 @@ export const DeliveryOption = () => {
                   <span className="font-bebas tracking-wider pt-1">CHANGE</span>
                 </Button>
               </div>
-            </Paper>
+            </div>
 
             {proceedToPayment === false ? (
-              <Paper className="p-3">
+              <div className="p-3 bg-white shadow-xl rounded-b-sm">
                 {paymentData.map((p, i) => (
                   <Accordion
                     key={i}
@@ -338,10 +363,10 @@ export const DeliveryOption = () => {
                     </AccordionDetails>
                   </Accordion>
                 ))}
-              </Paper>
+              </div>
             ) : (
               <>
-                <Paper className="p-3 w-[35rem] font-bebas mb-4 flex justify-between">
+                <div className="p-3 w-[35rem] font-bebas flex justify-between bg-white border-b">
                   {/* selected Type of Delivery Option */}
                   {/* estimated delivery */}
                   <div>
@@ -372,8 +397,8 @@ export const DeliveryOption = () => {
                       </span>
                     </Button>
                   </div>
-                </Paper>
-                <Paper className="p-3 font-bebas">
+                </div>
+                <div className="p-3 font-bebas bg-white shadow-xl rounded-b-sm">
                   <div>
                     <div className="font-bold tracking-widest">
                       Payment Options Available
@@ -388,7 +413,6 @@ export const DeliveryOption = () => {
                       <>
                         <div
                           key={i}
-                          onClick={() => setSelectedOption(i)}
                           className="flex items-center hover:cursor-pointer"
                         >
                           <div>
@@ -396,6 +420,13 @@ export const DeliveryOption = () => {
                               <Checkbox
                                 size="small"
                                 checked={selectedOption === i}
+                                disabled={
+                                  selectedDeliveryOptionIndex === 1 && i === 0
+                                }
+                                onClick={() => {
+                                  setSelectedOption(i);
+                                  setSelectedPaymentOptionIndex(i);
+                                }}
                               />
                             )}
                           </div>
@@ -443,30 +474,17 @@ export const DeliveryOption = () => {
                       </div>
                     )}
                   </div>
-                </Paper>
+                </div>
               </>
             )}
           </Grid>
-
-          {/* <Button
-                            variant="contained"
-                            color="inherit"
-                            fullWidth
-                            startIcon={<IoBagCheckOutline/>}
-                            onClick={handleCheckout}
-                            className="shadow bg-gray-700 hover:bg-blue-900 focus:shadow-outline focus:outline-none text-white text-xs py-2 px-4 rounded cursor-pointer"
-                          >
-                            <span className="font-bebas text-lg tracking-wider">Checkout</span>
-                          </Button> */}
-
-          {/* cart side */}
           <Grid item>
             <div>
-              <Paper className="px-8 py-4 font-bebas w-[27rem]">
-                <div className="font-bold text-lg tracking-wider mb-2">
-                  Order Summary
-                </div>
+              <div className="font-bold text-lg tracking-wider bg-white border-b font-bebas p-3 rounded-t-sm">
+                Order Summary
+              </div>
 
+              <div className="px-8 py-4 font-bebas w-[27rem] bg-white shadow-xl rounded-b-sm">
                 {cart?.map((p, i) => (
                   <div key={i}>
                     <div className="flex justify-between mb-5">
@@ -544,7 +562,7 @@ export const DeliveryOption = () => {
                   </div>
                 )}
                 {selectedOptionIndex === null && null}
-              </Paper>
+              </div>
             </div>
           </Grid>
         </Grid>

@@ -95,6 +95,7 @@ export default function AdminUserList() {
                     <th className="p-2">Name</th>
                     <th className="p-2">Email</th>
                     <th className="p-2">Phone Number</th>
+                    <th className="p-2">Authentication</th>
                     <th className="p-2"></th>
                   </tr>
                 </thead>
@@ -108,6 +109,18 @@ export default function AdminUserList() {
                       </td>
                       <td className="p-3">{u.email}</td>
                       <td className="p-3">{u.contactnum}</td>
+
+                      <td className="p-3">
+                        {u.isVerified === true ? (
+                          <span className="p-1 px-4 bg-[#def2d0] text-[#245900] rounded-full font-bold tracking-wider">
+                            Verified
+                          </span>
+                        ) : (
+                          <span className="p-1 px-4 bg-[#ffdcdc] text-[#900] rounded-full font-bold tracking-wider">
+                            Not Verified
+                          </span>
+                        )}
+                      </td>
 
                       <td className="p-3">
                         <button

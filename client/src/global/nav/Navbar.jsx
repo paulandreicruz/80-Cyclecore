@@ -32,7 +32,8 @@ const Navbar = () => {
   const logout = () => {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
-    navigate("/login");
+    navigate("/loading");
+    toast.success("Logged-Out Successfuly");
   };
 
   const [nav, setNav] = useState(false);

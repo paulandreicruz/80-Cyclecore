@@ -164,7 +164,14 @@ export default function UserOrders() {
                           Qty: <span className="text-lg">{p.quantity}</span>
                         </div>
                         <div className="text-sm">
-                          PHP <span className="text-lg"> {p.price}</span>
+                     
+                          <span className="text-lg">
+                            {" "}
+                            {p.price.toLocaleString("en-PH", {
+                              style: "currency",
+                              currency: "PHP",
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -232,9 +239,19 @@ export default function UserOrders() {
 
                 <div className="space-y-1">
                   <div className="text-sm">
-                    Payment Method:{" "}
+                    Delivery Type:{" "}
                     <span className="font-bold tracking-wider">
-                      {selectedOrder.payment?.transaction?.creditCard?.cardType ? selectedOrder.payment?.transaction?.creditCard?.cardType : 'Not processd' }
+                      {selectedOrder.deliveryOption}
+                    </span>
+                  </div>
+
+                  <div className="text-sm">
+                    Payment Type:{" "}
+                    <span className="font-bold tracking-wider">
+                      {selectedOrder.payment?.transaction?.creditCard?.cardType
+                        ? selectedOrder.payment?.transaction?.creditCard
+                            ?.cardType
+                        : selectedOrder.paymentOption}
                     </span>
                   </div>
                   <div className="text-sm">
@@ -243,16 +260,16 @@ export default function UserOrders() {
                       {selectedOrder.payment?.transaction?.paymentInstrumentType
                         ? selectedOrder.payment?.transaction
                             ?.paymentInstrumentType
-                        : "Not processed"}
+                        : " None "}
                     </span>
                   </div>
                   <div className="text-sm">
                     Transaction ID:{" "}
-                    {/* <span className="font-bold tracking-wider">
+                    <span className="font-bold tracking-wider">
                       {selectedOrder.payment?.transaction.id
                         ? selectedOrder.payment.transaction.id
-                        : "Not processed"}
-                    </span> */}
+                        : " None "}
+                    </span>
                   </div>
                   <h1 className="text-xs">
                     order id#:{" "}
@@ -295,6 +312,31 @@ export default function UserOrders() {
                     <div>
                       <div className="mt-2">{p.name}</div>
                     </div>
+                    <div>
+                      <div className="mt-2">{p.customframename}</div>
+                      <div className="mt-2">{p.customframeprice}</div>
+                    </div>
+                    <div>
+                      <div className="mt-2">{p.customhandlebarname}</div>
+                      <div className="mt-2">{p.customhandlebarprice}</div>
+                    </div>
+                    <div>
+                      <div className="mt-2">{p.customgroupsetname}</div>
+                      <div className="mt-2">{p.customgroupsetprice}</div>
+                    </div>
+                    <div>
+                      <div className="mt-2">{p.customwheelsetname}</div>
+                      <div className="mt-2">{p.customwheelsetprice}</div>
+                    </div>
+                    <div>
+                      <div className="mt-2">{p.customtirename}</div>
+                      <div className="mt-2">{p.customtireprice}</div>
+                    </div>
+                    <div>
+                      <div className="mt-2">{p.customtsaddlename}</div>
+                      <div className="mt-2">{p.customsaddleprice}</div>
+                    </div>
+                    
 
                     <div className="font-bebas flex space-x-[3rem]">
                       <div className="text-lg">
@@ -307,7 +349,10 @@ export default function UserOrders() {
                       <div className="text-lg">
                         <div className="mt-2">
                           <div className="text-center text-base">
-                            Php {p.price}
+                            {p.price.toLocaleString("en-PH", {
+                              style: "currency",
+                              currency: "PHP",
+                            })}
                           </div>
                         </div>
                       </div>
@@ -347,7 +392,10 @@ export default function UserOrders() {
                   </h1>
                   <h1 className="font-bebas text-sm justify-end flex">total</h1>
                   <h1 className="font-bebas text-3xl justify-end flex text-white">
-                    PHP {selectedOrder.totalPrice}
+                    {selectedOrder.totalPrice.toLocaleString("en-PH", {
+                      style: "currency",
+                      currency: "PHP",
+                    })}
                   </h1>
                 </div>
               </>

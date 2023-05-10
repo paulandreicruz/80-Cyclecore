@@ -205,13 +205,13 @@ export const Checkout = () => {
   };
 
   return (
-    <div className="bg-gray50">
+    <div className="bg-gray-200 h-screen">
       <Navbar />
       <div className="my-10 mx-48">
         <Grid container gap={3}>
           {/* Left- Side */}
           <Grid item className="flex-1">
-            <Paper elevation={5} className="px-5 py-3 mb-5">
+            <div className="px-5 py-3 bg-white border-b rounded-t-sm">
               <div className="items-center font-bebas font-bold flex justify-between text-2xl tracking-wider">
                 <div className="flex items-center gap-1">
                   Please choose/select a delivery address
@@ -231,9 +231,9 @@ export const Checkout = () => {
                   </Button>
                 </NavLink>
               </div>
-            </Paper>
+            </div>
 
-            <Paper elevation={5} className="p-5">
+            <div className="p-5 bg-white shadow-xl rounded-b-sm">
               <div>
                 {addresses?.length !== 3 ? (
                   <div
@@ -375,16 +375,15 @@ export const Checkout = () => {
                   </Dialog>
                 </div>
               ))}
-            </Paper>
+            </div>
           </Grid>
 
           <Grid item>
             <div>
-              <Paper elevation={5} className="px-10 py-4 font-bebas w-[27rem]">
-                <div className="font-bold text-lg tracking-wider mb-2">
-                  Order Summary
-                </div>
-
+              <div className="font-bold text-lg tracking-wider border-b font-bebas bg-white py-2 px-4">
+                Order Summary
+              </div>
+              <div className="px-10 py-4 font-bebas w-[27rem] bg-white">
                 {cart?.map((p, i) => (
                   <div key={i}>
                     <div className="flex gap-8 mb-5">
@@ -435,12 +434,12 @@ export const Checkout = () => {
                   <h1>TOTAL</h1>
                   <h1>{cartTotal()}</h1>
                 </div>
-              </Paper>
+              </div>
 
-              <div className="mx-auto flex justify-center mt-5 font-bebas">
+              <div className="mx-auto flex justify-center font-bebas">
                 <button
                   onClick={handleNavigate}
-                  className="flex items-center gap-1 justify-center mx-auto text-center bg-yellow-300 p-3 w-full rounded-md tracking-tight"
+                  className="flex items-center gap-1 justify-center mx-auto text-center bg-yellow-300 p-3 w-full rounded-b-sm tracking-tight"
                 >
                   <TbTruckDelivery />
                   PROCEED TO DELIVERY OPTION

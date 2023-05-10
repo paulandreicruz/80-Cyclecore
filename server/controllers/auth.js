@@ -731,6 +731,29 @@ export const addDeliveryOption = async (req, res) => {
   }
 };
 
+export const addPaymentOption = async (req, res) => {
+  try {
+    const { paymentOption } = req.body;
+
+    // Get the user ID from the authenticated user's token
+    const userId = req.user._id;
+
+    // Find the user by their ID
+    const user = await User.findById(userId);
+
+    // Set the selected delivery option as the user's delivery option
+    user.paymentOption = paymentOption;
+
+    // Save the updated user object to the database
+    await user.save();
+
+    // Return the updated user object as the response
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getUsers = async (req, res) => {
   try {
     const count = await User.countDocuments();

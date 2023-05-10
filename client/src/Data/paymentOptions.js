@@ -15,6 +15,6 @@ export const paymentOptions = [
   {
     id: 3,
     chkbx: "Checkbox",
-    paymentOption: "Pickup from store",
+    paymentOption: "Pay from store",
   },
 ];
