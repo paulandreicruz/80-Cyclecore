@@ -101,6 +101,12 @@ export default function AdminOrders() {
 
   console.log(selectedOrder);
 
+  const customBuilds = [
+    "Specialized Frame Custom Build",
+    "Wilier Filante Custom Build",
+    "Exploro Frame Custom Build",
+  ];
+
   return (
     <>
       <div className={`px-10 py-5 font-bebas bg-gray-200 `}>
@@ -223,9 +229,10 @@ export default function AdminOrders() {
                 open={dialogOpen}
                 onClose={() => setDialogOpen(false)}
                 ref={componentRef}
+                maxWidth="xl"
               >
                 <DialogTitle sx={{ backgroundColor: "gray" }}>
-                  <div className="flex justify-between w-[35rem] text-white">
+                  <div className="flex justify-between w-[45rem] text-white">
                     <div className="font-bebas">
                       <img src={logo} alt="" className="w-44" />
                       <h1 className="tracking-wider text-6xl font-bold">
@@ -279,13 +286,20 @@ export default function AdminOrders() {
 
                         <div className="space-y-1">
                           <div className="text-sm">
-                            Payment Method:{" "}
+                            Delivery Type:{" "}
+                            <span className="font-bold tracking-wider">
+                              {selectedOrder.deliveryOption}
+                            </span>
+                          </div>
+
+                          <div className="text-sm">
+                            Payment Type:{" "}
                             <span className="font-bold tracking-wider">
                               {selectedOrder.payment?.transaction?.creditCard
                                 ?.cardType
                                 ? selectedOrder.payment?.transaction?.creditCard
                                     ?.cardType
-                                : "Cash-On-Delivery"}
+                                : selectedOrder.paymentOption}
                             </span>
                           </div>
                           <div className="text-sm">
@@ -295,7 +309,7 @@ export default function AdminOrders() {
                                 ?.paymentInstrumentType
                                 ? selectedOrder.payment?.transaction
                                     ?.paymentInstrumentType
-                                : "Not processed"}
+                                : " None "}
                             </span>
                           </div>
                           <div className="text-sm">
@@ -303,21 +317,21 @@ export default function AdminOrders() {
                             <span className="font-bold tracking-wider">
                               {selectedOrder.payment?.transaction.id
                                 ? selectedOrder.payment.transaction.id
-                                : "Not processed"}
+                                : " None "}
                             </span>
                           </div>
                           <h1 className="text-xs">
                             order id#:{" "}
-                            <span className="font-bold tracking-wider text-base">
+                            <span className="font-bold tracking-wider text-sm">
                               {selectedOrder.ordernumber}
                             </span>
                           </h1>
                           <h1 className="text-xs">
                             Payment Status:{" "}
-                            <span className="font-bold tracking-wider text-base">
+                            <span className="font-bold tracking-wider text-sm">
                               {selectedOrder.payment?.success
                                 ? "Success"
-                                : "Pending"}
+                                : "Failed"}
                             </span>
                           </h1>
                           <h1 className="text-xs">
@@ -342,7 +356,7 @@ export default function AdminOrders() {
                           </h1>
                           <h1 className="text-xs">
                             Date:{" "}
-                            <span className="font-bold tracking-wider">
+                            <span className="font-bold tracking-wider text-sm">
                               {moment(selectedOrder.createdAt).format(
                                 "MMMM Do YYYY, h:mm:ss"
                               )}
@@ -359,7 +373,7 @@ export default function AdminOrders() {
                             Item
                           </h1>
                         </div>
-                        <div className="flex gap-16 text-lg font-bebas">
+                        <div className="flex space-x-20 text-lg font-bebas">
                           <h1 className="font-bold">Quantity</h1>
                           <h1 className="font-bold">Price</h1>
                           <h1 className="font-bold">Amount</h1>
@@ -371,28 +385,172 @@ export default function AdminOrders() {
                             key={i}
                             className="font-bebas flex justify-between"
                           >
-                            <div>
-                              <div className="mt-2">{p.name}</div>
+                            <div className="text-sm">
+                              {customBuilds.some((build) =>
+                                p.name.includes(build)
+                              ) ? null : (
+                                <>
+                                  <div className="mt-2">{p.name}</div>
+                                </>
+                              )}
+                              {console.log(p.name)}
+                              {customBuilds.some((build) =>
+                                p.name.includes(build)
+                              ) && (
+                                <>
+                                  <div className="mt-2">
+                                    {p.customframename}
+                                  </div>
+                                  <div className="mt-2">
+                                    {p.customhandlebarname}
+                                  </div>
+                                  <div className="mt-2">
+                                    {p.customgroupsetname}
+                                  </div>
+                                  <div className="mt-2">
+                                    {p.customwheelsetname}
+                                  </div>
+                                  <div className="mt-2">{p.customtirename}</div>
+                                  <div className="mt-2">
+                                    {p.customtsaddlename}
+                                  </div>
+                                </>
+                              )}
                             </div>
 
-                            <div className="font-bebas flex space-x-[3rem]">
+                            <div className="font-bebas flex space-x-[4rem]">
                               <div className="text-lg">
-                                <div className="mt-2">
-                                  <div className="text-center text-base">
-                                    {p.quantity}
+                                <div>
+                                  <div className="text-sm">
+                                    <div className="mt-2">{p.quantity}</div>
+                                    {customBuilds.some((build) =>
+                                      p.name.includes(build)
+                                    ) ? (
+                                      <>
+                                        {customBuilds.some((build) =>
+                                          p.name.includes(build)
+                                        ) ? null : (
+                                          <div className="mt-2">
+                                            {p.quantity}
+                                          </div>
+                                        )}
+                                        <div className="mt-2">{p.quantity}</div>
+                                        <div className="mt-2">{p.quantity}</div>
+                                        <div className="mt-2">{p.quantity}</div>
+                                        <div className="mt-2">{p.quantity}</div>
+                                        {p.name.includes(
+                                          "Wilier Filante Custom Build"
+                                        ) ? null : (
+                                          <div className="mt-2">
+                                            {p.quantity}
+                                          </div>
+                                        )}
+                                      </>
+                                    ) : null}
                                   </div>
                                 </div>
                               </div>
                               <div className="text-lg">
                                 <div className="mt-2">
-                                  <div className="text-center text-base">
-                                    Php {p.price}
+                                  <div className="text-sm">
+                                    {customBuilds.some((build) =>
+                                      p.name.includes(build)
+                                    ) ? null : (
+                                      <>
+                                        <div>
+                                          {p.price.toLocaleString("en-PH", {
+                                            style: "currency",
+                                            currency: "PHP",
+                                          })}
+                                        </div>
+                                      </>
+                                    )}
+                                    {p.name.includes(
+                                      "Specialized Frame Custom Build"
+                                    ) ||
+                                    p.name.includes(
+                                      "Wilier Filante Custom Build"
+                                    ) ||
+                                    p.name.includes(
+                                      "Exploro Frame Custom Build"
+                                    ) ? (
+                                      <>
+                                        <div className="mt-2">
+                                          {p.customframeprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customhandlebarprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customgroupsetprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customwheelsetprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customtireprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customsaddleprice}
+                                        </div>
+                                      </>
+                                    ) : null}
                                   </div>
                                 </div>
                               </div>
                               <div className="text-lg">
                                 <div className="mt-2">
-                                  <div className="text-base">php {p.price}</div>
+                                  <div className="text-sm">
+                                    {customBuilds.some((build) =>
+                                      p.name.includes(build)
+                                    ) ? null : (
+                                      <>
+                                        <div>
+                                          {p.price.toLocaleString("en-PH", {
+                                            style: "currency",
+                                            currency: "PHP",
+                                          })}
+                                        </div>
+                                      </>
+                                    )}
+
+                                    {p.name.includes(
+                                      "Specialized Frame Custom Build"
+                                    ) ||
+                                    p.name.includes(
+                                      "Wilier Filante Custom Build"
+                                    ) ||
+                                    p.name.includes(
+                                      "Exploro Frame Custom Build"
+                                    ) ? (
+                                      <>
+                                        <div className="mt-2">
+                                          {p.customframeprice.toLocaleString(
+                                            "en-PH",
+                                            {
+                                              style: "currency",
+                                              currency: "PHP",
+                                            }
+                                          )}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customhandlebarprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customgroupsetprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customwheelsetprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customtireprice}
+                                        </div>
+                                        <div className="mt-2">
+                                          {p.customsaddleprice}
+                                        </div>
+                                      </>
+                                    ) : null}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -408,12 +566,12 @@ export default function AdminOrders() {
                     sx={{
                       height: "100px",
                       backgroundColor: "gray",
-                      width: "76.8%",
+                      width: "75%",
                     }}
                   >
                     <div className="font-bebas">
                       <img src={logo} alt="" className="w-12" />
-                      <div className="text-xs text-white w-[21rem]">
+                      <div className="text-xs text-white w-[33rem]">
                         We're preparing your order with care and attention to
                         detail. If you have any special requests, please let us
                         know and we'll do our best to accommodate them.
@@ -422,7 +580,11 @@ export default function AdminOrders() {
                   </DialogTitle>
 
                   <DialogTitle
-                    sx={{ backgroundColor: "orangered", height: "100px" }}
+                    sx={{
+                      backgroundColor: "orangered",
+                      height: "100px",
+                      width: "25%",
+                    }}
                   >
                     {selectedOrder && (
                       <>

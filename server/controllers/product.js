@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import Order from "../models/order.js";
 import Shipping from "../models/shippingoption.js";
 import sgMail from "@sendgrid/mail";
+import paypal from "paypal-rest-sdk";
 import { generateOrderNumber } from "../helpers/auth.js";
 
 dotenv.config();
@@ -19,6 +20,12 @@ const gateway = new braintree.BraintreeGateway({
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
   privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
+
+paypal.configure({
+  mode: "sandbox", // sandbox or live
+  client_id: process.env.PAYPAL_C_ID,
+  client_secret: process.env.PAYPAL_S,
 });
 
 export const create = async (req, res) => {
@@ -320,82 +327,8 @@ export const getToken = async (req, res) => {
   }
 };
 
-// export const processPayment = async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     const { nonce, cart } = req.body;
-
-//     let totalPrice = 0;
-//     let totalQuantity = 0;
-//     cart.forEach((item) => {
-//       totalPrice += item.price * item.quantity;
-//       totalQuantity += item.quantity;
-//     });
-
-//     let newTransaction = gateway.transaction.sale(
-//       {
-//         amount: totalPrice,
-//         paymentMethodNonce: nonce,
-//         options: {
-//           submitForSettlement: true,
-//         },
-//       },
-//       function (error, result) {
-//         if (result) {
-//           // res.send(result);
-//           const order = new Order({
-//             products: cart,
-//             payment: result,
-//             buyer: req.user._id,
-//             totalQuantity: totalQuantity, // new field to store total quantity
-//             totalPrice: totalPrice // new field to store total price
-//           }).save();
-//           //decrement Quantity
-//           decrementStocks(cart);
-//           res.json({ ok: true });
-//         } else {
-//           res.status(500).send(error);
-//         }
-//       }
-//     );
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// const decrementStocks = async (cart) => {
-//   try {
-//     //mongodb query
-//     const bulkOps = cart.map((item) => {
-//       return {
-//         updateOne: {
-//           filter: { _id: item._id },
-//           update: { $inc: { stocks: -1, sold: +1 } },
-//         },
-//       };
-//     });
-
-//     const updated = await Product.bulkWrite(bulkOps, {});
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// const decrementStocks = async (cart) => {
-//   try {
-//     for (let i = 0; i < cart.length; i++) {
-//       const product = await Product.findById(cart[i]._id);
-//       product.stock -= cart[i].quantity;
-//       await product.save();
-//     }
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 const decrementStocks = async (cart) => {
   try {
-    console.log(cart);
     const bulkOps = cart.map((item) => {
       console.log(item._id);
       return {
@@ -406,7 +339,6 @@ const decrementStocks = async (cart) => {
       };
     });
     const result = await Product.bulkWrite(bulkOps);
-    console.log(result);
   } catch (err) {
     console.log(err);
   }
@@ -505,6 +437,168 @@ export const processPayment = async (req, res) => {
   }
 };
 
+const executePayment = (paymentId, payerId) => {
+  return new Promise((resolve, reject) => {
+    const paymentDetails = { payer_id: payerId };
+    paypal.payment.execute(paymentId, paymentDetails, (error, payment) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(payment);
+      }
+    });
+  });
+};
+
+export const paypalPayment = async (req, res) => {
+  try {
+    const { cart } = req.body;
+
+    let totalPrice = 0;
+    let totalQuantity = 0;
+    cart.forEach((item) => {
+      totalPrice += item.price * item.quantity;
+      totalQuantity += item.quantity;
+    });
+
+    const user = await User.findById(req.user._id);
+    const deliveryFee = user.deliveryFee;
+
+    // Build PayPal payment request object
+    const paymentRequest = {
+      intent: "sale",
+      payer: {
+        payment_method: "paypal",
+      },
+      redirect_urls: {
+        return_url: "http://localhost:5173/dashboard/user/paypalsuccess",
+        cancel_url: "http://localhost:5173/dashboard/user/checkout",
+      },
+      transactions: [
+        {
+          amount: {
+            total: totalPrice.toFixed(2),
+            currency: "PHP",
+          },
+          description: "Purchase from Cyclecore",
+          item_list: {
+            items: cart.map((item) => {
+              return {
+                name: item.name,
+                price: item.price.toFixed(2),
+                currency: "PHP",
+                quantity: item.quantity,
+              };
+            }),
+          },
+        },
+      ],
+    };
+    // Create a PayPal payment
+    const createPayment = () => {
+      return new Promise((resolve, reject) => {
+        paypal.payment.create(paymentRequest, function (error, payment) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(payment);
+          }
+        });
+      });
+    };
+
+    const createdPayment = await createPayment();
+
+    console.log("PayPal createPayment response:", createdPayment);
+
+    // Save the payment ID in your database
+    const paymentId = createdPayment.id;
+
+    //product return
+    const products = cart.map((item) => {
+      return {
+        product: item.product ? item.product._id : null,
+        quantity: item.quantity,
+        name: item.product ? item.product.name : null,
+        price: item.price,
+        size: item.size,
+        photo: {
+          url: item.photo && item.photo.url ? item.photo.url : null,
+        },
+        image: item.image,
+        customframename: item.customframename,
+        customframeprice: item.customframeprice,
+        customhandlebarname: item.customhandlebarname,
+        customhandlebarprice: item.customhandlebarprice,
+        customgroupsetname: item.customhandlebarname,
+        customgroupsetprice: item.customhandlebarprice,
+        customwheelsetname: item.customwheelsetname,
+        customwheelsetprice: item.customwheelsetprice,
+        customtirename: item.customtirename,
+        customtireprice: item.customtireprice,
+        customtsaddlename: item.customtsaddlename,
+        customsaddleprice: item.customsaddleprice,
+      };
+    });
+
+    //create an order
+    const shippingAddress = user.shippingAddress; // get shippingAddress from user document
+    const deliveryOption = user.deliveryOption; // get deliveryOption from user document
+    const estimatedDelivery = user.estimatedDelivery; // get estimatedDelivery from user document
+    const paymentOption = user.paymentOption;
+    const ordernumber = generateOrderNumber();
+    const order = new Order({
+      products: cart,
+      paymentId: paymentId,
+      paypalpayment: createdPayment,
+      ordernumber: ordernumber.ordernum,
+      buyer: req.user._id,
+      shippingAddress: shippingAddress, // populate shippingAddress with user document
+      deliveryOption: deliveryOption,
+      paymentOption: paymentOption,
+      estimatedDelivery: estimatedDelivery,
+      totalPrice: totalPrice,
+      totalQuantity: totalQuantity,
+    });
+    await order.save();
+
+    await decrementStocks(cart);
+
+    // Get the PayPal payment approval URL
+    const approvalUrl = createdPayment.links.find(
+      (link) => link.rel === "approval_url"
+    ).href;
+
+    // Send the approval URL back to the client
+    res.json({ approvalUrl: approvalUrl });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+};
+
+export const executePaypalPayment = async (req, res) => {
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
+
+  try {
+    const executedPayment = await executePayment(paymentId, payerId);
+    console.log("PayPal executePayment response:", executedPayment);
+
+    // Update the order in your database with the executed payment details
+    const order = await Order.findOne({ paymentId: paymentId });
+    order.paypalpayment = executedPayment;
+    order.paypalstatus = "paid";
+
+    await order.save();
+
+    res.send("Payment successful");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Payment failed");
+  }
+};
+
 export const processPickup = async (req, res) => {
   try {
     console.log(req.body);
@@ -586,10 +680,11 @@ export const orderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    const order = await Order.findByIdAndUpdate(orderId, { status }).populate(
-      "buyer",
-      "email firstname lastname"
-    );
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { status },
+      { new: true }
+    ).populate("buyer", "email firstname lastname");
 
     //send email
 
@@ -598,8 +693,94 @@ export const orderStatus = async (req, res) => {
       from: process.env.SENDGRID_EMAIL,
       to: order.buyer.email,
       subject: "Order Status",
-      html: `  <h1>Hi ${order.buyer.firstname}, Your order's status is: <span style="color:red;">${order.status}</span></h1>
-      <p>Visit <a href="${process.env.CLIENT_URL}/dashboard/user/orders">your dashboard</a> for more details</p>`,
+      html: ` <div style="background-color: #F5F5F5; padding: 20px; color: black">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; padding: 40px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <div style="text-align: center;">
+          <img src="https://scontent.fmnl5-2.fna.fbcdn.net/v/t39.30808-6/295513367_417116773770605_4039671274580630735_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeEdTcyi4CcYe3wIoeENTvbz3B4F9XFE2-3cHgX1cUTb7TSasIuz-FYKMzneXqMZwtsFkou0Q6iJ4kOY2y40QJHC&_nc_ohc=LJslj-n-HwcAX_1CzoL&_nc_ht=scontent.fmnl5-2.fna&oh=00_AfCWrbvRPpxUQKdoQsqRh-BLF1lJovu9C0knObkaZIds_g&oe=645CB0D2" alt="" style="max-width: 150px;">
+        </div>
+        <table style="margin-top: 30px; width: 30rem">
+          <thead style="text-align: left; border-bottom: 1px solid">
+            <tr>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Order Status</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.products
+              .map(
+                (product) => `
+                <tr>
+                  <td>${product.name},</td>
+                  <td>${product.quantity}</td>
+                  <td>${order.status}</td>
+                  <td>${product.price}</td>
+                </tr>
+                <tr>
+                <td>${product.customframename},</td>
+                <td>${product.quantity}</td>
+                <td></td>
+                <td>${product.customframeprice.toLocaleString("en-PH", {
+                  style: "currency",
+                  currency: "PHP",
+                })}</td>
+              </tr>
+              <tr>
+              <td>${product.customhandlebarname},</td>
+              <td>${product.quantity}</td>
+              <td></td>
+              <td>${product.customhandlebarprice.toLocaleString("en-PH", {
+                style: "currency",
+                currency: "PHP",
+              })}</td>
+            </tr>
+            <tr>
+            <td>${product.customwheelsetname},</td>
+            <td>${product.quantity}</td>
+            <td></td>
+            <td>${product.customwheelsetprice.toLocaleString("en-PH", {
+              style: "currency",
+              currency: "PHP",
+            })}</td>
+          </tr>
+          <tr>
+          <td>${product.customtirename},</td>
+          <td>${product.quantity}</td>
+          <td></td>
+          <td>${product.customtireprice.toLocaleString("en-PH", {
+            style: "currency",
+            currency: "PHP",
+          })}</td>
+        </tr>
+        <tr>
+        <td>${product.customsaddlename},</td>
+        <td>${product.quantity}</td>
+        <td></td>
+        <td>${product.customsaddleprice.toLocaleString("en-PH", {
+          style: "currency",
+          currency: "PHP",
+        })}</td>
+      </tr>
+      <tr>
+      <td>${product.customgroupsetname},</td>
+      <td>${product.quantity}</td>
+      <td></td>
+      <td>${product.customgroupsetprice.toLocaleString("en-PH", {
+        style: "currency",
+        currency: "PHP",
+      })}</td>
+    </tr>
+              `
+              )
+              .join("")}
+          </tbody>
+        </table>
+        <div style="text-align: left; margin-top: 30px;">
+          <h3>Order Total: ${order.totalPrice}</h3>
+        </div>
+      </div>
+    </div> `,
     };
 
     try {

@@ -33,15 +33,24 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AdminDashboardSideBar = () => {
   const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
 
   const [openOrders, setOpenOrders] = useState(false);
 
   const logout = () => {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
+    navigate("/login-loader");
+    toast.success("logged-out successfully!");
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 3000);
   };
 
   // states
@@ -451,7 +460,7 @@ const AdminDashboardSideBar = () => {
             <ul
               className={`${
                 !openStock && "scale-y-0 max-h-0"
-              } transition-all duration-700 ease-in-out origin-top bg-[#505b6996]`}
+              } transition-all duration-500 ease-in-out origin-top bg-[#505b6996]`}
             >
               <li>
                 <NavLink
@@ -512,11 +521,11 @@ const AdminDashboardSideBar = () => {
 
             <div
               className={`${
-                ["/dashboard/admin/stocks/newsadasd"].includes(pathname)
+                ["/dashboard/admin/sales/management"].includes(pathname)
                   ? "bg-[#33cabb] hover:bg-[#33cabb]"
                   : "hover:bg-[#3f4a59]"
               } ${
-                openStock && "bg-[#455160]"
+                openSale && "bg-[#455160]"
               } py-1 flex items-center hover:cursor-pointer text-white`}
               onClick={() => setOpenSale(!openSale)}
             >
@@ -527,7 +536,7 @@ const AdminDashboardSideBar = () => {
               <div className="flex items-center gap-2">
                 <div
                   className={`${
-                    openStock && "rotate-90"
+                    openSale && "rotate-90"
                   } transition-all duration-700 ease-in-out`}
                 >
                   <BiChevronRight />
@@ -558,7 +567,7 @@ const AdminDashboardSideBar = () => {
                     <BiCircle
                       fontSize={10}
                       className={`${
-                        pathname === "/dashboard/admin/stocks/newasds" &&
+                        pathname === "/dashboard/admin/sales/management" &&
                         "text-[#33cabb] bg-[#33cabb]"
                       } rounded-full`}
                     />
@@ -606,16 +615,14 @@ const AdminDashboardSideBar = () => {
             </span>
           </DialogContent>
           <DialogActions className="gap-2">
-            <NavLink to="/login">
-              <Button
-                variant="contained"
-                color="success"
-                size="small"
-                onClick={logout}
-              >
-                <span className="font-bebas text-xl font-bold">Yes</span>
-              </Button>
-            </NavLink>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={logout}
+            >
+              <span className="font-bebas text-xl font-bold">Yes</span>
+            </Button>
 
             <Button
               variant="contained"

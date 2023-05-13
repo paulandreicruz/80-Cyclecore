@@ -21,7 +21,6 @@ import {
   relatedProducts,
   getToken,
   processPayment,
-  orderStatus,
   addShippingOption,
   getShippingOption,
   createcustomize,
@@ -30,6 +29,9 @@ import {
   photocustomize,
   updateStocks,
   processPickup,
+  orderStatus,
+  paypalPayment,
+  executePaypalPayment,
 } from "../controllers/product.js";
 
 router.post("/product", requireSignin, isAdmin, formidable(), create);
@@ -53,9 +55,12 @@ router.get("/related-products/:productId/:categoryId", relatedProducts);
 router.post("/shipping", addShippingOption);
 router.get("/shipping-option", requireSignin, getShippingOption);
 
+//payment
 router.get("/braintree/token", getToken);
 router.post("/braintree/payment", requireSignin, processPayment);
 router.post("/payment/pickup", requireSignin, processPickup);
+router.post("/paypal", requireSignin, paypalPayment);
+router.get("/execute-payment", executePaypalPayment);
 
 router.put("/order-status/:orderId", requireSignin, isAdmin, orderStatus);
 

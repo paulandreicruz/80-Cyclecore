@@ -193,7 +193,27 @@ export const register = async (req, res) => {
       from: process.env.SENDGRID_EMAIL,
       to: user.email,
       subject: "Email Verification",
-      html: `Hello! Just one more step to continue cycling Click <a href="${verificationLink}">here</a> to verify your email address.`,
+      html: `
+      <div style="background-color: #F5F5F5; padding: 20px; color: black">
+      <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 8px; padding: 40px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);">
+        <div style="text-align: center;">
+          <img src="https://scontent.fmnl5-2.fna.fbcdn.net/v/t39.30808-6/295513367_417116773770605_4039671274580630735_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=e3f864&_nc_eui2=AeEdTcyi4CcYe3wIoeENTvbz3B4F9XFE2-3cHgX1cUTb7TSasIuz-FYKMzneXqMZwtsFkou0Q6iJ4kOY2y40QJHC&_nc_ohc=LJslj-n-HwcAX_1CzoL&_nc_ht=scontent.fmnl5-2.fna&oh=00_AfCWrbvRPpxUQKdoQsqRh-BLF1lJovu9C0knObkaZIds_g&oe=645CB0D2" alt="" style="max-width: 150px;">
+        </div>
+        <div style="text-align: center;">
+          <img src="https://www.pngall.com/wp-content/uploads/8/Email-Verification.png" alt="" style="max-width: 150px;">
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <h1 style="font-size: 36px; font-family: sans-serif; margin: 0;">Verify Your Email Address</h1>
+        </div>
+        <div style="font-size: 20px; font-family: sans-serif; margin-top: 30px; line-height: 1.5; text-align: center; color: gray">
+          <p>To have full access to the Cyclecore website, we need to verify your email. Please click the verification link below:</p>
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="${verificationLink}" style="display: inline-block; background-color: #277DA1; color: #fff; text-decoration: none; padding: 16px 24px; font-size: 24px; font-family: sans-serif; border-radius: 4px; width: 80%">Click to Verify</a>
+        </div>
+      </div>
+    </div>
+      `,
     };
 
     await sgMail.send(emailData);
@@ -817,21 +837,21 @@ export const getfiveOrders = async (req, res) => {
 
 export const deleteUserById = async (req, res) => {
   try {
-    const deletedOrder = await Order.findByIdAndDelete(req.params.id);
-    if (deletedOrder) {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (deletedUser) {
       res.status(200).json({
-        message: "Order deleted successfully",
-        deletedOrder: deletedOrder,
+        message: "User deleted successfully",
+        deletedUser: deletedUser,
       });
     } else {
       res.status(404).json({
-        message: "Order not found",
+        message: "User not found",
       });
     }
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: "Error deleting order",
+      message: "Error deleting user",
     });
   }
 };

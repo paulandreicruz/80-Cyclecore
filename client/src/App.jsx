@@ -44,6 +44,7 @@ import AdminStocks from "./pages/admin/AdminStocks";
 import { AdminSalesHistory } from "./pages/admin/AdminSalesHistory";
 import Loading from "./global/loading/Loading";
 import LoginLoader from "./global/loading/LoginLoader";
+import PaypalSuccessPage from "./pages/user/PaypalRedirect";
 
 function App() {
   return (
@@ -84,6 +85,7 @@ function App() {
             <Route path="user/profile" element={<UserProfile />} />
             <Route path="user/checkout" element={<Checkout />} />
             <Route path="user/deliveryoption" element={<DeliveryOption />} />
+            <Route path="user/paypalsuccess" element={<PaypalSuccessPage />} />
             <Route path="user/ordersuccess" element={<OrderSuccess />} />
             <Route path="user/orders" element={<UserOrders />} />
           </Route>

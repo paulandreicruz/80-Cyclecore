@@ -1,239 +1,3 @@
-// import React, {useState} from 'react'
-// import {AiOutlineEyeInvisible, AiOutlineEye} from 'react-icons/ai'
-// import { TextField } from '@mui/material';
-// import { NavLink } from 'react-router-dom';
-// import axios from "axios";
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { useAuth } from '../../context/Auth';
-// import { useNavigate } from 'react-router-dom';
-
-// const Register = () => {
-//     //open
-//     const [open,setOpen] = useState(false);
-//     const [opening,setOpening] = useState (false);
-
-//     //hooks
-//     const [ auth, setAuth ] = useAuth();
-//     const navigate = useNavigate();
-
-//     //register user state
-//     const [firstname, setfirstName] = useState("");
-//     const [lastname, setlastName] = useState("");
-//     const [email, setEmail] = useState("");
-//     const [address, setAddress] = useState("");
-//     const [contactnum, setContactnum] = useState("");
-//     const [birthdate, setBirthdate] = useState("2017-05-24");
-//     const [password, setPassword] = useState("");
-//     const [confirmpassowrd, setConfirmpassword] = useState("");
-//     const [error, setError] = useState("");
-
-//     // connecting port
-//     // console.log(import.meta.env.VITE_APP_REACT_APP_API)
-
-//     //handle submit form register
-//     const handleSubmit = async (e) => {
-//         e.preventDefault();
-//         try {
-//             const { data } = await axios.post(`/register`,{
-//                 firstname,
-//                 lastname,
-//                 email,
-//                 birthdate,
-//                 contactnum,
-//                 password,
-//             });
-//             console.log(data);
-//             if (data?.error) {
-//                 toast.error(data.error, {
-//                     position: "top-center",
-//                     autoClose: 2000,
-//                     hideProgressBar: false,
-//                     closeOnClick: true,
-//                     pauseOnHover: false,
-//                     draggable: true,
-//                     progress: undefined,
-//                     theme: "light",
-//                     });
-//             } else {
-//                 localStorage.setItem('auth', JSON.stringify(data));
-//                 setAuth({...auth, token: data.token, user: data.user });
-//                 console.log(data)
-//                 toast.success('Registration Successful', {
-//                     position: "top-center",
-//                     autoClose: 2000,
-//                     hideProgressBar: false,
-//                     closeOnClick: true,
-//                     pauseOnHover: false,
-//                     draggable: true,
-//                     progress: undefined,
-//                     theme: "light",
-//                     });
-//                 navigate("/dashboard");
-//             }
-//         } catch (err) {
-//             console.log(err);
-//             toast.error('Registration Failed. Try Again.', {
-//                 position: "top-center",
-//                 autoClose: 2000,
-//                 hideProgressBar: false,
-//                 closeOnClick: true,
-//                 pauseOnHover: false,
-//                 draggable: true,
-//                 progress: undefined,
-//                 theme: "light",
-//                 })
-//         }
-//     };
-
-//     // handle toggle
-//     const toggle = () => {
-//         setOpen(!open);
-//     };
-
-//     const toggle2 = () => {
-//         setOpening(!opening);
-//     };
-
-//     return (
-//         <div>
-
-//             <section className="bg-gray-50 min-h-screen flex items-center justify-center">
-//                 {/* login container */}
-//                 <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-7xl p-5 ">
-
-//                     {/* form */}
-//                     <div className="md:w-1/2 p-5">
-
-//                         <div>
-//                             <NavLink to="/">
-//                                 <img className="w-[200px] items-center p-0" src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t1.15752-9/321421696_988840015430714_1756898395352918694_n.png?_nc_cat=102&ccb=1-7&_nc_sid=ae9488&_nc_eui2=AeFqiQB2gn6RBunaj9ahDT12t2Rk1xQTRUe3ZGTXFBNFRzYuqjmxGbLqx-JD-cnn0QuX6xcVH3ZYzHye8iOZEqt6&_nc_ohc=df1vqQ2w6s0AX_9DzAd&_nc_ht=scontent.fmnl17-5.fna&oh=03_AdQUcHvA0bAkfp6Uf4vht22FGaaZ8OPTNqi-9JWdjnE9aQ&oe=640C5F61" alt="" />
-//                             </NavLink>
-//                         </div>
-
-//                         <h2 className="text-[#002D74] font-bold text-2xl">Register</h2>
-//                         <p className="text-[#002D74] text-sm my-4">If you are already a member, easily login <NavLink to="/login" className='underline font-se'>Here</NavLink></p>
-
-//                         <form onSubmit={handleSubmit} className="gap-4 flex flex-col">
-
-//                             <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 ">
-//                                 {/* <input className="p-2 mt-8 rounded-xl border" type="text" name="firstname" placeholder="Firstname" /> */}
-//                                 <TextField value={firstname} onChange={(e) => setfirstName(e.target.value)} type="text" placeholder='Firstname' label="Firstname" size='small' sx={{backgroundColor:'white', mb: 3}} fullWidth />
-
-//                                 <TextField value={lastname} onChange={(e) => setlastName(e.target.value)} type="text" placeholder='Lastname' label="Lastname" size='small' sx={{backgroundColor:'white', mb: 3}} fullWidth/>
-//                                 {/* <input className="p-2 mt-8 rounded-xl border" type="text" name="firstname" placeholder="Lastname" /> */}
-//                             </div>
-
-//                             <div className='mb-5'>
-//                                 {/* <input type="email" name="" id="" placeholder='Email' className='p-2 rounded-xl border w-full'/> */}
-
-//                                 <TextField value={email} onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Email' label="Email" size='small' fullWidth sx={{backgroundColor:'white', mb: 3}}/>
-//                             </div>
-
-//                             <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4 '>
-
-//                                 <TextField value={birthdate} onChange={(e) => setBirthdate(e.target.value)} type="date" label="Birthdate"
-//                                 sx={{backgroundColor:'white', mb: 3}}
-//                                 InputLabelProps={{
-//                                 shrink: true,
-//                                 }}
-//                                 size='small'/>
-
-//                                 <TextField value={contactnum} onChange={(e) => setContactnum(e.target.value)} type='number' label='Contact' size='small' sx={{backgroundColor:'white', mb: 3}} />
-//                             </div>
-
-//                             {/*
-//                             <div>
-//                                     <input type="number" placeholder='Age' className='p-2 rounded-xl border w-[80px]'/>
-//                             </div> */}
-
-//                             <div className='mb-5'>
-//                                 <h3 className='mb-4 text-[#002D74] text-sm mt-4"'>Address</h3>
-
-//                                 <div className='grid gap-4 mb-7 sm:grid-cols-1 md:grid-cols-2'>
-//                                     {/* <input type="text" name="street" id="" placeholder="Street" className='p-2 rounded-xl border w-full mb-2' /> */}
-
-//                                     <TextField  type='text' label='Street' size='small' sx={{backgroundColor:'white', mb: 3}}/>
-
-//                                     <TextField  type='text' label='Barangay' size='small' sx={{backgroundColor:'white', mb: 3}}/>
-
-//                                     {/* <input type="text" name="street" id="" placeholder="Barangay" className='p-2 rounded-xl border w-full mb-2' /> */}
-//                                 </div>
-
-//                                 <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-3 '>
-//                                     {/* <input type="text" name="street" id="" placeholder="City" className='p-2 rounded-xl border ' /> */}
-
-//                                     <TextField type='text' label='City' size='small' sx={{backgroundColor:'white', mb: 3}}/>
-
-//                                     <TextField type='text' label='Region' size='small' sx={{backgroundColor:'white', mb: 3}}/>
-
-//                                     <TextField type='number' label='Postal Code' size='small' sx={{backgroundColor:'white', mb: 3}}/>
-
-//                                     {/* <input type="text" name="street" id="" placeholder="Region" className='p-2 rounded-xl border ' />
-
-//                                     <input type="Number" name="street" id="" placeholder="Postal Code" className='p-2 rounded-xl border ' /> */}
-//                                 </div>
-
-//                             </div>
-
-//                             <div className="relative">
-
-//                                 {/* <input className="w-full p-2 rounded-xl border" type={(open === false ? "password" : "text")}
-//                                 name="password" placeholder="*******" /> */}
-
-//                                 <TextField value={password} onChange={(e) => setPassword(e.target.value)} type={(open === false ? "password" : "text")} label='Password' size='small' sx={{backgroundColor:'white', mb: 3}} fullWidth/>
-
-//                                 <div className="text-2xl absolute top-2.5 right-2">
-//                                 {
-//                                     (open === false) ? <AiOutlineEye onClick={toggle} className="cursor-pointer"/> : <AiOutlineEyeInvisible onClick={toggle} className="cursor-pointer"/>
-//                                 }
-
-//                                 </div>
-//                             </div>
-
-//                             <div className="relative">
-
-//                                 {/* <input className="w-full p-2 rounded-xl border" type={(opening === false ? "password" : "text")}
-//                                 name="password" placeholder="Confirm Password" /> */}
-
-//                                 <TextField type={(open === false ? "password" : "text")} label='Confirm Password' size='small' sx={{backgroundColor:'white', mb: 3}} fullWidth/>
-
-//                                 <div className="text-2xl absolute top-2.5 right-2">
-//                                 {
-//                                     (opening === false) ? <AiOutlineEye onClick={toggle2} className="cursor-pointer"/> : <AiOutlineEyeInvisible onClick={toggle2} className="cursor-pointer"/>
-//                                 }
-
-//                                 </div>
-//                             </div>
-
-//                             <div className=''>
-//                                 <input type="checkbox" name="" id="" className='border-gray-400 mr-2'/>
-
-//                                 <span>
-//                                     I accept the <a href="" className='font-semibold underline'>Terms of Use</a> & <a href="" className='font-semibold underline'>Privacy Policy</a>
-//                                 </span>
-//                             </div>
-
-//                             <button type="submit" className="hover:bg-[#6dec9e] duration-300 rounded-xl bg-[#c8f5d9] text-[#242424] py-2">Register</button>
-
-//                         </form>
-
-//                     </div>
-//                     {/* image */}
-//                     <div className="rounded-xl w-1/2 md:block hidden bg-[url('https://scontent.fmnl17-1.fna.fbcdn.net/v/t1.15752-9/330314779_1631701457280641_130997889362160226_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=ae9488&_nc_eui2=AeEkQpjH2BgyqCmYGlAfIq6fTgWED4WGWbpOBYQPhYZZugL5cGpzkwFMiPXDtBU_PViYO1O3uPJ-CdyQ-AlhTvZc&_nc_ohc=OtAfy81VKXUAX8HpjDZ&tn=MhX7EIYTgp3cA82U&_nc_ht=scontent.fmnl17-1.fna&oh=03_AdRBzmPddv3eOHyqlpBpbWShQ9MI9dweeZ_OdbyK-0wZ0Q&oe=640D7382')] bg-no-repeat bg-cover text-white p-12">
-//                     <h1 className='text-6xl mb-5 mt-[200px] text-center tracking-[1.5rem] font-bold font-lobster text-zinc-50'>Welcome</h1>
-//                     <div>
-//                         <p className='font-semibold text-center'>A bicycle is a useful vehicle that helps us reach a destination without polluting the environment. It is composed of steel and has two wheels. In addition, it has got a seat and handle with two pedals and also a bell. Some bicycles have a carrier while some don’t. It is a popular choice amongst poor people and students. Essay on bicycle will help us understand its importance.</p>
-//                     </div>
-//                     </div>
-//                 </div>
-//             </section>
-//         </div>
-//     )
-// };
-
-// export default Register;
-
 import React, { useState } from "react";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import {
@@ -243,6 +7,7 @@ import {
   DialogTitle,
   TextField,
   Button,
+  InputLabel,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -253,8 +18,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../context/Auth";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import reglogo from "../../assets/reg.jpg";
-import logoreg1 from "../../assets/Logo3.png";
+import kid from "../../assets/kid.jpg";
+import logoreg1 from "../../assets/Logo1.png";
 
 // validations
 const fnameValidations = Yup.string().required("Firstname is required!");
@@ -426,12 +191,13 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <section className="bg-gray-50 min-h-screen flex items-center justify-center">
+    <>
+      <div>
+      <section className="bg-gray-200 min-h-screen flex items-center justify-center font-bebas">
         {/* login container */}
-        <div className="bg-gray-100 flex rounded-2xl shadow-lg max-w-6xl p-5">
+        <div className="bg-gray-100 flex rounded-sm shadow-2xl shadow-black max-w-5xl p-5">
           {/* form */}
-          <div className="md:w-1/2 p-5">
+          <div className="w-[100%] p-5">
             <div>
               <NavLink to="/">
                 <img
@@ -442,139 +208,155 @@ const Register = () => {
               </NavLink>
             </div>
             <NavLink to="/">
-              <img src={logoreg1} className="w-32 mx-auto" />
+              <img src={logoreg1} className="w-[13rem] mx-auto" />
             </NavLink>
 
-            <h2 className="text-[#002D74] font-bold text-2xl">Register</h2>
-            <p className="text-[#002D74] text-sm my-4">
+            <div className="h-[1px] bg-gray-200 mb-2"/>
+
+            <h2 className="font-bold text-2xl tracking-wide">Register</h2>
+            <p className="text-sm my-4 tracking-wide">
               If you are already a member, easily login{" "}
               <NavLink to="/login" className="underline font-se">
                 Here
               </NavLink>
             </p>
 
-            <form onSubmit={handleSubmit} className="gap-2 flex flex-col">
+            <form onSubmit={handleSubmit} className="gap-2 flex flex-col font-bebas space-y-4">
               <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
                 <div>
+                  <InputLabel><span className="font-bebas text-sm tracking-wide">first name</span></InputLabel>
                   <TextField
                     type="text"
                     name="firstname"
-                    placeholder="Firstname"
-                    label="Firstname"
+                    variant="standard"
                     size="small"
                     fullWidth
                     onChange={handleChange}
                     value={values.firstname}
                     onBlur={handleBlur}
+                    color="warning"
+                    InputProps={{
+                      style:{
+                        fontFamily: "Bebas Neue",
+                        fontSize: 17.5,
+                      }
+                    }}
                   />
 
-                  {touched.firstname && errors.firstname ? (
-                    <div
-                      className="text-red-600 font-semibold text-sm
-                                    capitalize"
-                    >
-                      {errors.firstname}
-                    </div>
-                  ) : null}
+                  {touched.firstname && errors.firstname ? (<div className="text-red-600 font-semibold text-xs absolute tracking-widest"> {errors.firstname} </div>) : null}
                 </div>
 
                 <div>
+                  <InputLabel><span className="font-bebas text-sm tracking-wide">last name</span></InputLabel>
                   <TextField
                     type="text"
                     name="lastname"
-                    placeholder="Lastname"
-                    label="Lastname"
-                    size="small"
+                    size="small"                  
                     fullWidth
                     onChange={handleChange}
                     value={values.lastname}
                     onBlur={handleBlur}
+                    color="warning"
+                    variant="standard"
+                    InputProps={{
+                      style:{
+                        fontFamily: "Bebas Neue",
+                        fontSize: 17.5,
+                      }
+                    }}
                   />
-
-                  {touched.lastname && errors.lastname ? (
-                    <div
-                      className="text-red-600 font-semibold text-sm
-                                    capitalize"
-                    >
-                      {errors.lastname}
-                    </div>
-                  ) : null}
+                  {touched.lastname && errors.lastname ? (<div className="text-red-600 font-semibold text-xs absolute tracking-widest">{errors.lastname}</div>) : null}
                 </div>
               </div>
 
-              <div className="">
+              <div>
+                <InputLabel><span className="font-bebas text-sm tracking-wide">Email</span></InputLabel>
                 <TextField
                   type="text"
                   name="email"
-                  placeholder="Email"
-                  label="Email"
                   size="small"
                   fullWidth
-                  onChange={handleChange}
-                  value={values.email}
-                  onBlur={handleBlur}
+                  onChange={handleChange} value={values.email} onBlur={handleBlur}
+                  color="warning"
+                  variant="standard"
+                  InputProps={{
+                    style:{
+                      fontFamily: "Bebas Neue",
+                      fontSize: 17.5,
+                    }
+                  }}
                 />
 
-                {touched.email && errors.email ? (
-                  <div className="text-red-600 font-semibold text-sm">
-                    {errors.email}
-                  </div>
-                ) : null}
+                {touched.email && errors.email ? (<div className="text-red-600 font-semibold text-xs absolute tracking-widest">{errors.email}</div>) : null}
               </div>
 
               <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
                 <div className="grid sm:grid-cols-1">
+                  <InputLabel><span className="font-bebas text-sm tracking-wide">Birthdate</span></InputLabel>
                   <TextField
                     type="date"
-                    label="Birthdate"
                     InputLabelProps={{
                       shrink: true,
                     }}
                     size="small"
                     name="birthdate"
+                    variant="standard"
+                    color="warning"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    InputProps={{
+                      style:{
+                        fontFamily: "Bebas Neue",
+                        fontSize: 17.5,
+                      }
+                    }}
                   />
-
-                  {errors.birthdate && errors.birthdate ? (
-                    <div className="text-red-600 font-semibold text-sm transition-all ease-in duration-700">
-                      {errors.birthdate}
-                    </div>
-                  ) : null}
+                  <div>
+                    {errors.birthdate && errors.birthdate ? (<div className="text-red-600 font-semibold text-xs tracking-widest absolute">{errors.birthdate}</div>) : null}
+                  </div>
+                  
                 </div>
 
                 <div className="grid sm:grid-cols-1">
+                  <InputLabel><span className="font-bebas text-sm tracking-wide">Contact</span></InputLabel>
                   <TextField
                     type="number"
                     name="contactnum"
-                    label="Contact"
                     size="small"
                     onChange={handleChange}
                     value={values.contactnum}
                     onBlur={handleBlur}
+                    color="warning"
+                    variant="standard"
+                    InputProps={{
+                      style:{
+                        fontFamily: "Bebas Neue",
+                        fontSize: 17.5,
+                      }
+                    }}
                   />
-
-                  {touched.contactnum && errors.contactnum ? (
-                    <div className="text-red-600 font-semibold text-sm">
-                      {errors.contactnum}
-                    </div>
-                  ) : null}
+                  <div>
+                    {touched.contactnum && errors.contactnum ? (<div className="text-red-600 font-semibold text-xs tracking-widest absolute"> {errors.contactnum}</div>) : null}
+                  </div>
+                  
                 </div>
               </div>
               <div className="relative">
+              <InputLabel><span className="font-bebas text-sm tracking-wide">Password</span></InputLabel>
                 <TextField
                   type={open === false ? "password" : "text"}
                   name="password"
-                  label="Password"
                   size="small"
                   fullWidth
                   onChange={handleChange}
                   value={values.password}
                   onBlur={handleBlur}
+                  color="warning"
+                  variant="standard"
                 />
 
                 {touched.password && errors.password ? (
-                  <div className="text-red-600 font-semibold text-sm">
+                  <div className="text-red-600 font-semibold text-xs tracking-widest absolute">
                     {errors.password}
                   </div>
                 ) : null}
@@ -592,19 +374,21 @@ const Register = () => {
               </div>
 
               <div className="relative">
+                <InputLabel><span className="font-bebas text-sm tracking-wide">Confirm Password</span></InputLabel>
                 <TextField
                   type={opening === false ? "password" : "text"}
                   name="cnfrmpass"
-                  label="Confirm Password"
                   size="small"
                   fullWidth
                   onChange={handleChange}
                   value={values.cnfrmpass}
                   onBlur={handleBlur}
+                  color="warning"
+                  variant="standard"
                 />
 
                 {touched.cnfrmpass && errors.cnfrmpass ? (
-                  <div className="text-red-600 font-semibold text-sm">
+                  <div className="text-red-600 font-semibold text-xs tracking-widest absolute">
                     {errors.cnfrmpass}
                   </div>
                 ) : null}
@@ -624,7 +408,7 @@ const Register = () => {
                 </div>
               </div>
 
-              <div className="font-varela">
+              <div className="font-bebas">
                 <input
                   type="checkbox"
                   name="checkbox"
@@ -649,7 +433,7 @@ const Register = () => {
                   Privacy Policy
                 </span>
                 {errors.checkbox ? (
-                  <div className="text-red-600 font-semibold text-sm">
+                  <div className="text-red-600 font-semibold text-xs tracking-widest absolute">
                     {errors.checkbox}
                   </div>
                 ) : null}
@@ -657,7 +441,7 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="hover:scale-105 duration-300 rounded-xl bg-[#002D74] text-white py-2"
+                className="hover:scale-105 duration-300 rounded-sm text-lg font-bold tracking-widest bg-[#002D74] text-white py-2"
               >
                 Register
               </button>
@@ -667,22 +451,22 @@ const Register = () => {
               onClose={() => setOpenDialog(false)}
               className=""
             >
-              <DialogTitle>Terms of Use</DialogTitle>
+              <DialogTitle><span className="font-bebas font-bold text-3xl tracking-wide">Terms of Use</span></DialogTitle>
               <DialogContent>
                 <div className="space-y-5 mb-5">
                   <strong className="">Welcome to Cyclecore!</strong>
-                  <p className="font-varela">
+                  <p className="font-bebas">
                     These terms and conditions outline the rules and regulations
                     for the use of Cyclecore's Website, located at
                     Cyclecore.com.ph.
                   </p>
-                  <p className="font-varela">
+                  <p className="font-bebas">
                     By accessing this website we assume you accept these terms
                     and conditions. Do not continue to use Cyclecore if you do
                     not agree to take all of the terms and conditions stated on
                     this page.
                   </p>
-                  <p className="font-varela">
+                  <p className="font-bebas">
                     The following terminology applies to these Terms and
                     Conditions, Privacy Statement and Disclaimer Notice and all
                     Agreements: "Client", "You" and "Your" refers to you, the
@@ -702,13 +486,13 @@ const Register = () => {
                   </p>
                 </div>
                 <div className="space-y-5 mb-5">
-                  <h1 className="font-varela font-bold">Cookies</h1>
-                  <p className="font-varela">
+                  <h1 className="font-bebas font-bold">Cookies</h1>
+                  <p className="font-bebas">
                     We employ the use of cookies. By accessing Cyclecore, you
                     agreed to use cookies in agreement with the Cyclecore's
                     Privacy Policy.
                   </p>
-                  <p className="font-varela">
+                  <p className="font-bebas">
                     Most interactive websites use cookies to let us retrieve the
                     user's details for each visit. Cookies are used by our
                     website to enable the functionality of certain areas to make
@@ -716,7 +500,7 @@ const Register = () => {
                     affiliate/advertising partners may also use cookies.
                   </p>
                 </div>
-                <div className="font-varela space-y-5 mb-5">
+                <div className="font-bebas space-y-5 mb-5">
                   <h1 className="font-bold">License</h1>
                   <p>
                     License Unless otherwise stated, Cyclecore and/or its
@@ -756,7 +540,7 @@ const Register = () => {
                     offensive or causes breach of these Terms and Conditions.
                   </p>
                 </div>
-                <div className="font-varela space-y-5">
+                <div className="font-bebas space-y-5">
                   <h1 className="font-bold">Disclaimer</h1>
                   <p>
                     To the maximum extent permitted by applicable law, we
@@ -797,14 +581,14 @@ const Register = () => {
                 </div>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => setOpenDialog(false)}>Close</Button>
+                <Button variant="contained" color="inherit" onClick={() => setOpenDialog(false)}><span className="font-bebas text-lg font-bold tracking-wider">Close</span></Button>
               </DialogActions>
             </Dialog>
 
             <Dialog open={openDialog2} onClose={() => setOpenDialog2(false)}>
-              <DialogTitle>Privacy Policy</DialogTitle>
+              <DialogTitle><span className="font-bebas font-bold text-3xl tracking-wide">Privacy Policy</span></DialogTitle>
               <DialogContent>
-                <div className="font-varela space-y-5 mb-6">
+                <div className="font-bebas space-y-5 mb-6">
                   <p>
                     At Cyclecore, accessible from cyclecore.com.ph, one of our
                     main priorities is the privacy of our visitors. This Privacy
@@ -824,7 +608,7 @@ const Register = () => {
                   </p>
                 </div>
 
-                <div className="font-varela space-y-5">
+                <div className="font-bebas space-y-5">
                   <h1 className="font-bold">Consent</h1>
                   <p>
                     By using our website, you hereby consent to our Privacy
@@ -939,33 +723,20 @@ const Register = () => {
                 </div>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => setOpenDialog2(false)}>Close</Button>
+                <Button variant="contained" color="inherit" onClick={() => setOpenDialog2(false)}><span className="font-bebas text-lg font-bold tracking-wider">Close</span></Button>
               </DialogActions>
             </Dialog>
           </div>
           {/* image */}
           <div
-            style={{ backgroundImage: `url(${reglogo})` }}
-            className="rounded-xl w-9/12 md:block hidden  bg-no-repeat bg-cover text-white p-12"
+            style={{ backgroundImage: `url(${kid})`, backgroundRepeat: "no-repeat" }}
+            className="rounded-sm w-[70rem] md:block hidden  bg-no-repeat bg-cover text-white p-10"
           >
-            <h1 className="text-6xl mb-5 mt-[200px] text-center tracking-[1.5rem] font-bold font-lobster text-zinc-50">
-              Welcome
-            </h1>
-            <div>
-              <p className="font-semibold text-center">
-                A bicycle is a useful vehicle that helps us reach a destination
-                without polluting the environment. It is composed of steel and
-                has two wheels. In addition, it has got a seat and handle with
-                two pedals and also a bell. Some bicycles have a carrier while
-                some don’t. It is a popular choice amongst poor people and
-                students. Essay on bicycle will help us understand its
-                importance.
-              </p>
-            </div>
           </div>
         </div>
       </section>
     </div>
+    </>
   );
 };
 

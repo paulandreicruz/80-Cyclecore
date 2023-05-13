@@ -129,16 +129,19 @@ const orderSchema = new Schema(
     status: {
       type: String,
       default: "Not Processed",
-      enum: ["Not Processed", "Processing", "Shiped", "Delivered", "Cancelled"],
+      enum: ["Not Processed", "Processing", "Shiped", "Delivered", "Cancelled", "Ready for Pickup"],
     },
     totalQuantity: {
       type: Number,
-      required: true,
     },
     totalPrice: {
       type: Number,
-      required: true,
     },
+    paymentId: {
+      type: String,
+      required: false,
+    },
+    paypalpayment: {},
   },
   { timestamps: true }
 );

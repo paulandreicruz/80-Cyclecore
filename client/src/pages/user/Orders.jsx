@@ -25,6 +25,14 @@ export default function UserOrders() {
   //context
   const [auth, setAuth] = useAuth();
   //state
+  const [status, setStatus] = useState([
+    "Not Processed",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+    "Ready for Pickup",
+  ]);
   const [orders, setOrders] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -58,8 +66,16 @@ export default function UserOrders() {
 
   const componentRef = useRef(null);
 
+  const customBuilds = [
+    "Specialized Frame Custom Build",
+    "Wilier Filante Custom Build",
+    "Exploro Frame Custom Build",
+  ];
+
   return (
-    <div className="bg-gray-200 h-full">
+    <div
+      className={`bg-gray-200 ${orders.length >= 3 ? "h-full" : "h-screen"}`}
+    >
       <Navbar />
 
       <style>
@@ -164,7 +180,6 @@ export default function UserOrders() {
                           Qty: <span className="text-lg">{p.quantity}</span>
                         </div>
                         <div className="text-sm">
-                     
                           <span className="text-lg">
                             {" "}
                             {p.price.toLocaleString("en-PH", {
@@ -187,9 +202,10 @@ export default function UserOrders() {
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
         ref={componentRef}
+        maxWidth="xl"
       >
-        <DialogTitle sx={{ backgroundColor: "gray" }}>
-          <div className="flex justify-between w-[35rem] text-white">
+        <DialogTitle sx={{ backgroundColor: "gray", width: "100%" }}>
+          <div className="flex justify-between w-full text-white">
             <div className="font-bebas">
               <img src={logo} alt="" className="w-44" />
               <h1 className="tracking-wider text-6xl font-bold">Invoice</h1>
@@ -266,26 +282,56 @@ export default function UserOrders() {
                   <div className="text-sm">
                     Transaction ID:{" "}
                     <span className="font-bold tracking-wider">
-                      {selectedOrder.payment?.transaction.id
-                        ? selectedOrder.payment.transaction.id
-                        : " None "}
+                      {selectedOrder.payment?.transaction.id ||
+                        selectedOrder.paymentId ||
+                        "None"}
                     </span>
                   </div>
                   <h1 className="text-xs">
                     order id#:{" "}
-                    <span className="font-bold tracking-wider text-base">
+                    <span className="font-bold tracking-wider text-sm">
                       {selectedOrder.ordernumber}
                     </span>
                   </h1>
                   <h1 className="text-xs">
                     Payment Status:{" "}
-                    <span className="font-bold tracking-wider text-base">
-                      {selectedOrder.payment?.success ? "Success" : "Failed"}
+                    <span className="font-bold tracking-wider text-sm">
+                      {selectedOrder.payment?.success &&
+                      !selectedOrder.paymentId
+                        ? "Success"
+                        : selectedOrder.payment?.success === false &&
+                          !selectedOrder.paymentId
+                        ? "Failed"
+                        : selectedOrder.paymentId
+                        ? selectedOrder.paypalpayment.state
+                        : ""}
+                    </span>
+                  </h1>
+                  <h1 className="text-xs">
+                    Shipping Status:{" "}
+                    <span
+                      className={`tracking-wider text-base ${
+                        selectedOrder.status === status[0]
+                          ? "text-red-500"
+                          : selectedOrder.status === status[1]
+                          ? "text-yellow-500"
+                          : selectedOrder.status === status[2]
+                          ? "text-blue-500"
+                          : selectedOrder.status === status[3]
+                          ? "text-green-500"
+                          : selectedOrder.status === status[4]
+                          ? "text-gray-500"
+                          : selectedOrder.status === status[5]
+                          ? "text-green-500"
+                          : ""
+                      }`}
+                    >
+                      {selectedOrder.status}
                     </span>
                   </h1>
                   <h1 className="text-xs">
                     Date:{" "}
-                    <span className="font-bold tracking-wider">
+                    <span className="font-bold tracking-wider text-sm">
                       {moment(selectedOrder.createdAt).format(
                         "MMMM Do YYYY, h:mm:ss"
                       )}
@@ -300,7 +346,7 @@ export default function UserOrders() {
                 <div>
                   <h1 className="font-bold text-lg tracking-wide">Item</h1>
                 </div>
-                <div className="flex gap-16 text-lg font-bebas">
+                <div className="flex space-x-20 text-lg font-bebas">
                   <h1 className="font-bold">Quantity</h1>
                   <h1 className="font-bold">Price</h1>
                   <h1 className="font-bold">Amount</h1>
@@ -309,56 +355,134 @@ export default function UserOrders() {
               {selectedOrder.products.map((p, i) => (
                 <>
                   <div key={i} className="font-bebas flex justify-between">
-                    <div>
-                      <div className="mt-2">{p.name}</div>
+                    <div className="text-sm">
+                      {customBuilds.some((build) =>
+                        p.name.includes(build)
+                      ) ? null : (
+                        <>
+                          <div className="mt-2">{p.name}</div>
+                        </>
+                      )}
+                      {console.log(p.name)}
+                      {customBuilds.some((build) => p.name.includes(build)) && (
+                        <>
+                          <div className="mt-2">{p.customframename}</div>
+                          <div className="mt-2">{p.customhandlebarname}</div>
+                          <div className="mt-2">{p.customgroupsetname}</div>
+                          <div className="mt-2">{p.customwheelsetname}</div>
+                          <div className="mt-2">{p.customtirename}</div>
+                          <div className="mt-2">{p.customtsaddlename}</div>
+                        </>
+                      )}
                     </div>
-                    <div>
-                      <div className="mt-2">{p.customframename}</div>
-                      <div className="mt-2">{p.customframeprice}</div>
-                    </div>
-                    <div>
-                      <div className="mt-2">{p.customhandlebarname}</div>
-                      <div className="mt-2">{p.customhandlebarprice}</div>
-                    </div>
-                    <div>
-                      <div className="mt-2">{p.customgroupsetname}</div>
-                      <div className="mt-2">{p.customgroupsetprice}</div>
-                    </div>
-                    <div>
-                      <div className="mt-2">{p.customwheelsetname}</div>
-                      <div className="mt-2">{p.customwheelsetprice}</div>
-                    </div>
-                    <div>
-                      <div className="mt-2">{p.customtirename}</div>
-                      <div className="mt-2">{p.customtireprice}</div>
-                    </div>
-                    <div>
-                      <div className="mt-2">{p.customtsaddlename}</div>
-                      <div className="mt-2">{p.customsaddleprice}</div>
-                    </div>
-                    
 
-                    <div className="font-bebas flex space-x-[3rem]">
+                    <div className="font-bebas flex space-x-[4rem]">
                       <div className="text-lg">
-                        <div className="mt-2">
-                          <div className="text-center text-base">
-                            {p.quantity}
+                        <div>
+                          <div className="text-sm">
+                            <div className="mt-2">{p.quantity}</div>
+                            {customBuilds.some((build) =>
+                              p.name.includes(build)
+                            ) ? (
+                              <>
+                                {customBuilds.some((build) =>
+                                  p.name.includes(build)
+                                ) ? null : (
+                                  <div className="mt-2">{p.quantity}</div>
+                                )}
+                                <div className="mt-2">{p.quantity}</div>
+                                <div className="mt-2">{p.quantity}</div>
+                                <div className="mt-2">{p.quantity}</div>
+                                <div className="mt-2">{p.quantity}</div>
+                                {p.name.includes(
+                                  "Wilier Filante Custom Build"
+                                ) ? null : (
+                                  <div className="mt-2">{p.quantity}</div>
+                                )}
+                              </>
+                            ) : null}
                           </div>
                         </div>
                       </div>
                       <div className="text-lg">
                         <div className="mt-2">
-                          <div className="text-center text-base">
-                            {p.price.toLocaleString("en-PH", {
-                              style: "currency",
-                              currency: "PHP",
-                            })}
+                          <div className="text-sm">
+                            {customBuilds.some((build) =>
+                              p.name.includes(build)
+                            ) ? null : (
+                              <>
+                                <div>
+                                  {p.price.toLocaleString("en-PH", {
+                                    style: "currency",
+                                    currency: "PHP",
+                                  })}
+                                </div>
+                              </>
+                            )}
+                            {p.name.includes(
+                              "Specialized Frame Custom Build"
+                            ) ||
+                            p.name.includes("Wilier Filante Custom Build") ||
+                            p.name.includes("Exploro Frame Custom Build") ? (
+                              <>
+                                <div className="mt-2">{p.customframeprice}</div>
+                                <div className="mt-2">
+                                  {p.customhandlebarprice}
+                                </div>
+                                <div className="mt-2">
+                                  {p.customgroupsetprice}
+                                </div>
+                                <div className="mt-2">
+                                  {p.customwheelsetprice}
+                                </div>
+                                <div className="mt-2">{p.customtireprice}</div>
+                                <div className="mt-2">
+                                  {p.customsaddleprice}
+                                </div>
+                              </>
+                            ) : null}
                           </div>
                         </div>
                       </div>
                       <div className="text-lg">
                         <div className="mt-2">
-                          <div className="text-base">php {p.price}</div>
+                          <div className="text-sm">
+                            {customBuilds.some((build) =>
+                              p.name.includes(build)
+                            ) ? null : (
+                              <>
+                                <div>
+                                  {p.price.toLocaleString("en-PH", {
+                                    style: "currency",
+                                    currency: "PHP",
+                                  })}
+                                </div>
+                              </>
+                            )}
+
+                            {p.name.includes(
+                              "Specialized Frame Custom Build"
+                            ) ||
+                            p.name.includes("Wilier Filante Custom Build") ||
+                            p.name.includes("Exploro Frame Custom Build") ? (
+                              <>
+                                <div className="mt-2">{p.customframeprice}</div>
+                                <div className="mt-2">
+                                  {p.customhandlebarprice}
+                                </div>
+                                <div className="mt-2">
+                                  {p.customgroupsetprice}
+                                </div>
+                                <div className="mt-2">
+                                  {p.customwheelsetprice}
+                                </div>
+                                <div className="mt-2">{p.customtireprice}</div>
+                                <div className="mt-2">
+                                  {p.customsaddleprice}
+                                </div>
+                              </>
+                            ) : null}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -375,7 +499,7 @@ export default function UserOrders() {
           >
             <div className="font-bebas">
               <img src={logo} alt="" className="w-12" />
-              <div className="text-xs text-white w-[21rem]">
+              <div className="text-xs text-white w-[33rem]">
                 We're preparing your order with care and attention to detail. If
                 you have any special requests, please let us know and we'll do
                 our best to accommodate them.
@@ -383,7 +507,9 @@ export default function UserOrders() {
             </div>
           </DialogTitle>
 
-          <DialogTitle sx={{ backgroundColor: "orangered", height: "100px" }}>
+          <DialogTitle
+            sx={{ backgroundColor: "orangered", height: "100px", width: "25%" }}
+          >
             {selectedOrder && (
               <>
                 <div>

@@ -24,6 +24,9 @@ import { toast } from "react-toastify";
 
 export const DeliveryOption = () => {
   //state
+  const [clientToken, setClientToken] = useState("");
+  const [instance, setInstance] = useState("");
+  const [approvalUrl, setApprovalUrl] = useState("");
   const [shippingAddress, setShippingAddress] = useState({});
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(null);
   const [proceedToPayment, setProceedToPayment] = useState(false);
@@ -52,18 +55,6 @@ export const DeliveryOption = () => {
       : "";
 
   const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleOptionSelect = (index) => {
-    setSelectedOption(index);
-  };
-
-  // const handleAccordionChange = (index) => {
-  //   if (index === selectedOptionIndex) {
-  //     setSelectedOptionIndex(null);
-  //   } else {
-  //     setSelectedOptionIndex(index);
-  //   }
-  // };
 
   // accordion change
   const handleAccordionChange = (index) => {
@@ -127,16 +118,7 @@ export const DeliveryOption = () => {
 
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate("/dashboard/user/deliveryoption");
-  };
-
-  const handleNavigate2 = () => {
-    navigate("/dashboard/user/checkout");
-  };
-
   //cart
-
   const cartTotal = () => {
     let total = 0;
     cart.map((item) => {
@@ -150,7 +132,6 @@ export const DeliveryOption = () => {
       currency: "PHP",
     });
   };
-
   const cartInitalTotal = () => {
     let total = 0;
     cart.map((item) => {
@@ -162,17 +143,7 @@ export const DeliveryOption = () => {
     });
   };
 
-  const totalQuantity = () => {
-    let total = 0;
-    cart.map((item) => {
-      total += item.quantity;
-    });
-    return total;
-  };
-
-  const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState("");
-
+  //braintree
   useEffect(() => {
     if (auth?.token) {
       getClientToken();
@@ -187,7 +158,6 @@ export const DeliveryOption = () => {
       console.log(err);
     }
   };
-
   const handleCheckout = async () => {
     try {
       const { nonce, details } = await instance.requestPaymentMethod();
@@ -244,10 +214,28 @@ export const DeliveryOption = () => {
       console.log(err);
     }
   };
+  const options = {
+    authorization: clientToken,
+    card: {
+      overrides: {
+        fields: {
+          cvv: {
+            type: "password",
+          },
+        },
+      },
+    },
+  };
 
-  console.log("payment", selectedPaymentOptionIndex);
-  console.log("index", selectedOption);
-  console.log("delivery", selectedDeliveryOptionIndex);
+  const handlePaypalClick = async () => {
+    try {
+      const res = await axios.post("/paypal", { cart });
+      const { approvalUrl } = res.data;
+      window.location.replace(approvalUrl); // redirect to PayPal approval URL
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -441,10 +429,7 @@ export const DeliveryOption = () => {
                           ""
                         ) : (
                           <DropIn
-                            options={{
-                              authorization: clientToken,
-                              currency: "PHP",
-                            }}
+                            options={options}
                             onInstance={(instance) => setInstance(instance)}
                           />
                         )}
@@ -563,6 +548,7 @@ export const DeliveryOption = () => {
                 )}
                 {selectedOptionIndex === null && null}
               </div>
+              <button onClick={handlePaypalClick}>Pay with PayPal</button>
             </div>
           </Grid>
         </Grid>

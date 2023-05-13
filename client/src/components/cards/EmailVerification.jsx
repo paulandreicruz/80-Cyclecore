@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Button, Paper } from "@mui/material";
+import { Button } from "@mui/material";
 import logo  from "../../assets/logo1.png"
 import { AiFillCheckCircle } from 'react-icons/ai'
 import Confetti from 'react-confetti';
@@ -13,7 +13,6 @@ function VerifyEmail() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
-    // Show confetti animation for 5 seconds when the component mounts
     setShowConfetti(true);
     setTimeout(() => {
       setShowConfetti(false);
