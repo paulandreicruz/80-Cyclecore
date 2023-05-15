@@ -6,7 +6,7 @@ export const paymentOptions = [
     chkbx: "Checkbox",
     paymentOption: "Pay By Cash On Delivery",
   },
-  
+
   {
     id: 2,
     chkbx: "Checkbox",
@@ -14,6 +14,11 @@ export const paymentOptions = [
   },
   {
     id: 3,
+    chkbx: "Checkbox",
+    paymentOption: "Pay With Paypal",
+  },
+  {
+    id: 4,
     chkbx: "Checkbox",
     paymentOption: "Pay from store",
   },

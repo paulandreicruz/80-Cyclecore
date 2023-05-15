@@ -16,97 +16,6 @@ dotenv.config();
 
 sgMail.setApiKey(process.env.SENDGRID_KEY);
 
-// export const register = async (req, res) => {
-//   try {
-//     // 1. destructor name, email, passwprd from req.body
-//     const {
-//       firstname,
-//       lastname,
-//       email,
-//       password,
-//       address,
-//       contactnum,
-//       birthdate,
-//     } = req.body;
-//     const today = new Date();
-//     const birthdateObject = new Date(birthdate);
-//     const age = today.getFullYear() - birthdateObject.getFullYear();
-//     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[0-9]).{8,}$/;
-//     const phoneRegex = /^\d{11}$/;
-
-//     // 2. all fields require validation
-//     if (!firstname.trim()) {
-//       return res.json({ error: "Firstname is required" });
-//     }
-//     if (!lastname.trim()) {
-//       return res.json({ error: "Lastname is required" });
-//     }
-//     if (!email) {
-//       return res.json({ error: "Email is taken" });
-//     }
-//     if (!contactnum) {
-//       return res.json({ error: "Email is taken" });
-//     }
-//     // if(!contactnum.trim()){
-//     //     return res.json({error: "Contact Number is required"});
-//     // }
-//     if (age < 18) {
-//       return res.json({
-//         error: "You must be atleast 18 years old to register",
-//       });
-//     }
-//     if (!passwordRegex.test(password)) {
-//       return res.json({
-//         error:
-//           "Password must contain at least one uppercase letter, one special character, and one number, and be at least 8 characters long.",
-//       });
-//     }
-//     // if (!phoneRegex.test(contactnum)) {
-//     //     return res.json({ error: "Phone number must have 11 digits only." });
-//     //   }
-//     // 3. check if email is taken.
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.json({ error: "Email is taken" });
-//     }
-//     const contactUser = await User.findOne({ contactnum });
-//     if (contactUser) {
-//       return res.json({ error: "Phone Number is taken" });
-//     }
-//     // 4. hash passwor
-//     const hashedPassword = await hashPassword(password);
-//     // 5. register user
-//     const user = await new User({
-//       firstname,
-//       lastname,
-//       email,
-//       birthdate,
-//       address,
-//       contactnum,
-//       password: hashedPassword,
-//     }).save();
-//     // 6. create signed jwt
-//     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-//       expiresIn: "7d",
-//     });
-//     // 7. send response
-//     res.json({
-//       user: {
-//         firstname: user.firstname,
-//         lastname: user.lastname,
-//         email: user.email,
-//         birthdate: user.birthdate,
-//         role: user.role,
-//         address: user.address,
-//         contactnum: user.contactnum,
-//       },
-//       token,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 export const register = async (req, res) => {
   try {
     // Destructure fields from req.body
@@ -229,34 +138,6 @@ export const register = async (req, res) => {
   }
 };
 
-// export const verifyEmail = async (req, res) => {
-//   try {
-//     const { token } = req.query;
-
-//     // Find user with matching verification token
-//     const user = await User.findOne({ verificationToken: token });
-
-//     console.log("User found:", user?.email); // Log the user's email address
-
-//     if (!user) {
-//       return res.status(400).json({ error: "Invalid or expired token" });
-//     }
-
-//     // Update user's isVerified field to true
-//     user.isVerified = true;
-//     user.verificationToken = null;
-
-//     await user.save();
-//     console.log("User saved successfully:", user);
-//     return res
-//       .status(200)
-//       .json({ message: "Email address verified successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "An error occurred" });
-//   }
-// };
-
 export const verifyEmail = async (req, res) => {
   try {
     const { token } = req.query;
@@ -344,62 +225,6 @@ export const resendVerificationEmail = async (req, res) => {
   }
 };
 
-// export const resendVerificationEmail = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-
-//     // Find user with matching email address
-//     const user = await User.findOne({ email });
-
-//     if (!user) {
-//       return res.status(400).json({ error: "User not found" });
-//     }
-
-//     // Check the resend verification email counter
-//     if (user.resendVerificationEmails >= 5) {
-//       return res
-//         .status(400)
-//         .json({ error: "Maximum resend verification email limit reached" });
-//     }
-
-//     // Increment the resend verification email counter
-//     user.resendVerificationEmails++;
-
-//     // Save the updated user document to the database
-//     await user.save();
-
-//     // Generate new verification token and expiry date and save to user's account
-//     // Update user's isVerified field to false
-//     const verificationToken = generateVerificationToken();
-//     user.isVerified = false;
-//     user.verificationToken = verificationToken.token;
-//     user.emailVerificationExpiry = verificationToken.expiryTime;
-
-//     // Reset the resend verification email counter
-//     user.resendVerificationEmails = 0;
-
-//     await user.save();
-
-//     // Send verification email with new token to user's email address
-//     const verificationLink = `${process.env.CLIENT_URL}/verify-email?token=${verificationToken.token}`;
-
-//     const emailData = {
-//       from: process.env.SENDGRID_EMAIL,
-//       to: user.email,
-//       subject: "Email Verification",
-//       html: `Hello! Just one more step to continue cycling Click <a href="${verificationLink}">here</a> to verify your email address.`,
-//     };
-
-//     await sgMail.send(emailData);
-
-//     // Send response
-//     res.json({ message: "New verification email sent successfully" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "An error occurred" });
-//   }
-// };
-
 export const login = async (req, res) => {
   try {
     // 1. destructor name, email, passwprd from req.body
@@ -485,58 +310,6 @@ export const updateProfile = async (req, res) => {
     console.log(err);
   }
 };
-
-// export const addAddress = async (req, res) => {
-//   try {
-//     const { region, city, barangay, postalCode, street } = req.body;
-
-//     // Get the user ID from the authenticated user's token
-//     const userId = req.user._id;
-
-//     // Find the user by their ID and update their address array with the new address object
-//     const user = await User.findByIdAndUpdate(
-//       userId,
-//       {
-//         $push: {
-//           address: { region, city, barangay, postalCode, street },
-//         },
-//       },
-//       { new: true }
-//     );
-//     // Return the updated user object as the response
-//     res.json(user);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-// export const addAddress = async (req, res) => {
-//   try {
-//     const { region, city, barangay, postalCode, street } = req.body;
-
-//     // Get the user ID from the authenticated user's token
-//     const userId = req.user._id;
-
-//     // Find the user by their ID
-//     const user = await User.findById(userId);
-
-//     // Check if the user has already added 3 addresses
-//     if (user.address.length >= 3) {
-//       return res.status(400).json({ message: "Maximum number of addresses reached" });
-//     }
-
-//     // Add the new address object to the user's address array
-//     user.address.push({ region, city, barangay, postalCode, street });
-
-//     // Save the updated user object to the database
-//     await user.save();
-
-//     // Return the updated user object as the response
-//     res.json(user);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 export const addAddress = async (req, res) => {
   try {
@@ -889,53 +662,37 @@ export const getSalesInMay = async (req, res) => {
 
 export const getSalesByWeek = async (req, res) => {
   try {
-    const currentWeek = moment().week();
+    const startOfWeek = moment().startOf("week").toDate();
+    const endOfWeek = moment().endOf("week").toDate();
+
     const totalSales = await Order.aggregate([
       {
         $match: {
           "payment.success": true,
-          createdAt: { $gte: moment().startOf("week").toDate() }, // filter by current week
+          createdAt: { $gte: startOfWeek, $lte: endOfWeek }, // filter by this week's date range
         },
       },
       {
         $group: {
-          _id: { $dayOfYear: "$createdAt" }, // group by day of year
+          _id: null,
           total: { $sum: "$totalPrice" },
         },
       },
       {
         $project: {
           _id: 0,
-          dayOfYear: "$_id",
           total: 1,
-        },
-      },
-      {
-        $group: {
-          _id: "$dayOfYear",
-          total: { $sum: "$total" },
-        },
-      },
-      {
-        $sort: {
-          _id: 1,
         },
       },
     ]);
 
-    // Reset total sales to 0 for each new day
-    const salesByDay = totalSales.reduce((acc, curr) => {
-      if (curr._id <= moment().dayOfYear()) {
-        acc[curr._id] = curr.total;
-      } else {
-        acc[curr._id] = 0;
-      }
-      return acc;
-    }, {});
+    // Extract the total sales for this week from the result
+    const thisWeekSales = totalSales.length > 0 ? totalSales[0].total : 0;
 
-    res.json({ salesByDay: salesByDay });
+    res.json({ thisWeekSales });
   } catch (err) {
     console.log(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -948,16 +705,18 @@ export const getSalesByDay = async (req, res) => {
       {
         $match: {
           "payment.success": true,
-          createdAt: { $gte: startOfDay, $lte: endOfDay }, // filter by today's date
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
         },
       },
       {
         $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, // group by date
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
           total: { $sum: "$totalPrice" },
+          orders: { $push: "$$ROOT" } // Accumulate order documents for each day
         },
       },
     ]);
+
     res.json({ totalSales });
   } catch (err) {
     console.log(err);
@@ -969,7 +728,7 @@ export const getHottestProducts = async (req, res) => {
   try {
     const hottestProducts = await Product.find()
       .sort({ sold: -1 }) // sort by sold value in descending order
-      .limit(10); // return top 10 products
+      .limit(5); // return top 10 products
     res.json(hottestProducts);
   } catch (err) {
     console.log(err);

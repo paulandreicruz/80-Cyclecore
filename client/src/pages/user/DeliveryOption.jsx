@@ -4,6 +4,7 @@ import { useAuth } from "../../context/Auth";
 import { useCart } from "../../context/Cart";
 import { NavLink, useNavigate } from "react-router-dom";
 import Navbar from "../../global/nav/Navbar";
+import paypal from "../../assets/paypal.png";
 import {
   Accordion,
   AccordionDetails,
@@ -423,6 +424,31 @@ export const DeliveryOption = () => {
                       </>
                     ))}
 
+                    {selectedOption === 2 && (
+                      <>
+                        <div className="bg-gray-50 p-2 rounded-md">
+                          <img
+                            src={paypal}
+                            alt=""
+                            className="w-[25rem] mx-auto"
+                          />
+
+                          <div>
+                            <button
+                              className="w-full rounded-full bg-[#fec33a] hover:bg-[#ffd164]"
+                              onClick={handlePaypalClick}
+                            >
+                              <img
+                                src={paypal}
+                                alt=""
+                                className="w-24 mx-auto"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
                     {selectedOption === 1 ? (
                       <div className="max-w-md mx-auto">
                         {!clientToken || !cart?.length ? (
@@ -448,7 +474,7 @@ export const DeliveryOption = () => {
                         </div>
                       </>
                     ) : (
-                      <div className="flex justify-end">
+                      <div className={`${selectedOption === 2 && "hidden"} flex justify-end`}>
                         <button
                           onClick={handleCheckoutPickup}
                           className="flex items-center gap-1 bg-yellow-300 p-3 rounded-md tracking-wide hover:scale-105 duration-200 ease-in-out"
@@ -548,7 +574,6 @@ export const DeliveryOption = () => {
                 )}
                 {selectedOptionIndex === null && null}
               </div>
-              <button onClick={handlePaypalClick}>Pay with PayPal</button>
             </div>
           </Grid>
         </Grid>

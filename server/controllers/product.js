@@ -23,10 +23,16 @@ const gateway = new braintree.BraintreeGateway({
 });
 
 paypal.configure({
-  mode: "sandbox", // sandbox or live
-  client_id: process.env.PAYPAL_C_ID,
-  client_secret: process.env.PAYPAL_S,
+  mode: "live", // sandbox or live
+  client_id: process.env.PAYPAL_LIVE_C_ID,
+  client_secret: process.env.PAYPAL_LIVE_S_ID,
 });
+
+// paypal.configure({
+//   mode: "sandbox", // sandbox or live
+//   client_id: process.env.PAYPAL_C_ID,
+//   client_secret: process.env.PAYPAL_S,
+// });
 
 export const create = async (req, res) => {
   try {
@@ -588,7 +594,7 @@ export const executePaypalPayment = async (req, res) => {
     // Update the order in your database with the executed payment details
     const order = await Order.findOne({ paymentId: paymentId });
     order.paypalpayment = executedPayment;
-    order.paypalstatus = "paid";
+    order.paypalstatus = true; // Set paypalstatus to true
 
     await order.save();
 
@@ -715,69 +721,51 @@ export const orderStatus = async (req, res) => {
                   <td>${product.name},</td>
                   <td>${product.quantity}</td>
                   <td>${order.status}</td>
-                  <td>${product.price}</td>
+                  <td>${product.price.toLocaleString("en-PH", {
+                    style: "currency",
+                    currency: "PHP",
+                  })}
+                  </td>
+                </tr>
+                <td>${product.customframename ?? ""}</td>
+                <td></td>
+                <td>${product.customframeprice ?? ""}</td>
                 </tr>
                 <tr>
-                <td>${product.customframename},</td>
-                <td>${product.quantity}</td>
+                <td>${product.customhandlebarname ?? ""}</td>
                 <td></td>
-                <td>${product.customframeprice.toLocaleString("en-PH", {
-                  style: "currency",
-                  currency: "PHP",
-                })}</td>
-              </tr>
-              <tr>
-              <td>${product.customhandlebarname},</td>
-              <td>${product.quantity}</td>
-              <td></td>
-              <td>${product.customhandlebarprice.toLocaleString("en-PH", {
-                style: "currency",
-                currency: "PHP",
-              })}</td>
-            </tr>
-            <tr>
-            <td>${product.customwheelsetname},</td>
-            <td>${product.quantity}</td>
-            <td></td>
-            <td>${product.customwheelsetprice.toLocaleString("en-PH", {
-              style: "currency",
-              currency: "PHP",
-            })}</td>
-          </tr>
-          <tr>
-          <td>${product.customtirename},</td>
-          <td>${product.quantity}</td>
-          <td></td>
-          <td>${product.customtireprice.toLocaleString("en-PH", {
-            style: "currency",
-            currency: "PHP",
-          })}</td>
-        </tr>
-        <tr>
-        <td>${product.customsaddlename},</td>
-        <td>${product.quantity}</td>
-        <td></td>
-        <td>${product.customsaddleprice.toLocaleString("en-PH", {
-          style: "currency",
-          currency: "PHP",
-        })}</td>
-      </tr>
-      <tr>
-      <td>${product.customgroupsetname},</td>
-      <td>${product.quantity}</td>
-      <td></td>
-      <td>${product.customgroupsetprice.toLocaleString("en-PH", {
-        style: "currency",
-        currency: "PHP",
-      })}</td>
-    </tr>
+                <td>${product.customhandlebarprice ?? ""}</td>
+                </tr>
+                <tr>
+                <td>${product.customwheelsetname ?? ""}</td>
+                <td></td>
+                <td>${product.customwheelsetprice ?? ""}</td>
+                </tr>
+                <tr>
+                <td>${product.customtirename ?? ""}</td>
+                <td></td>
+                <td>${product.customtireprice ?? ""}</td>
+                </tr>
+                <tr>
+                <td>${product.customtsaddlename ?? ""}</td>
+                <td></td>
+                <td>${product.customsaddleprice ?? ""}</td>
+                </tr>
+                <tr>
+                <td>${product.customgroupsetname ?? ""}</td>
+                <td></td>
+                <td>${product.customgroupsetprice ?? ""}</td>
+                </tr>
               `
               )
               .join("")}
           </tbody>
         </table>
         <div style="text-align: left; margin-top: 30px;">
-          <h3>Order Total: ${order.totalPrice}</h3>
+          <h3>Order Total:${order.totalPrice.toLocaleString("en-PH", {
+            style: "currency",
+            currency: "PHP",
+          })}</h3>
         </div>
       </div>
     </div> `,

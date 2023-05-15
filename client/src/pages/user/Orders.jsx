@@ -32,6 +32,7 @@ export default function UserOrders() {
     "Delivered",
     "Cancelled",
     "Ready for Pickup",
+    "Refunded",
   ]);
   const [orders, setOrders] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -304,7 +305,7 @@ export default function UserOrders() {
                         ? "Failed"
                         : selectedOrder.paymentId
                         ? selectedOrder.paypalpayment.state
-                        : ""}
+                        : "Not Paid"}
                     </span>
                   </h1>
                   <h1 className="text-xs">
@@ -322,8 +323,8 @@ export default function UserOrders() {
                           : selectedOrder.status === status[4]
                           ? "text-gray-500"
                           : selectedOrder.status === status[5]
-                          ? "text-green-500"
-                          : ""
+                          ? "text-red-500"
+                          : selectedOrder.status === status[6]
                       }`}
                     >
                       {selectedOrder.status}

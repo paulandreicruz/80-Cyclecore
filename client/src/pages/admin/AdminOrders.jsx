@@ -35,6 +35,8 @@ export default function AdminOrders() {
     "Shipped",
     "Delivered",
     "Cancelled",
+    "Ready for Pickup",
+    "Refunded",
   ]);
   const [orders, setOrders] = useState([]);
   const [changedStatus, setChangedStatus] = useState("");
@@ -99,7 +101,6 @@ export default function AdminOrders() {
     }
   };
 
-  console.log(selectedOrder);
 
   const customBuilds = [
     "Specialized Frame Custom Build",
@@ -315,9 +316,9 @@ export default function AdminOrders() {
                           <div className="text-sm">
                             Transaction ID:{" "}
                             <span className="font-bold tracking-wider">
-                              {selectedOrder.payment?.transaction.id
-                                ? selectedOrder.payment.transaction.id
-                                : " None "}
+                              {selectedOrder.payment?.transaction.id ||
+                                selectedOrder.paymentId ||
+                                "None"}
                             </span>
                           </div>
                           <h1 className="text-xs">
@@ -329,9 +330,15 @@ export default function AdminOrders() {
                           <h1 className="text-xs">
                             Payment Status:{" "}
                             <span className="font-bold tracking-wider text-sm">
-                              {selectedOrder.payment?.success
+                              {selectedOrder.payment?.success &&
+                              !selectedOrder.paymentId
                                 ? "Success"
-                                : "Failed"}
+                                : selectedOrder.payment?.success === false &&
+                                  !selectedOrder.paymentId
+                                ? "Failed"
+                                : selectedOrder.paymentId
+                                ? selectedOrder.paypalpayment.state
+                                : ""}
                             </span>
                           </h1>
                           <h1 className="text-xs">
@@ -348,7 +355,9 @@ export default function AdminOrders() {
                                   ? "text-green-500"
                                   : selectedOrder.status === status[4]
                                   ? "text-gray-500"
-                                  : ""
+                                  : selectedOrder.status === status[5]
+                                  ? "text-red-500"
+                                  : selectedOrder.status === status[6]
                               }`}
                             >
                               {selectedOrder.status}
@@ -525,13 +534,7 @@ export default function AdminOrders() {
                                     ) ? (
                                       <>
                                         <div className="mt-2">
-                                          {p.customframeprice.toLocaleString(
-                                            "en-PH",
-                                            {
-                                              style: "currency",
-                                              currency: "PHP",
-                                            }
-                                          )}
+                                          {p.customframeprice}
                                         </div>
                                         <div className="mt-2">
                                           {p.customhandlebarprice}
